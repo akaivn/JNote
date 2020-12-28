@@ -1,0 +1,567 @@
+Redis
+	What
+		Redis（Remote Dictionary Server )，即远程字典服务，是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库
+	Why
+		性能极高
+			Redis能读的速度是110000次/s,写的速度是81000次/s 。
+		丰富的数据类型
+			Redis支持的类型 String, List, Hash, Set 及 Ordered Set 数据类型操作。
+		原子
+			Redis的所有操作都是原子性的，意思就是要么成功执行要么失败完全不执行。单个操作是原子性的。多个操作也支持事务，即原子性，通过MULTI和EXEC指令包起来
+		丰富的特性
+			Redis还支持 publish/subscribe, 通知, key 过期等等特性。
+		是对SQL数据库的补充
+		Redis是一个简单的，高效的，分布式的，基于内存的缓存工具。架设好服务器后，通过网络连接（类似数据库），提供Key－Value式缓存服务。简单，是Redis突出的特色。 简单可以保证核心功能的稳定和优异
+	
+	Redis安装
+		下载
+			$ wget http://download.redis.io/releases/redis-5.0.8.tar.gz
+		解压
+			$ tar -xzf redis-5.0.8.tar.gz
+		进入文件夹后编译
+			$ cd redis-5.0.8
+			$ make
+		安装到指定的文件夹
+			$ make PREFIX=/usr/local/redis install
+			注意：PREFIX必须大写、同时会自动为我们创建redis目录，并将结果安装此目录
+	Redis启动
+		1.进入对应的安装目录 
+			$ /usr/local/redis/bin/
+ 		2.执行命令
+ 			$ ./redis-server
+ 		启动Redis客户端
+ 			1.进入对应的安装目录 
+				$ /usr/local/redis/bin/
+ 			2.执行命令
+ 				$ ./redis-cli
+	Redis配置文件
+		1.要想让redis配置文件生效必须将reids.conf先复制一份到redis/bin同级目录下
+			进入redis解压后的目录。使用 $ cp redis.conf /usr/local/redis/bin 命令
+
+		3.自定义配置
+			a.daemonize no 改为yes 更改redis为守护进程，支持窗口多用，后台启动
+			b.bind 127.0.0.1 解除绑定使redis支持远程连接
+			c.requirepass  设置密码
+
+			再次启动redis和配置文件一起启动  ./bin/redis-server ./redis.conf
+
+		4.登录客户端时需要进行密码验证
+			$ ./redis-cli -h 远程连接ip -p port端口号 2>/dev/null -a password密码 
+			2>/dev/null：加上忽略掉警告 Warning: Using a password with '-a' option on the command line interface may not be safe.
+
+	Redis关闭
+		1.关机，宕机，崩溃
+		2.通过客户端正常关闭
+			$ ./redis-cli shutdown
+			如果设置了密码，需要先验证密码。直接在客户端中shutdown不需要密码
+		3.	退出客户端命令为：$ quit
+	Redis key常用命令(公共)
+		以下的key 和 var为 变量
+		1.设置key
+			$ set key var
+		2.设置值
+			$ set key value
+			设置key和value(同时)
+				$ set key value
+		3.拿取值
+			$ get key
+		4.检查key是否存在
+			$ exists key 不存在返回 0 存在返回1 后面可以跟数组使用空格将每个key隔开
+		5.删除key
+			$ del key 删除成功后返回 1
+		6.给key设置超时时间
+			$ expire key (seconds) 以秒为单位
+			key永久显示 -1
+			key超时后显示 -2
+		7.查看当前key的剩余存活时间(seconds)
+			$ ttl key
+		8.移除key的过期时间使key成为永久
+			$ persist key
+		9.根据通配条件查询key
+			$ keys var
+			* :通配所有key
+				查询后显示的结果是每一个key 中间都会有一个 'key'字符串和每一个key隔开
+			? :通配一个字符
+			单个指定的key名字：代表查询指定key
+		10.返回key所存储的类型
+			$ type key
+	Redis db常用命令(公共)
+		1.清空当前数据库所有key
+			$ flushdb
+		2.清空所有数据库中的所有key
+			$ flushall
+		3.切换数据库
+			$ select 0-15
+		4.移动数据库中的key到指定数据库,如果该不存在则不能成功，如果该key在另一个数据库中已经存在，同样不能成功
+			$ move key db
+		5.数据库长度(有多少个key)
+			$ dbsize
+	Redis key的命名规则
+		不建议太长，也不建议太短，行业命名规则为 例：user:id:name 可读性更好
+	Redis 支持的数据类型
+		String
+			string是redis最基本的类型，一个key对应一个value。是二进制安全的。意思是redis的string可以包含任何数据。比如jpg图片或者序列化的对象 。
+			二进制安全是指:在传输数据时，保证二进制数据的信息安全，也就是不被篡改、破译等，如果被攻击，能够及时检测出来 
+			二进制安全特点： 
+			    1、编码、解码发生在客户端完成，执行效率高 
+				2、不需要频繁的编解码，不会出现乱码
+			String的命令
+				1.set 命令用于设置给定 key 的值。如果 key 已经存储值， set 就覆写旧值，且无视类型 
+					$ set key_name value
+				2.只有在 key 不存在时设置 key 的值。命令在指定的 key 不存在时，为 key 设置指定的值
+					$ setnx key_name(key_name is nil) value
+				3.get命令用于获取指定 key 的值。如果 key 不存在，返回 nil 。如果key 储存的值不是字符串类型，返回一个错误
+					$ get key_name
+				4.用于获取存储在指定 key 中字符串的子字符串。字符串的截取范围由 start 和 end 两个偏移量决定(包括 start 和 end 在内)
+					$ getrange key_name start end
+				5.获取所有(一个或多个)给定 key 的值
+					$ mget key1 [key2..]
+				6.getset 命令用于设置指定 key 的值，并返回 key 的旧值,当 key 不存在时，返回 nil 
+					$ getset key_name value
+				7.返回 key 所储存的字符串值的长度
+					$ strlen key_name
+				8.删除指定的key，如果存在，返回值数字类型。 
+					$ del key_name
+				9.自增/自减：
+					I.自增
+						a.incr 命令将 key 中储存的数字值增1。如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 incr 操作 
+							$ incr key_name
+						b.incrby 命令将 key 中储存的数字加上指定的增量值 
+							$ incrby key_name value
+					II.自减
+						a.decr 命令将 key 中储存的数字值减1，如果key不存在，那么key的值会先被初始化为0，然后在执行decr操作
+							$ decr key_name
+						b.decrby 命令将 key 中储存的数字减去指定的值
+							$ decrby key_name value
+				10.Append 命令用于为指定的 key 追加至未尾，如果不存在，为其赋值  
+					$ append key_name value
+
+				注意：key的字符区分大小写，但命令不区分。
+		Hash(哈希)
+			适合存储对象类型
+
+			Hash命令
+				1.设置hash值
+					$ hset key filed value
+				2.设置一个key的多个值
+					$ hmset key filed value [filed .. value..]
+				3.获取hash值
+					$ hget key filed
+				4.获取一个hash的多个值
+					$ hmget key filed [filed..]
+				5.查询一个hash的所有的值
+					$ hgetall key
+				6.删除hash某个key的某个值
+					$ hdel key filed [filed..]
+		List(列表)
+			a.赋值与取值
+				1.在列表左侧插入
+					$ lpush key value[value...]
+				2.在列表右侧插入
+					$ rpush key value[value...]
+				3.显示列表所有数据(指定范围，下标从0开始，-1代表最后一个(右侧))
+					$ lrange key start end
+				4.在已经存在的列表最左侧插入数据，如果列表不存在，命令不生效
+					$ lpushx key value	    	
+				5.在已经存在的列表最右侧插入数据，如果列表不存在，命令不生效
+					$ rpushx key value
+				6.查询列表的长度
+					$ llen key
+				7.获得指定index的列表的值
+					$ lindex key index
+			b.删除(当列表中没有值时，列表会被redis自动删除)
+				1.移除列表最左侧第一个元素并取出,如果没有此列表就返回nil
+					$ lpop key
+				2.移除列表最右侧第一个元素并取出,如果没有此列表就返回nil
+					$ rpop key
+				3.移除列表最左侧第一个元素并取出，如果此列表不存在，那么在超时时间内，列表会阻塞到这,如果超时时间内移除后，还会返回移除花费时间s
+					$ blpop key timeout
+				4.移除列表最右侧第一个元素并取出，如果此列表不存在，那么在超时时间内，列表会阻塞到这，如果超时时间内移除后，还会返回移除花费时间s
+					$ brpop key timeout
+				5.使列表保留指定的区域，不在这个区域的其他数据全部移除
+					$ ltrim key start(下标从0(最左侧)开始) end
+				6.删除整个列表使用公共命令
+					$ del key
+				7.清空当前数据库
+					$ flushdb
+			c.修改
+				1.在指定的下标下位置修改为某个值
+					$ lset key index value
+				2.在指定列表下指定值的前或后插入某个值
+					$ linset key before|after v1 v2
+			d.高级语法
+				1.指定列表的最右侧数据被移到指定列表的最左侧
+					$ rpoplpush sourcel targetl
+				2.指定列表的最右侧数据被移到指定列表的最左侧，如果此列表不存在，那么在超时时间内，列表会阻塞到这,如果超时时间内操作完成后，还会返回操作花费时间s
+					$ brpoplpush sourcel targetl timeout
+		Set(集合)
+			特点：无序不可重复，底层为hashtable和intset数组实现，相对于java中的hashset功能相似
+			a.设置值(赋值)
+				1.设置新集合
+					$ sadd key member[member...] 如果赋值时几个值相同那么后面的值会覆盖前面的值，赋值成功后返回的是插入成功的数据条数(int)
+				2.获取集合长度
+					$ scard key :返回intger类型长度
+				3.判断这个集合元素是否存在此集合中，如果存在返回1，不存在则返回0
+					$ sismember key member
+				4.返回集合中一个或多个(指定)随机集合元素
+					$ srandmember key [count] 默认返回一个，指定count可返回任意个，如果设置的count超过此集合长度，那么会将集合中所有的元素都返回，返回值是一个集合
+			b.取值
+				1.查询所有集合中的值
+					$ smembers key
+			c.移除
+				1.移除集合中一个或多个元素
+					$ srem key member1 [member2...] :返回integer类型，代表移除元素成功的次数
+				2.移除集合中随机一个或多个元素并返回
+					$ spop key [count] ：返回集合类型，如果没有指定移除个数，默认为一，且返回的集合中的值也只有一个
+				3.将指定集合中的某一个元素移动到指定的另一个集合中，如果那个目标集合不存在则创建它并完成操作
+					$ smove source target members
+			d.高级命令
+				差集(只能一次比较两个集合)
+					取出两个集合不同的数据返回集合类型，以放在第一个的集合为主表
+					$ sdiff key1 key2 ：key1集合中有哪些元素与key2集合中不一样
+				交集
+					取出多个集合中共有数据返回集合类型，没有前后集合之分，如果其中有不存在的集合key就返回空
+					$ sinter key1 key2[key...]
+				并集
+					取出多个集合中所有的数据，如果有重复的数据就覆盖掉(set特征)
+					$ sunion key1 key2[key...]
+		ZSet(有序集合)
+			a.赋值，修改
+				$ zadd key score [score...] member [member...]：如果这个key不存在就添加，如果存在可以修改该key的score
+			b.取值
+				1.取出集合的成员数量
+					$ zcard key
+				2.取出集合中所有值，排序为按分数从低到高
+					$ zrange key start stop
+				3.取出集合中某个元素的排名
+					$ zrank key member
+				4.显示指定数值区间内所有的key的数量
+					$ zcount key min max
+				5.取出集合中所有值，排序为按分数从高到低
+					$ zrevrange key start stop
+			c.删除
+				1.移除指定一个或多个key
+					$ zrem key member [member...]
+				2.移除指定排序区间的所有元素,顺序为从低到高
+					$ zremrangebyrank key start stop 
+				3.移除指定数值区间的所有元素
+					$ zremrangebyscore key min max
+	Redis高级数据类型
+		Hyperloglog
+			这个数据类型被用来做大数据时计算基数(不重复的数)的个数才诞生的数据类型
+			命令
+				1.添加元素
+					$ pfadd key element1[elenemt2...]
+				2.查询key的元素基数个数
+					$ pfcount key1 [key2...]
+				3.合并多个hyperloglog到一个
+					$ pfmerge new hlog1 [hlog2...]
+			这个数据类型到大数据时占用内存极小，每个key都是固定的内存(12kb),数据量小时，很鸡肋
+	Redis连接java
+		1.导入jar包或者依赖
+			<dependency>
+				<groupId>redis.clients</groupId>
+            	<artifactId>jedis</artifactId>
+            	<version>3.1.0</version>
+			</dependency>
+			
+		2.编写java代码
+			//1.传入对应点ip和端口
+			Jedis jedis = new Jedis("ip",port);
+			//设置redis-cli的密码
+			jedis.auth(String password);
+			//2.测试存储字符串key和value，（可以是中文，再客户端(redis)完成解码降低服务端压力）
+			jedis.set(key,value);
+			//3.释放连接关闭资源
+			jedis.close();
+		
+			注意
+				1.此时，jedis客户端无法完成对redis的链接，因为liunx的防火墙并没有开启redis的端口号，我们需要手动的去将redis的端口号开启
+				2.所有的jedis类的方法都是redis的命令
+	Redis连接池工具类的配置
+		public class JedisPoolUtils {
+			private static final String ip = "192.168.1.104";
+			private static final Integer port = 6379;
+			private static final String password = "kate";
+			private static JedisPoolConfig jedisPoolConfig;
+			private static JedisPool jedisPool;
+			private static Jedis jedis;
+
+			static {
+    			//初始化池的配置，内部有其默认实现 详情参考API
+    			jedisPoolConfig = new JedisPoolConfig();
+			}
+
+			//返回Jedis对象
+			public static Jedis getJedis(){
+    			//创建JedisPool连接池对象
+    			jedisPool = new JedisPool(jedisPoolConfig,ip,port);
+    			jedis = jedisPool.getResource();
+    			//设置客户端(redis-cli)密码
+    			jedis.auth(password);
+    			return jedis;
+			}
+
+			//关闭连接(释放连接)
+			public static void releases(){
+    			jedis.close();
+			}
+		}
+	RedisTemplate模板使用(等于将spring和redis进行整合)
+		Spring data 提供了RedisTemplate模版 它封装了redis连接池管理的逻辑，业务代码无须关心获取，释放连接逻辑；spring redis同时支持Jedis，Jredis等客户端
+		1.导入jar包或者依赖
+			<dependency>
+			    <groupId>org.springframework.data</groupId>
+			    <artifactId>spring-data-redis</artifactId>
+			    <version>2.2.2.RELEASE</version>
+			</dependency>
+			注意：如果使用2.x版本，那么相应的Jedis版本应该为3.0及以上，不然jar包冲突，版本不匹配
+		2.配置spring核心文件
+			a.配置Jedis链接池
+				<!--jedis连接池配置-->
+			    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+			        <!--最大连接数量-->
+			        <property name="maxTotal" value="20"/>
+			        <!--最大空闲-->
+			        <property name="maxIdle" value="5"/>
+			    </bean>
+			b.配置单机的Jedis客户端
+				<!--redis链接密码-->
+			    <bean id="redisPassword" class="org.springframework.data.redis.connection.RedisPassword">
+			        <constructor-arg name="thePassword" value="kate"></constructor-arg>
+			    </bean>
+
+			    <!--单机的Jedis-->
+			    <!--这里有三种配置策略-->
+			    <!--
+			    	1.RedisStandaloneConfiguration 表示单机
+			    	2.RedisSentinelConfiguration  主从复制
+			    	3.RedisClusterConfiguration  集群
+			    -->
+				<bean id="redisStandaloneConfiguration" class="org.springframework.data.redis.connection.RedisStandaloneConfiguration">
+			        <!--指定服务器端口-->
+			        <property name="port" value="6379"/>
+			        <!--指定服务器地址-->
+			        <property name="hostName" value="192.168.1.104"/>
+			        <!--password-->
+			        <!--需要注意的是当spring-data-redis为2.0及以上时，这里需要引入的password为一个bean-->
+			        <property name="password" ref="redisPassword"/>
+			    </bean>
+
+			c.配置spring-data的Jedis工厂
+				<!--配置spring-data提供的Jedis工厂-->
+			    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+			        <!--引入jedis配置-->
+			        <constructor-arg name="standaloneConfig" ref="redisStandaloneConfiguration"/>
+			    </bean>
+
+			d.配置指定为string类型的序列化方式
+				<!--配置string的序列化模板-->
+			    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+			        <!--传入一个jedis客户端工厂-->
+			        <constructor-arg name="connectionFactory" ref="jedisConnectionFactory"/>
+			        <property name="keySerializer" ref="stringSerializable"/>
+			        <property name="valueSerializer" ref="stringSerializable"/>
+			    </bean>
+
+			    配置使用RedisTemplate模板
+			    <!--配置模板 采用fastjson序列化格式-->
+			    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+			        <property name="connectionFactory" ref="jedisConnectionFactory"/>
+			        <property name="keySerializer" ref="stringSerializable"/>
+			        <property name="valueSerializer" ref="fastJsonRedisSerializer"/>
+			    </bean>
+
+	序列化方式
+		1：JdkSerializationRedisSerializer:
+			使用JdkSerializationRedisSerializer序列化的Bean必须实现Serializable接口
+			<!--默认使用jdk的序列化方式-->
+		2：GenericJackson2JsonRedisSerializer
+			java8新增的类，GenericJackson2JsonRedisSerializer序列化方式无法识别
+			 <!--2.序列化方式-->
+			    <bean id="genericJackson2JsonRedisSerializer" class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
+		3：StringRedisSerializer
+			不能序列化Bean，只能序列化字符串类型的数据，如果value都是字符串类型，可以用该方式序列化
+			<!--3.序列化方式-->
+			<bean id="stringSerializable" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+		4：GenericFastJsonRedisSerializer
+			目前没有发现问题，很好用
+			阿里开发的基于fastjson的序列化方式
+			需要引入fastjson依赖或jar包
+			<dependency>
+	            <groupId>com.alibaba</groupId>
+	            <artifactId>fastjson</artifactId>
+	            <version>1.2.62</version>
+	        </dependency>
+			<bean id="fastJsonRedisSerializer" class="com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer"/>
+			   
+	案例
+		1.用户在2分钟内，仅允许输入错误密码5次。如果超过次数，限制其登录1小时。（要求每登录失败时，都要给相应提式）	
+			业务逻辑分析
+				判断当前是否有登录限制
+					有没有key 有的话是不是5次 user:lo:val
+					1.有限制
+						1.1 告诉用户限制1小时登录
+					2.无限制
+						2.1.登录成功
+							显示登录成功 并清空所有错误次数
+						2.2.登录失败
+							记录登录次数 user:lc:faild
+								判断是否存在该key，如果不存在第一次登录，设置该key的次数为1，并且限制key的存活时间为2分钟
+							2.2.1.看当前的key的值是否小于4
+								小于4
+									叠加次数
+								不小于4
+									代表输错5次 限制登录一小时，并告知用户
+		2.手机短信验证码90秒过期时间设置
+	Redis中对String操作
+		可以配置String类型的专属模板和对String类型进行操作的接口
+			@Autowired
+			//模板  内部定义了以string类型格式为序列化的操作
+			private StringRedisTemplate stringRedisTemplate;
+			//专属接口 以后就不用先获得opsForValue以后再对string进行操作并且不用强转（因为泛型指定了类型）
+			@Resource(name = "stringRedisTemplate")//需要注入模板
+		    private ValueOperations<String,String> valueOperations;
+
+		    set
+		    	valueOperations.set(String key,Object value);
+		    get
+		    	valueOperations.get(String key);
+
+	Redis中对Hash操作
+		/**
+		*对hash操作使用fastjson序列化方式
+		*模板我们使用RedisTemplate
+		*/
+		//模板 
+		@Autowired
+	    private RedisTemplate redisTemplate;
+		//专属接口 以后就不用先获得opsForHash以后再对hash进行操作并且不用强转（因为泛型指定了类型）
+	    @Resource(name = "redisTemplate")//需要注入模板
+	    private HashOperations<String,Integer,User> hashOperations;
+
+	    注意：hash中自带hasKey(String key,Object hk)方法,不用使用模板提供的hasKey方法，并且专属接口里面定义了对hash的内部封装操作，使我们操作起来更方便，它和使用命令进行hash存储的方式不大一样。
+
+
+	    针对hash操作时，有三个参数
+	    	key 代表使用命令时我们最前方的那个key 这个key我们一般都设置在model对象内部使用static修饰，一般为类的名字首字母小写
+	    	hk	代表该对象的key					一般我们设置为对象的id
+	    	hv	代表该对象的值 					
+	    set
+	    	设置时我们使用
+	    	hashOperations.put(User.getKey(),user.getId(),user);
+	    get
+	    	获取时按key 和 hk来查询
+	    	hashOperations.get(String key,Object hk);
+	Redis中对List操作
+		模板我们可以使用string的模板，也可以使用redisTemplate，因为是集合，我们不确定泛型，如果是string类型，就可以用string的模板来实现string的序列化接口
+
+		接口我们使用专属接口
+			ListOperations<K,V> list;声明泛型后就可以加点调用list的方法
+
+		如果存入entity类型，我们不能将值序列化为string，可以将key序列化为string,值可以使用fastjson序列化为json格式
+
+		分页公式
+			long start = (pageIndex-1)*pageSize;
+        	long stop = pageIndex*pageSize-1;
+        场景
+        	分页，列表页，收藏(加入内存，再做持久化)，留言评论，最热推荐(Top5)等
+        任务队列
+        	订单流程  用户注册实名认证
+        	订单流程
+        		1.首先将所有任务存入一个集合中，该集合的存储数据的机制为lpush(leftPush) 往左侧插入
+        		2.完成一个调用一下rpoplpush(rightPopAndLeftPush),将任务集合中的最右侧数据移到此集合的最左侧
+	Redis中对Set操作
+		专属接口
+			SetOperations<K,V> set声明泛型，然后选用模板
+		模板
+			RedisTemplate,StringRedisTemplate
+		场景
+			1.因为独立且唯一，可以用来做网站访问统计ip
+			2.抽奖(spop key [count])
+			3.共同关注，共同好友等(sunion key1 key2 ...)
+
+	Redis中对ZSet操作
+		专属接口
+			ZSetOperations<K,V> 声明泛型，选用模板
+
+		注意
+			当需要添加多条元素时，应该使用Set<ZSetOperations.TypedTuple<T>> s 来声明集合类型的泛型，在插入时，使用TypedTuple的子类的构造器来赋值(v,d)
+		场景
+			排行榜
+
+	Redis中对HyperLogLog操作
+		专属接口
+			HyperLogLog<K,V> hyper 声明泛型，选用模板
+		场景
+			统计网站ip数
+			当天点击量(真实点击量)
+
+	Redis中的事务
+		redis中的事务是一组命令，当需要使用事务时首先开始事务，接着会把每条命令都加入一个队列，等到输入执行命令时，这组队列里的命令便会被依次按顺序执行，因此就保证了事务的原子性，对外是一个整体。redis事务中没有回滚
+
+		事务
+			开启事务
+				$ multi
+			执行事务
+				$ exec
+			放弃队列
+				$ discard
+			监视key
+				$ watch key [key...]
+			放弃监视
+				$ unwatch key [key...]
+		事务异常处理
+			1.当命令无异常，执行命令异常时，redis不会放弃事务，除异常的命令其他的命令都将被执行
+			2.当命令异常时，redis会放弃整个事务队列，一条命令都不会执行
+		事务key的监视
+			我们使用watch命令来监视某些key，当此key正在进行事务队列时，其他key虽然可以修改此数据，但事务队列最后执行时返回nil，表示没有执行任何队列中的命令
+		redis事务应用场景
+			一组命令的执行，从外部不能插入
+
+	Redis的持久化机制
+		redis持久化文件 dump.rdb
+		RDB(快照)
+			在每隔一段时间后进行一次持久化，以找快照的形式将redis中的数据以二进制的方式存储到硬盘
+			快照条件
+				1.服务器正常关闭 shutdown
+				2.执行save命令，或bgsave(手动)
+					redis持久化机制(自动)
+						save 900 1     //每900秒（15分钟）至少1个key发生变化，产生快照
+						save 300 10   //每300秒（5分钟）至少10个key发生变化，产生快照
+						save 60 10000   //每60秒（1分钟）至少10000个key发生变化，产生快照
+
+		AOF(类似日志)
+			等于将每条数据存放的过程记录下来，存放到日志文件中
+	Redis内存淘汰策略
+		1.定时删除
+			给key设置一个过期时间，一到时间马上干掉，增加cpu负荷，拿时间换空间，内存压力较小，
+		2.惰性删除
+			当key到期时不会马上删除，而是等到用的时候先告诉你此key消失或过期，然后去执行cpu删除数据，此方法会增加内存负荷，cpu压力较小，属于拿空间换时间
+		3.定期删除
+			前面的两种方法都比较极端，这里就出现了第三种方法
+			定期删除会对每一个过期区(expires)进行定期抽查，当抽中的key过期时就把它删掉，如果一轮抽中并删除的过期key比较多(>W*25%)，它会再来一轮，如果比较少(小于等于W*25%)，直接继续往下执行下一个过期区，它是靠current_db来确定当前执行到哪一个区,w的值我们可以设置，这个策略就是定期抽查，然后将抽中的过期key给移除，cpu占用不在一点，内存也得到了释放
+
+	缓存执行流程
+		前台请求，后台先从缓存中取数据，取到直接返回结果，取不到时从数据库中取，数据库取到更新缓存，并返回结果，数据库也没取到，那直接返回空结果。
+	缓存穿透
+		描述
+			按照缓存流程假如数据库返回的是空结果，存入到了redis后，这个key就会被redis回收(redis特性，假如一个key中没有值，那么这个key就会被redis自动回收)	，如此循环往复，大量并发用户同时访问的都是数据库，就会造成一种好像没有经过redis一样的穿透效果。
+		解决方法
+			1.即使在数据库中没有返回结果时，也要往redis中存一个空结果(null)，可以使用 "null" 这种形式，同时给这个key设置一个稍微短的过期时间，避免真实数据来时跟此数据结合造成脏数据
+			2.执行缓存预热
+	缓存击穿
+		描述
+			缓存击穿是指缓存中没有但数据库中有的数据（一般是缓存时间到期），这时由于并发用户特别多，同时读缓存没读到数据，又同时去数据库去取数据，引起数据库压力瞬间增大
+		解决方法
+			1.设置热点数据永远不过期。
+			2.加互斥锁，互斥锁参考代码如下：
+	缓存雪崩
+		描述
+			缓存雪崩是指缓存中数据大批量到过期时间，而查询数据量巨大，引起数据库压力过大甚至down机。和缓存击穿不同的是，        缓存击穿指并发查同一条数据，缓存雪崩是不同数据都过期了，很多数据都查不到从而查数据库。
+		解决方法
+			1.缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生。
+			2.如果缓存数据库是分布式部署，将热点数据均匀分布在不同搞得缓存数据库中。
+			3.设置热点数据永远不过期。
+	缓存预热
+		就是系统启动前，提前将相关数据加载到缓存系统，避免用户请求的时候，先查询数据库然后再将数据缓存的问题！用户直接查询事先被预热的缓存数据

@@ -1,0 +1,655 @@
+what
+	mybatis是一个优秀的轻量级的java持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。
+why
+	简单易学：本身就很小且简单。没有任何第三方依赖，最简单安装只要两个jar文件+配置几个sql映射文件易于学习，易于使用，通过文档和源代码，可以比较完全的掌握它的设计思路和实现。
+	灵活：mybatis不会对应用程序或者数据库的现有设计强加任何影响。 sql写在xml里，便于统一管理和优化。通过sql语句可以满足操作数据库的所有需求。
+	解除sql与程序代码的耦合：通过提供DAO层，将业务逻辑和数据访问逻辑分离，使系统的设计更清晰，更易维护，更易单元测试。sql和代码的分离，提高了可维护性。
+	提供映射标签，支持对象与数据库的orm字段关系映射
+	提供对象关系映射标签，支持对象关系组建维护
+	提供xml标签，支持编写动态sql
+
+I.mybatis配置文件
+	<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE configuration
+	        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+	<!-- 主要配置 -->
+	<configuration>
+	    <environments default="mysql">
+	    	<!-- 环境 -->
+	        <environment id="mysql">
+	        	<!-- 事务类型 -->
+	            <transactionManager type="JDBC"></transactionManager>
+	            <!-- 数据源，池 -->
+	            <dataSource type="POOLED">
+	            	<!-- 数据库连接四大属性 -->
+	                <property name="driver" value="com.oracle.jdbc.OracleDriver"/>
+	                <property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+	                <property name="username" value="scott"/>
+	                <property name="password" value="kate"/>
+	            </dataSource>
+	        </environment>
+	    </environments>
+	    <!-- 映射文件配置，位置，属性等 -->
+	    <mappers>
+	    </mappers>
+	</configuration>
+II.mybatis映射文件配置
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		<!-- 映射文件的空间名字唯一 -->
+    	<mapper namespace="cn.kate.dao.UserMapper">
+    		CRUD等操作配置
+    		其他配置
+    	</mapper>
+
+III.mybatis获得sqlSession对象流程
+		//1.读取mybatisxml配置文件
+        inputStream = Resources.getResourceAsStream("mybatis-config.xml");
+        //2.创建sqlSessionFoctory对象
+        SqlSessionFactoryBuilder ssfb = new SqlSessionFactoryBuilder();
+        sqlSessionFactory = ssfb.build(inputStream);
+        //3.拿到工厂后来生产对象SqlSession
+        sqlSession = sqlSessionFactory.openSession();
+        //4.得到对象后用对象来创建dao的代理对象
+        mapper = sqlSession.getMapper(UserMapper.class);
+        //事务提交
+        sqlSession.commit();
+        //6.关闭对象
+        inputStream.close();
+        sqlSession.close();
+
+IV.使用注解开发
+	CURD操作我们使用
+		@Select @Update() @Insert @Delete
+
+		例：
+			@Select("select * from tb_user") 
+			List<User> findAll();
+
+		    @Select("select * from tb_user where id = #{id}")
+		    User findUserById(int id);
+
+			@Insert("insert into tb_user (id,name,password) values (sq_tbuser.nextval,#{name},#{password}) ")
+   			boolean insertUser(User user);
+
+   			@Update("update tb_user set name = #{name},password = #{password} where id = #{id}")
+		    boolean updateUser(User user);
+
+		    @Delete("delete from tb_user where id = #{id}")
+		    boolean deleteUser(int id);
+	<注意>：
+		如果项目中同时使用注解和xml来配置同一个dao接口中的某一个方法，那么也会报错，（不知道以谁为基准）
+
+		使用注解和xml中的占位符问题
+			当dao接口中的某一个方法的参数为基本数据类型时，占位符随便写（此时程序会根据反射，将参数加载到dao接口中的方法来），但当参数为引用类型时，比如一个对象，这时候占位符必须写该对象的属性名，因为它会根据占位符的名字来寻找该对象的getter方法赋值
+
+	@Param()
+		它的作用和xml映射文件中的parameterType属性不大一样
+		@Param 用于对注解或者xml文件中的参数名和顺序的限定 一般没必要用
+		parameterType是对参数的类型的限定，如果不写则不限定参数类型
+	@Results 和 @Result
+		相当于xml配置文件中的<resultMap></resultMap>,用来解决数据库列名和实体类属性名称不一致的问题
+		例：
+			@Results(value = {
+            	@Result(column = "name",property = "userName"),
+	            @Result(column = "password",property = "userPwd")
+	    	})
+	    当一个查询方法完成列名和属性名对应后，其他方法是可以引用的
+	    例：
+	    	@Results(id = "userMap",value = {
+            	@Result(column = "name",property = "userName"),
+	            @Result(column = "password",property = "userPwd")
+	    	})
+
+	    	@ResultMap(value = {
+	    		"userMap"
+	    	})
+	    	List<User> findUsersByLike(String name);
+	使用注解来完成一对一（多对一）的关系映射 + 延迟加载或非延迟加载的查询封装
+		<sql语句比较精简>
+		@Select("select * from t_account")
+	    @Results(value = {
+	            //自己的配置完成
+	            @Result(id = true,column = "id",property = "id"),
+	            @Result(column = "money",property = "money"),
+	            //配置一对一关联查询
+	                    <!--属性名-->     <!--一对一另外的dao接口对应的方法的参数值-->  <!--对应的方法-->            <!--是否采用延迟加载-->
+	            @Result(property = "user",column = "id",one = @One (select = "cn.kate.dao.UserDao.findUserById",fetchType = FetchType.EAGER))
+	    })
+	    List<Account> findAll();
+	一对多
+		@Select("select * from tb_user")
+		@Results(value = {
+		        @Result(id = true,column = "id",property = "id"),
+		        @Result(column = "name",property = "name"),
+		        @Result(column = "password",property = "password"),
+		                                <!--把你数据库中的id列拿出来，一个一个的给那个方法-->
+		        @Result(property = "as",column = "id",many = @Many(select = "cn.kate.dao.AccountDao.findAccountById",fetchType = FetchType.LAZY))
+		})
+		List<User> findAll();
+	注解开启二级缓存配置
+		1.设置mybatis配置文件
+			<!--开启二级缓存 默认的-->
+		    <settings>
+		        <setting name="cacheEnabled" value="true"/>
+		    </settings>
+		2.设置当前dao接口
+			@CacheNamespace(blocking = true)
+<注意>：
+	1.开发中我们一般不写dao接口的具体实现类，一般使用sqlSession对象提供的getMapper方法通过代理来动态生成对象
+	2.dao接口中的方法一定要跟mapper映射文件中相应的一段xml文件id相等
+	3.每一个实体类的property属性都应该跟数据库中column一一对应，如果不想对应：
+		a.可以修改sql语句，给每一个表字段起别名
+		b.通过配置文件来实现，引用的时候，需要将resultType换成resultMap，其他的方法也可以引用，直接写resultMap的id就行
+			<!--配置一个xml来解决列名和属性不一致-->
+		    <resultMap id="userMap" type="cn.kate.entity.User">
+		        <!--注解字段-->
+		        <id property="id" column="id"></id>
+		        <!--非主键字段-->
+		        <result property="loginId" column="login_id"></result>
+		        <result property="loginPwd" column="login_pwd"></result>
+		    </resultMap>
+	4.oracle的驱动jar的引入要根据实地的类路径去写
+	5.在mapper映射文件中oracle的sql语句最后不能带分号，mysql则无所谓
+
+OGNL表达式
+	Object Graphic Navigation Language 对象图导航语言
+	作用：在不使用.getxxx来获取属性的值
+		例：类中：user.getUserName();
+			ognl:userName
+	mybatis中就支持ognl表达式
+	将实体类作为查询参数时，就可以使用ognl表达式
+		例：
+		<select id="findQuery" resultType="user" parameterType="Query">
+	        select * from user where id = #{user.id};
+	    </select>
+
+properties标签
+	1.
+		配置mybatis中的propety属性
+		<properties>
+	        <property name="driver" value="com.mysql.jdbc.Driver"/>
+	        <property name="url" value="jdbc:mysql://localhost:3306/test"/>
+	        <property name="username" value="root"/>
+	        <property name="password" value="kate"/>
+	    </properties>
+	    配置了properties后下面的引用语法：${name}
+
+	<注意>：使用resources或url属性后，就可以从外部引用一个后缀为.properties的配置文件
+
+	2.resources
+		配置：
+			<properties resources = "这里可以从外部引入配置文件，但一定要写类路径" ></properties>
+	3.url
+		配置：
+			<properties url = "这里一定要写url路径" ></properties>
+typeAliases标签
+	typeAliases可以给实体类起别名,当指定了别名后就不在区分大小写
+	<typeAliases>
+        <typeAlias type="cn.kate.entity.User" alias="user"/>
+        <typeAlias type="cn.kate.entity.QueryVo" alias="qv"/>
+    </typeAliases>
+    当实体类多的时候，为了规避使用大量的typeAlias标签，出现了package标签，当使用了package标签后，其该包下的所有类都注册了别名，别名就是类名，不在区分大小写
+    <typeAliases>
+        <package name="cn.kate.entity"/>
+    </typeAliases>
+
+<注意>：在mybatis-config.xml中的mapper标签中，以上两个标签是同样的作用
+	<mappers>
+		<!--注解使用-->
+		<mapper class = "cn.kate.entity.xxx"></mapper>
+		<!--xml配置使用-->
+		<mapper resource="cn/kate/dao/userMapper.xml"/>
+		<!--package使用-->
+		<注意>：package标签只能指定dao接口所在的包。package标签一但指定，就不要指定mapper标签，无论是注解还是xml，package都会去自动扫描来完成读取
+				核心文件中指定映射文件那儿可以配package，如果是扫描包下的注解没有规则，指明包就能扫，但如果扫描的是跟dao绑定的映射配置文件，那么就需要做到文件名一致并处于一个目录中
+				杜老师：
+					开发中使用的是接口加xml的形式两种结合,接口相当于抽象层，xml相当于实现层
+					不用package的时候只需要指定Xml的命名空间指向 接口 配置文件的Id指向接口的方法即可同时使用 注解 和 xml配置文件
+		<package name="cn.kate.dao"/>
+	</mappers>
+#与$的区别
+	1.#对sql语句的变量不会进行转义会将变量外添加引号，$直接以字符串拼接的方式，$会进行转义
+	2.#可以防止sql注入，$不能，#比$安全
+	3.如果sql的变量是表结构相关的，比如表名，字段名。 排序就是经典的场景就应该使用$。
+	4.如果传入的参数为对象类型，使用#时应注意#{大括号里面的值不可以随便写，要写实体类的属性名，它根据相应的getter方法去取值完成赋值}，同样的${这里如果不写_parameter || value},也会根据getter方法去找你写的那个属性名
+
+		可以这么理解：
+			#{}两种写法
+				1.传入参数为基本类型时
+					#{随便写}
+				2.传入参数为引用类型或对象类型时
+					#{该对象的变量名}
+			${}两种写法
+				1.传入参数为基本类型时
+					${_parameter || value}:这时，如果字段的值为字符串类型时，你需要手动的加上 ''
+				2.传入参数为引用类型或对象类型时
+					${该对象的变量名}
+				动态sql时，只有一个参数也可以用_parameter
+	还有一点需要注意的是：一般我们都是使用#而不适用$，只有在特定的场合才会用到$,比如分组，排序等跟表字段或表结构相关时才会使用$
+连接池：
+	在mybatis配置文件中是有池的概念的，它被配置在dataSource的type属性中
+	<dataSource type="Variable">
+		
+	</dataSource>
+	type属性的取值一共有三种
+		1.POOLED	
+			它是由mybatis实现javax.sql.DataSource的连接池，每次有一个对象需要连接时，它会从空闲池中取出一个来给相应的对象，如果空闲池中的没有连接，它就会从活动池中取，如果活动池中的连接也都被占用，那么它会去判断那个最先被连接走的连接，将它释放并交给这个新的连接对象
+		2.UNPOOLED	
+			它也由mybatis实现javax.sql.DataSource，但却并没有池的概念，他只是每次由对象需要连接时，它会创建新的连接，用完后它会释放，下次还是会创建新的连接
+		3.JNDI
+			使用servlet容器，也就是服务器内置的技术，tomcat中使用的就是dbcp连接池,非web工程或者maven war工程不可用
+
+	配置c3p0链接池
+		1.首先创建一个自定义类来继承UnpooledDataSourceFactory
+			public class C3p0DataSourceFactory extends UnpooledDataSourceFactory {
+		    	public C3p0DataSourceFactory(){
+		        	this.dataSource = new ComboPooledDataSource();
+			    }
+			}
+		2.配置mybatis核心文件	
+						<!--写类全名-->
+			<dataSource type="com.aaa.C3p0DataSourceFactory">
+                <!--四大连接数据库属性-->
+                <property name="driverClass" value="oracle.jdbc.OracleDriver"></property>
+                <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
+                <property name="user" value="scott"></property>
+                <property name="password" value="kate"></property>
+                <!-- c3p0相关属性 -->
+                <!--初始化时获取十个连接，取值应在minPoolSize与maxPoolSize之间 -->
+                <property name="initialPoolSize" value="10"></property>
+                <!--连接池中保留的最小连接数 -->
+                <property name="minPoolSize" value="10"></property>
+                <!--连接池中保留的最大连接数 -->
+                <property name="maxPoolSize" value="50"></property>
+                <!--还可以配置其他的c3p0属性-->
+            </dataSource>
+mybatis中事务
+	I.什么是事务
+	II.事务的四大特性ACID
+	III.如果没有隔离性会怎么样
+	IV.隔离的级别都有哪些
+	V.事务的自动提交设置
+		在mybatis中，DML除了select外，其余的都有事务概念，即不会自动提交和可以回滚数据
+		我们可以设置为自动提交，不过不提倡
+		sqlSession.commit(true);
+		回滚操作为
+		sqlSession.rollback();
+
+动态SQL
+	在mybatis中使用一系列xml标签配置来完成动态sql
+		1.<if></if>
+			<if test = "条件">
+				sql语句
+			</if>
+
+			例：select * from user where 1=1
+				<if test = "username != null">
+					and username = #{username}
+				</if>
+			<注意> :当进行动态sql操作时，mybatis会根据你传入的parameterType属性去取实体类的相对应的getter方法进行判断操作，若此时传入int，string，double等常用属性作为参数类型，其一定会抛出当前类里找不到相对应的属性的getter方法。
+		2.<where></where>
+			当拥有大量条件时，where 1=1 这个判断就不用写了，mybatis会从这众多的条件中来选满足条件的语句执行，并且，会将语句所需的 'where'自动补上
+			select * from user
+			<where>
+				<if></if>
+				<if></if>
+				<if></if>
+				...
+			</where>
+		3.子查询的用法<foreach></foreach>
+			遍历集合循环赋值
+			<foreach collection = "集合名" open = "条件从什么地方开始" close = "结束" item = "每一项（起名字 a）" separator = "中间用什么分割">
+				赋值(此处的名字由 a 处决定)
+			</foreach>
+			如果是map或者set集合，就应该使用@Param()注解来指定集合名字，使用时使用指定的名字
+			<select id="findAllByMap" resultType="cn.kate.entity.Emp">
+		        select * from emp where empno in
+		        <foreach collection="map.keys" item="emp" open="(" close=")" separator=",">
+		            #{emp}
+		        </foreach>
+		    </select>
+		4.抽取重复的sql代码片段
+			<sql id = "唯一标识">
+				<!--重复的语句-->
+				select * from tb_user
+			</sql>
+
+			引用：
+				<select id="findAll" resultType="User">
+			        <include refid="testSql"></include>
+			    </select>
+mybatis中多表的操作
+	一对一（多对一）:mybatis中将多对一的关系看成了一对一
+		<java实体类关系><子表实体类属性需要包含父表实体类的引用>
+		例：用户和订单，抽取一个订单来看，它只属于一个用户，所以mybatis就把它看成了一对一
+		I.不常用
+			在一对一时，可以使用创建一个新的子类来继承其原有父类的方式来实现查询时的最后结果的封装
+			例：
+				public class Child extends Account {
+		    		private String name;
+		    		private String password;
+		    	}
+		    	配置
+		    									<!--配置时返回其继承父类的子类来完成结果的封装-->
+		    	<select id="findAll" resultType="cn.kate.model.Child">
+			        select u.name,u.password,a.* from tb_user u join T_ACCOUNT a on u.id = a.userid
+			    </select>
+		II.常用的方式
+			<!--需要配置一对一的映射关系：使用resultMap-->
+		    <resultMap id="accountMap" type="Account">
+		        <!--主键字段-->
+		            <!--java属性--> <!--数据库列名-->
+		        <id property="id" column="id"></id>
+		        <!--非主键字段-->
+		        <result property="money" column="money"></result>
+		        <!--映射关系-->
+		                     <!--java属性--> <!--封装到哪个对象中-->
+		        <association property="user" javaType="cn.kate.model.User">
+		            <id property="id" column="userid"></id><!--关键点是在父类引用里面声明关联的id，将父表里的主键字段与子表中的外键字段关联-->
+		            <result property="name" column="name"></result><!--关键在于sql语句怎么写-->
+		            <result property="password" column="password"></result>
+		        </association>
+		    </resultMap>
+		    <!-- 查询所有 -->
+		    <select id="findAll" resultMap="accountMap">
+		        select u.name,u.password,a.* from tb_user u join T_ACCOUNT a on u.id = a.userid
+		    </select>
+	一对多
+		<java实体类关系><父表实体类属性需要包含子表实体类的集合>	
+
+		配置    
+		<resultMap id="userMap" type="User">
+	        <id property="id" column="id"></id>
+	        <result property="name" column="name"></result>
+	        <result property="password" column="password"></result>
+	                                            <!--起了别名-->
+	        <collection property="accounts" ofType="Account">
+	            <id property="id" column="id"></id>s
+	            <result property="uid" column="userid"></result>
+	            <result property="money" column="money"></result>
+	        </collection>
+	    </resultMap>
+	    <!-- 查询所有 -->
+	    <select id="findAll" resultMap="userMap">
+	        select * from tb_user u left join T_ACCOUNT a on u.id = a.userid
+	    </select>
+
+	 	<注意> :当完成一对多查询时，需遵循mybatis的规范，在父表实体类中引入子表实体类的集合作为属性，且sql语句必须为左连接。
+	多对多
+		<java实体类关系><在自己的实体类属性中各自包含一个对方的实体类集合属性>
+		例：以user表中第一出发点去查role表中的数据信息
+			sql 是这样写的：select * from TB_USER tu left join UANDR U on tu.ID = U.ID left join ROLE R on U.RID = R.RID
+		配置
+			<resultMap id="userMap" type="User">
+		        <id property="id" column="id"></id>
+		        <result property="name" column="name"></result>
+		        <result property="password" column="password"></result>
+		        <collection property="rs" ofType="cn.kate.model.Role">
+		            <id property="rid" column="rid"></id>
+		            <result property="rolename" column="rolename"></result>
+		            <result property="roledesc" column="roledesc"></result>
+		        </collection>
+		    </resultMap>
+
+		    以role表第一出发点中去查user表中的数据信息
+		    sql 是这样写的：select r.*,tu.* from role r left join UANDR U on r.RID = U.RID left join TB_USER TU on U.ID = TU.ID
+		配置
+			<resultMap id="roleMap" type="Role">
+		        <id property="rid" column="rid"></id>
+		        <result property="rolename" column="rolename"></result>
+		        <result property="roledesc" column="roledesc"></result>
+
+		        <collection property="us" ofType="User">
+		            <id property="id" column="id"></id>
+		            <result property="name" column="name"></result>
+		            <result property="password" column="password"></result>
+		        </collection>
+		    </resultMap>
+	<注意>
+		1.在多表查询中，需要注意的是有时给类注册了别名，有时没有
+		2.如果换行有时需要在末尾或者开头打上一个空格
+
+延迟加载
+	延迟加载(lazy load)是(也称为懒加载),延迟加载机制是为了避免一些无谓的性能开销而提出来的，所谓延迟加载就是当在真正需要数据的时候，才真正执行数据加载操作。
+	延迟加载，可以简单理解为，只有在使用的时候，才会发出sql语句进行查询。
+
+	思想：在用的时候就去调用对方配置文件下的一个查询方法
+
+	一对多，多对多：一般使用延迟加载
+	一对一，多对一：一般使用立即加载
+	配置文件(mybatis-config.xml)
+		<!--开启mybatis支持延迟加载-->
+	    <settings>
+	        <setting name="lazyLoadingEnabled" value="true"/>
+	        <!--默认false-->
+        	<setting name="aggressiveLazyLoading" value="false"/>
+	    </settings>
+	mybatis一对一(多对一)实现延迟加载
+		映射文件配置
+									<!--column属性指定的是那个需要id的方法的参数值--> <!--select指定的是usermapper映射文件中的唯一查询user的标识-->
+	        <association property="user" column="userid"  javaType="cn.kate.model.User" select="cn.kate.dao.UserDao.findUserById">
+	            <id property="id" column="id"></id>
+	            <result property="name" column="name"></result>
+	            <result property="password" column="password"></result>
+	        </association>   
+
+		一对多实现延迟加载
+			<collection property="as" ofType="Account" select="cn.kate.dao.AccountDao.findAccountById" column="id">
+	            <id property="id" column="id"></id>
+	            <result property="money" column="money"></result>
+	        </collection>
+mybatis中的缓存
+	什么是缓存
+		存在于内存中的临时数据
+	为什么使用缓存
+		减少与数据库的交互次数，提高执行效率。
+	什么样的数据能使用缓存，什么样的数据不能使用
+		适用于缓存：
+			重复的查询并且不经常改变的数据。
+			数据的正确与否对最终结果影响不大的
+		不适用于缓存：
+			经常改变的数据。
+			数据的正确与否对最终结果影响很大的。如，商品库存，银行汇率，股市牌价。
+	mybatis中的一级缓存和二级缓存
+	    一级缓存：
+	        它指的是mybatis中SqlSession对象的缓存。
+	        当我们执行查询的时候，查询的结果会同时存入到SqlSession为我们提供的一块区域中。
+	        该区域的结构是一个Map。当我们再次查询同样的数据，mybatis会先去查询SqlSession中是否已经存在该数据，有的话直接拿来用。
+	        当SqlSession对象消失时，mybatis的一级缓存也就消失了。同时可以用另一种清空缓存的方式：sqlSession.clearCache
+	       		一级缓存分析：
+					当调用了sqlSession对象的clearCache，update(),insert(),close(),commit(),delete()等方法后，一级缓存将被清空，此时会重新进行查询
+				注：clearCache会清空所有缓存（不管一级还是二级）
+	    二级缓存：
+	        它指的是mybatis中SqlSessionFactory对象的缓存。由同一个SqlSessionFactory对象创建的SqlSession共享其缓存。
+	    二级缓存的使用步骤：
+	        第一步：让mybatis框架支持二级缓存（在mybatis-Config.xml中配置）
+	        	<!--开启mybatis支持二级缓存-->
+			    <settings>
+			        <setting name="cacheEnabled" value="true"/>
+			    </settings>
+	        第二步：让当前的映射文件支持二级缓存（在相应的配置文件中配置）
+	        	<!--开启当前配置文件支持二级缓存-->
+    			<cache/>
+	        第三步：让当前的操作支持二级缓存（在select标签中配置）
+	        																	<!--当前select语句支持二级缓存-->
+			    <select id="findUserById" resultType="User" parameterType="int" useCache="true">
+			        select * from tb_user where id = #{id}
+			    </select>
+			注意：该对象必须实现序列化接口，否则会抛出cache异常
+					public class User implements Serializable {}
+			二级缓存分析：查询返回的对象值一致，但对象不相等
+				同一个SqlSessionFactory对象创建的SqlSession共享其缓存，在这时，sqlSessionFactory对象在内存中划分一块空间，来存放数据(此时存入内存的不是对象而是数据),(同一个SqlSessionFactory对象创建的SqlSession)发起一次查询，它（SqlSessionFactory）就将数据封装到一个对象中返回出去，所以即使只查询了一次，两个对象依然是不相等的
+settings的几个配置
+	1.开启二级缓存
+		<setting name="cacheEnabled" value="true"/>
+	2.开启mybatis支持延迟加载
+		<setting name="lazyLoadingEnabled" value="true"/>
+        <!--默认false-->
+    	<setting name="aggressiveLazyLoading" value="false"/>
+    3.开启日志记录
+    	<setting name = "logImpl" value = "log4j"/>
+    4.开启自动映射结果类型
+    	<setting name = "autoMappingBehavior" value = "Variable"/>
+    	它有三种取值
+    		1.PARTIAL:默认值，你写不写都会自动封装到简易的类型，复杂类型无法完成映射
+    		2.NONE:你写就映射，不写的话，int类型映射为0，字符串类型映射为null
+    		3.FULL:你写不写都会自动映射，包括复杂类型
+Extend
+	1.调用存储过程
+		xml:
+			statementType = CALLABLE
+			{call 存储过程名(#{列1,mode = 输出参数/输入参数 jdbcType = 参数类型},...)}
+		注解：
+			@Select(
+					{ "call 存储过程名(#{列1,mode=输出参数/输入参数,jdbcType=参数类型},"
+				+ "#{列2,mode=输出参数/输入参数,jdbcType=参数类型})"}
+			)
+			@Options(statementType=StatementType.CALLABLE)
+	2.调用函数
+			select dbo.函数名(#{0})
+
+	动态sql：拼接sql（根据条件查询有则查，没有则不拼）分页
+	将对象作为查询条件：使用ognl表达式
+	多表关联：assocation，collection
+	3.mybatisPageHelper(5.x)插件使用
+		1.引入相关依赖或导入jar包
+			<dependency>
+	            <groupId>com.github.pagehelper</groupId>
+	            <artifactId>pagehelper</artifactId>
+	            <version>5.1.2</version>
+        	</dependency>
+        2.在mybatis配置文件中配置插件
+        	<plugins>
+		        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+		    </plugins>
+		3.使用
+			<!--dao-->
+			public abstract List<User> findAllByPageInfo(DynamicQuery dq);
+			<!--mapper-->
+			<select id="findAllByPageInfo" resultType="com.aaa.entity.User">
+		        select * from tb_user
+		        <where>
+		            <if test="name != null and name != ''">
+		                and name like #{name}
+		            </if>
+		        </where>
+		    </select>
+			<!--测试-->
+			PageHelper.startPage(1,5);
+        	List<User> list = MybatisUtil.getSqlSession().getMapper(UserDao.class).findAllByPageInfo(dynamicQuery);
+        	注意：插件会将startPage方法下的第一个查询语句分页
+        4.PageInfo对象的属性
+			//当前页
+			private int pageNum;
+			//每页的数量
+			private int pageSize;
+			//当前页的数量
+			private int size;
+			//由于startRow 和endRow 不常用，这里说个具体的用法
+			//可以在页面中"显示startRow 到endRow 共size 条数据"
+			//当前页面第一个元素在数据库中的行号
+			private int startRow;
+			//当前页面最后一个元素在数据库中的行号
+			private int endRow;
+			//总记录数
+			private long total;
+			//总页数
+			private int pages;
+			//结果集
+			private List<T> list;
+			//前一页
+			private int prePage;
+			//下一页
+			private int nextPage;
+			//是否为第一页
+			private boolean isFirstPage = false;
+			//是否为最后一页
+			private boolean isLastPage = false;
+			//是否有前一页
+			private boolean hasPreviousPage = false;
+			//是否有下一页
+			private boolean hasNextPage = false;
+			//导航页码数
+			private int navigatePages;
+			//所有导航页号
+			private int[] navigatepageNums;
+			//导航条上的第一页
+			private int navigateFirstPage;
+			//导航条上的最后一页
+			private int navigateLastPage;
+		5.如果编写动态sql(按条件查询)时，直接在mapper配置文件中写动态sql即可，插件使我们不在关心具体的分页配置，帮助我们省掉了几乎所有的手动封装，手动赋值，我们只需传入pageIndex和pageSize即可
+mybatis整合spring
+	1.导入mybatis-spring.jar
+	2.将SqlSessionFactory对象交给spring来管理
+	3.配置SqlSessionFactoryBean对象属性和值
+		属性：
+			DataSource：数据源
+			configLocation：指定一个mybatis核心配置文件（使用classpath）
+			environments：配置一个环境
+			transactionManager：事务管理器
+			typeAliases：起别名，需要指定class数组
+			typeAliasesPackage:起别名，需要指定包
+			mapperLocations ：指定映射文件所在的包或具体的映射文件
+			configuration ：指定一个新的配置（能够在没有对应的 MyBatis XML 配置文件的情况下，直接设置 Configuration 实例）
+			databaseIdProvider：当使用多个数据库配置时，使用它
+
+	需要注意的是，这个配置文件（configuration属性）并不需要是一个完整的 MyBatis 配置。确切地说，任何环境配置（<environments>），数据源（<DataSource>）和 MyBatis 的事务管理器（<transactionManager>）都会被忽略。SqlSessionFactoryBean 会创建它自有的 MyBatis 环境配置（Environment），并按要求设置自定义环境的值。
+
+	入门环境搭建
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	        <property name="dataSource" ref="dataSource" /><!--数据源-->
+	        <!--spring运行的时候把指定的mybatis xml文件加载进来-->
+	        <property name="mapperLocations" value="classpath*:cn/kate/dao/*.xml"/><!--映射xml-->
+	        <property name="typeAliasesPackage" value="cn.kate.entity"/><!--别名 指定包-->
+	    </bean>
+
+	    注意：
+	    	1.classpath和classpath*的区别
+	    		classpath：只会到你的class路径中查找找文件。
+				classpath*：不仅包含class路径，还包括jar文件中（class路径）进行查找。
+				a.在项目中，web项目会生成多个classpath，如果此时使用classpath，它只会去加载第一个claspath，如果需要加载多个,应该使用classpath*
+				b.尽量避免使用classpath*,因为他会扫描所有的classpath，这样就造成了性能不好，当有多个classpath 我们需要找一个文件时，可以使用classpath:包名/包名/包名等/*后缀.任意文件类型   来加载该文件
+			2.
+				**与*的区别
+				**：代表任意目录和文件夹
+				*：代表任意通配符
+			3.
+	    <!--注入数据源—-->
+	    <bean id = "dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	        <!--注入数据库连接属性-->
+	        <property name="driverClass" value="oracle.jdbc.OracleDriver"/>
+	        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+	        <property name="user" value="scott"/>
+	        <property name="password" value="kate"/>
+	    </bean>
+
+	    <!--配置映射接口  MapperFactoryBean -->
+	    <bean id = "empDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	        <property name="mapperInterface" value="cn.kate.dao.EmpDao"/><!--映射器接口-->
+	        <property name="sqlSessionFactory" ref="sqlSessionFactory"/><!--sqlSessionFactory-->
+	    </bean>
+	    	或配置映射器接口所在的包
+	    	<!--配置映射接口所在的包  MapperScannerConfigurer -->
+		    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		    	<!--你的接口让spring来创建对象,默认创建出来的对象id是你的接口名的首字母小写-->
+		        <property name="basePackage" value="cn.kate.dao"/><!--映射器接口所在的包-->
+		    </bean>
+		    xml配置(simple)
+		    	
+			或者配置mapperScan注解，详情见官网
+	MybatisCodeHelperPro插件使用
+		1.根据表生成service，lombok注解，实体类，serviceimpl，mapper接口，映射文件，增删改查
+		2.根据类生成表
+		3.支持生成分页代码，依赖pageHelper插件
+		4.支持生成ResultMap标签
+		5.支持生成crud标签
+		6.支持一键添加@Param注解
+		7.支持自动判断非空(String)和代码补全
+		8.支持通过方法名生成sql(单表)
+			详情见官网：https://gejun123456.github.io/MyBatisCodeHelper-Pro/#/
+	
+	mybatis官方文档：https://mybatis.org/mybatis-3/zh/index.html
+	mybatis-spring官方文档：https://mybatis.org/spring/zh/index.html

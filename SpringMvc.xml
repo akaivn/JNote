@@ -1,0 +1,433 @@
+springmvc原理
+	springmvc开发环境头
+		<beans xmlns="http://www.springframework.org/schema/beans"
+		       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		       xmlns:context="http://www.springframework.org/schema/context"
+		       xmlns:mvc="http://www.springframework.org/schema/mvc"
+		       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		       http://www.springframework.org/schema/beans/spring-beans.xsd
+		       http://www.springframework.org/schema/context
+		       https://www.springframework.org/schema/context/spring-context.xsd
+		       http://www.springframework.org/schema/mvc
+		       https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+		       <!-- 扫描注解所在的包 -->
+			   <context:component-scan base-package="cn.kate"/>
+			   <!--视图解析器-->
+			   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			       <property name="prefix" value="/jsp/"></property><!--文件夹的地址制定-->
+			       <property name="suffix" value=".jsp"/><!--文件名的后缀制定-->
+			   </bean>
+
+				<!--静态资源不拦截-->
+			    <mvc:resources mapping="/js/**" location="/js/"/>
+			    <mvc:resources mapping="/css/**" location="/css/"/>
+			    <mvc:resources mapping="/images/**" location="/images/"/>
+
+			   <!--开启springmvc注解支持-->
+			   <mvc:annotation-driven/>
+		</beans>
+	dispatcherServlet
+		<!-- 配置前端控制器 -->
+	    <servlet>
+	        <servlet-name>dispatcher</servlet-name>
+	        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	        <!-- 配置初始化参数 -->
+	        <init-param>
+	            <param-name>contextConfigLocation</param-name>
+	            <param-value>classpath:springmvc-config.xml</param-value><!-- 加载springmvc配置文件 -->
+	        </init-param>
+	        <load-on-startup>1</load-on-startup>
+	    </servlet>
+
+	    <servlet-mapping>
+	        <servlet-name>dispatcher</servlet-name>
+	        <url-pattern>/</url-pattern><!--这里不能写*不然他会把你所有的请求都拦截下来，就会找不到项目-->
+	    </servlet-mapping>
+	使用注解开发（helloSpringmvc）
+		@Controller:声明这是一个控制器
+		@RequestMapping(Variable)
+			属性
+				value：跟path起了别名，表示当前请求路径
+				method：值是数组表示请求方式
+				params:表示限制当前请求参数和参数值
+				headers：表示限制请求头
+	请求参数绑定
+		1.绑定基本类型
+			从页面通过get请求方式请求时的数据的变量名要和后台控制器方法里的参数名一致，如果是对象类型，则可以使用ognl表达式，即为对象加点方式调用
+			<input type = "text" name = "属性名"/>
+		2.绑定引用类型
+			从页面通过post方式请求时，表单的name属性要跟后台控制器方法里的参数名的属性名一致，如果有引用类型，则可以使用ognl表达式，即为对象加点方式调用
+			它回去调用你传入参数的名字来调用对应的set方法给其赋值
+			<input type = "text" name = "对象名.属性"/>
+		3.绑定集合类型
+			绑定list集合时
+				<input type="text" name="集合对象名[0].属性"/>
+			绑定map集合时
+				<input type="text" name="集合对象名['key'].属性"/>
+	配置中文乱码过滤器
+		<filter>
+		    <filter-name>characterEncodingFilter</filter-name>
+		    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		    <init-param>
+		      	<param-name>encoding</param-name>
+		      	<param-value>UTF-8</param-value>
+		    </init-param>
+		</filter>
+
+	  	<filter-mapping>
+		    <filter-name>characterEncodingFilter</filter-name>
+		    <url-pattern>/*</url-pattern>
+	  	</filter-mapping>
+
+	常用注解
+		@RequestParam：将请求参数名赋值给控制器方法的形参，一旦使用，其value的值必须是参数的名字
+		@RequestBody：拿到整个请求体参数和值，格式为key-value
+			https://segmentfault.com/q/1010000012556996/a-1020000012559771
+		@PathVariable：拿到restful风格请求参数的值
+		@RequestHeader：获取请求头信息，用法和requestBody一样
+		@CookieValue：获取cookie的值
+		@DateTimeFormat:时间转换
+		@ExceptionHandler:异常处理
+		@ControllerAdvice：通常和ExceptionHandler一起用做全局异常处理
+		@RestController:是controller+reponseBody的结合
+		@ModelAttribute：放在方法上代表这个方法会先被执行，放在参数上，代表此参数为你下一个方法执行所需参数
+		@SessionAttributes：把值（model属性）放在session域中，在多个方法之间都可调用取值
+			Model ：这个接口提供了addAttribute方法用于将键值对存入request域中
+			SessionStatus：这个类提供了删除session域中值的方法setComplete
+
+	Restful风格
+		同一个路径下可以根据不同的请求方式去执行方法，如果此时请求方式有相同，就可以在路径上使用/{Variable}的方式声明占位符，访问时传的值不同，执行的方法就不同。这种方式利于管理和扩展，同时让缓存都在一个路径下，很方便。 
+
+		例：@RequestMapping("/{id}/{uid}/hello")  可以多个变量 顺序随 便放
+			访问url时的path：localhost:8080/projectName/1/2/hello.do
+	跳转方式
+		a.使用HttpServletRequest和HttpServletResponse进行跳转
+		b.使用springmvc的跳转方式跳转
+			有视图解析器
+			1.return "xxx";		---request
+			2.return "redirect:xxx"		---response
+			无视图解析器
+			1.return "xxx.jsp" 	---request
+				a.return "forward:xxx.jsp" ---request
+			2.return "redirect:xxx.jsp"	---response	
+	时间转换
+		1.@DateTimeFormat(pattern = "xxx")
+		2.自定义
+			默认支持yyyy-mm-dd格式日期自动转换为util类型
+	ajax和json处理
+		注意：如果导入jquery文件或者css文件，或者图片等一系列静态资源时，dispathcherServlet会拦截（前提是dispathcherServlet路径为 / 拦截处jsp以外所有的资源 ）你的资源
+			<!--告诉它释放静态资源-->
+			<mvc:resources mapping = "/js/" location = "/js/**"/><!--任何js文件夹下的所有文件都不会被拦截-->
+		处理普通的ajax请求可以使用response。但处理返回json数据的请求时要做如下处理
+		1.导入jar包：jackson-databind-jar
+					jackson-core-jar
+					jackson-annotations-jar
+
+			依赖
+				<dependency>
+			      <groupId>com.fasterxml.jackson.core</groupId>
+			      <artifactId>jackson-databind</artifactId>
+			      <version>2.9.9</version>
+			    </dependency>
+		2.json配置文件
+			<!--spring4中返回json串的配置方式-->
+		    <bean
+		        class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		        <property name="messageConverters">
+		            <list>
+		                <ref bean="jsonHttpMessageConverter" />
+		            </list>
+		        </property>
+		    </bean>
+
+			<!--配置jackson的bean，这里使用的spring4中的配置-->
+			    <bean id="jsonHttpMessageConverter"
+			        class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+
+		ajax前端参数的两种写法
+			https://segmentfault.com/q/1010000012556996/a-1020000012559771				
+
+			spring5.x可以直接使用@ResponseBody进行响应
+	    3.java代码需使用@ResponseBody注解声明响应体
+	      然后直接返回所需的数据即可	
+	   
+
+文件上传
+	使用流的方式进行上传
+	所需jar包是：fileupload--jar和io--jar
+	依赖
+		<dependency>
+	      <groupId>commons-io</groupId>
+	      <artifactId>commons-io</artifactId>
+	      <version>2.5</version>
+	    </dependency>
+
+	    <dependency>
+	      <groupId>commons-fileupload</groupId>
+	      <artifactId>commons-fileupload</artifactId>
+	      <version>1.3.1</version>
+	    </dependency>
+
+	表单
+		<form action="upload" method="post" enctype="multipart/form-data">
+	        <input type="file" name="此处应为controller方法参数MultipartFile的参数名"/>
+	        <input type="submit" value="ok"/>
+	    </form>
+	配置文件如下
+
+	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<!-- 编码格式 -->
+			<property name="defaultEncoding" value="utf-8"/>
+			<!-- 最大上传文件大小 -->
+		    <property name="maxUploadSize" value="1000000"/>
+		    <!-- 最大缓存 -->
+		    <property name="maxInMemorySize" value="40956"></property>
+	</bean>
+
+	public String fileupload2(MultipartFile 此处应为表单file框name名,HttpServletRequest request) throws Exception{
+        //获得图片资源路径
+        String realPath = request.getSession().getServletContext().getRealPath("/images");
+        File f = new File(realPath);
+        //如果不存在此文件夹就创建它
+        if(!f.exists()){
+        	f.mkdirs();
+        }
+        //获得文件名
+        String name = file.getOriginalFilename();
+        //拼上uuid
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        name = uuid + "_" + name;
+        //上传
+        file.transferTo(new File(f,name));
+        return "success";
+    }
+    注意：参数那应该和前端文本框的name属性一致，配置的文件上传解析器的id也必须是multipartResolver
+
+   	跨服务器上传
+   		1.导入相关jar包
+   			jersey-core
+   			jersey-client
+   		2.
+   			public String upload3(MultipartFile file) throws Exception{
+
+		        String path = "http://localhost:8080/images/images/";
+
+		        //创建一个客户端
+		        Client client = Client.create();
+
+		        //和图片服务器连接
+		        WebResource resource = client.resource(path + file.getOriginalFilename());
+		        //上传
+		        resource.put(file.getBytes());
+
+		        return "success";
+    		}
+	springmvc异常处理
+		1.自定义异常
+		2.配置异常处理器
+		3.跳转页面
+
+		拦截异常后跳转到指定页面
+			1.配置简单的错误拦截页面的bean
+				<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		            <!-- 定义出现异常后，默认跳转到的页面(异常处理页面) -->
+		            <property name="defaultErrorView" value="error"></property>
+
+		            <!-- 定义异常处理页面用来获取异常信息的变量名 -->
+		            <property name="exceptionAttribute" value="exce"></property>
+		            <!-- 定义需要特殊处理的异常，key指定自定义异常类，跳转到的页面作为值 -->
+		            <property name="exceptionMappings">
+		                <props>
+		                    <prop key="java.lang.RuntimeException">error</prop>
+		                    <!-- 可以继续扩展对不同类型异常的处理...  -->
+		                </props>
+		            </property>
+	        	</bean>
+
+	        特点：
+				使用这种方式具有集成简单、有良好的扩展性、对已有代码没有入侵性等优点，但该方法仅能获取到异常信息，若在出现异常时，对需要获取除异常以外的数据的情况不适用。
+
+	        2.使用@ExceptionHandler注解 只能作用在@Controller类下
+	        	@ExceptionHandler({Exception.class})
+			    public String  error(Exception e){
+			        System.out.println(e);
+			        return "error";
+			    }
+			特点：
+				如果不配置@ControllerAdvice，那么此注解就只能处理当前Controller类中的异常，配置了@ControllerAdvice后就可以灵活的控制发生异常后跳转的页面，以及异常数据的保存和日志等操作
+			3.自定义类实现HandlerExceptionResolver，并加入spring容器中
+				@Component
+			    public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
+			        ModelAndView mv = new ModelAndView();
+			        mv.setViewName("error");
+			        mv.addObject("exce",e);
+			        return mv;
+			    }
+				
+	JSR303校验
+		1.导入依赖或坐标或jar包
+			<dependency>
+		      <groupId>javax.validation</groupId>
+		      <artifactId>validation-api</artifactId>
+		      <version>1.1.0.Final</version>
+		    </dependency>
+
+		    <dependency>
+		      <groupId>org.hibernate</groupId>
+		      <artifactId>hibernate-validator</artifactId>
+		      <version>6.1.0.Final</version>
+		    </dependency>
+		2.将以下注解按需添加到bean对象上
+			@Null 	必须为空
+			@Notnull 必须不为空
+			@NotEmpty  除去空字符串后必须不为空
+			@NotBlank  除去两边空格后必须不为空
+			@Length  元素长度必须在指定范围
+			@Max  最大
+			@Min  最小
+			@Range max和min的结合使用
+			@Past  必须为一个过去时间
+			@Future  必须为一个将来时间
+			@AssertTrue 必须为true
+			@AssertFalse 必须为false
+			@Email 必须符合邮箱格式
+			@Pattren 必须符合其中的正则表达式
+
+			controller中调用
+				
+	拦截器
+		什么是拦截器：拦截一组资源的访问和请求
+		拦截器和过滤器的区别：
+			1.
+				拦截器是springmvc独有的，只有使用springmvc才可以使用拦截器
+				过滤器在任何javaweb工程中都可以使用
+			2.
+				配置了拦截器后，只会拦截controller类中的方法
+				过滤器会拦截任何请求 jsp/html/css/js等
+		拦截器配置(interceptor)
+			1.实现HandlerInterceptor接口中的方法
+				preHandle:预处理方法，它在最前面执行
+				postHandle:后处理方法，它在执行完controller返回后执行
+				afterHandle:最后执行（执行完跳转页面或其他操作后）
+	        2.在配置文件中配置
+		        <mvc:interceptors>
+		        	<mvc:interceptor>
+		        		<!-- /** 表示包括该路径下的所有子路径 -->
+		        		<mvc:mapping path="/admin/**"/>
+		        		<!-- 配置的拦截器 -->
+		        		<bean class="cn.kate.controller.MyInterceptor"/>
+		        	</mvc:interceptor>
+		        </mvc:interceptors> 
+		        <!--当有多个拦截器时，需要配置多个<mvc:interceptor>标签-->
+    
+	spring+springmvc整合
+		需求分析：
+			服务器启动时把spring配置文件一起加载
+			声明service层的具体对象，使用di注入
+			在controller类中直接从容器中取service层的对象调用即可
+		实现：
+			配置全局监听器(ContextLoaderListener)(因为默认只会去加载WEB-INF/目录下的配置文件，所以我们要手动指定位置)
+				<!-- 配置监听器 -->
+			    <listener>
+			        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+			    </listener>
+			在全局监听器中指定spring配置文件的路径
+				<!-- 手动指定位置 -->
+			    <context-param>
+			        <param-name>contextConfigLocation</param-name>
+			        <param-value>classpath:spring-config.xml</param-value>
+			    </context-param>
+			启动服务器时将spring配置文件加载
+	ssm + swagger整合
+		1、导入swagger依赖
+			<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+		    <dependency>
+		      <groupId>io.springfox</groupId>
+		      <artifactId>springfox-swagger2</artifactId>
+		      <version>2.9.2</version>
+		      <exclusions>
+		        <exclusion>
+		          <artifactId>spring-expression</artifactId>
+		          <groupId>org.springframework</groupId>
+		        </exclusion>
+		        <exclusion>
+		          <artifactId>spring-core</artifactId>
+		          <groupId>org.springframework</groupId>
+		        </exclusion>
+		        <exclusion>
+		          <artifactId>spring-context</artifactId>
+		          <groupId>org.springframework</groupId>
+		        </exclusion>
+		        <exclusion>
+		          <artifactId>spring-beans</artifactId>
+		          <groupId>org.springframework</groupId>
+		        </exclusion>
+		        <exclusion>
+		          <artifactId>spring-aop</artifactId>
+		          <groupId>org.springframework</groupId>
+		        </exclusion>
+		      </exclusions>
+		    </dependency>
+
+		    <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+		    <dependency>
+		      <groupId>io.springfox</groupId>
+		      <artifactId>springfox-swagger-ui</artifactId>
+		      <version>2.9.2</version>
+		    </dependency>
+
+		    <!-- swagger依赖jackson -->
+		    <dependency>
+		      <groupId>com.fasterxml.jackson.core</groupId>
+		      <artifactId>jackson-databind</artifactId>
+		      <version>2.9.9</version>
+		    </dependency>
+		2、配置类
+			@Configuration
+			@EnableSwagger2
+			public class SpringFoxConfig {}
+		3、配置文件
+			<mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
+    		<mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
+		4、测试
+			输入地址：http://ip:端口/项目名/swagger-ui.html  访问
+		5、完善配置类
+			@Configuration
+			@EnableSwagger2
+			public class SpringFoxConfig {
+
+			    @Bean
+			    public Docket docket(ApiInfo apiInfo){
+			        return new Docket(DocumentationType.SWAGGER_2)
+			                .apiInfo(apiInfo)
+			                .groupName("xxx")
+			                .enable(true)
+			                .select()
+			                .apis(RequestHandlerSelectors.basePackage("cn.kate.controller"))
+			                .build();
+			    }
+
+
+			    @Bean
+			    public ApiInfo apiInfo(){
+			        return new ApiInfo(
+			                // 标题title
+			                "TCL API文档开始",
+			                // 描述 desc
+			                "这是我的第一次Swagger和SSM集成文档",
+			                // 版本 version
+			                "V1.0",
+			                // 组
+			                "APIS",
+			                // 作者信息描述和简介
+			                new Contact("TCL","https://www.baidu.com","kate_jr@163.com"),
+			                // 开源协议和版本号
+			                "Apache 2.0",
+			                // url地址
+			                "http://121.89.216.65:86/xsk_car/login.html",
+			                new ArrayList()
+			        );
+			    }
+			}
