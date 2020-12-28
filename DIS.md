@@ -595,3 +595,22 @@ code: kate
 ##### 4、访问
 
 登录Nacos界面，服务列表处注册有seata-server的服务即表示成功
+
+#### Code6-server
+
+**code6-server为根据关键字扫描github的系统，语言为php**
+
+该开源项目地址为：[code6-server](https://github.com/4x99/code6)
+
+##### 1、运行命令
+
+```shell
+docker run -d -p 666:80 -e MYSQL_HOST=81.68.111.193 -e MYSQL_PORT=3306 -e MYSQL_DATABASE=github -e MYSQL_USERNAME=root -e MYSQL_PASSWORD=kate --name code6-server code6
+```
+
+##### 2、访问
+
+```http
+http:ip:666
+```
+
