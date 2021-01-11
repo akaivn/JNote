@@ -185,6 +185,12 @@ docker run -d -p 5672:5672 -p 15672:15672 --name rabbitmqtcl 镜像id
 http://ip:15672
 ```
 
+##### 4、账号/密码 (默认)
+
+```txt
+guest/guest
+```
+
 #### Portainer
 
 ##### 1、拉取镜像
