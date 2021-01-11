@@ -215,6 +215,13 @@ git config --global i18n.logoutputencoding gbk
 
 **右键窗体-->Operations-->Text-->字符编码为：zh-CN / UTF-8(Unicode)**
 
+##### 全局设置
+
+```shell
+git config --global user.name "nameVal"
+git config --global user.email "eamil@qq.com"
+```
+
 #### Git常用命令
 
 ```shell
