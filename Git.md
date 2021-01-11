@@ -204,6 +204,9 @@ git push
 ```shell
 Logon failed, use ctrl+c to cancel basic credential prompt. # 链接被拒绝登录
 
+# 输入如下命令，关闭所有console后，重新打开console即可
+setx GIT_TRACE ""
+setx GCM_TRACE ""
 ```
 
 
