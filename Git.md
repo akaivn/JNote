@@ -213,7 +213,7 @@ git config --global i18n.logoutputencoding gbk
 
 ##### Git Bash窗口乱码
 
-右键窗体-->Operations-->Text-->字符编码为：zh-CN / UTF-8(Unicode)
+**右键窗体-->Operations-->Text-->字符编码为：zh-CN / UTF-8(Unicode)**
 
 #### Git常用命令
 
