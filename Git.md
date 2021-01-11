@@ -199,6 +199,22 @@ git push
 
 而不用再带上远程 + 分支名
 
+##### Git status乱码
+
+```shell
+git config --global core.quotepath false
+```
+
+##### log 日志乱码
+
+```shell
+git config --global i18n.logoutputencoding gbk
+```
+
+##### Git Bash窗口乱码
+
+右键窗体-->Operations-->Text-->字符编码为：zh-CN / UTF-8(Unicode)
+
 #### Git常用命令
 
 ```shell
