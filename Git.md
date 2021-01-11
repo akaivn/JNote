@@ -209,7 +209,7 @@ setx GIT_TRACE ""
 setx GCM_TRACE ""
 ```
 
-
+此方式不行时，只能重装，网上的方式都试过了，应该是更换github账号的原因，导致原来设置的全局账户出现了缓存
 
 ##### Git status乱码
 
