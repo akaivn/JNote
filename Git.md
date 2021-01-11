@@ -199,6 +199,15 @@ git push
 
 而不用再带上远程 + 分支名
 
+##### 6、Git push报错
+
+```shell
+Logon failed, use ctrl+c to cancel basic credential prompt. # 链接被拒绝登录
+
+```
+
+
+
 ##### Git status乱码
 
 ```shell
