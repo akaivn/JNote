@@ -220,7 +220,7 @@ UUID(4);//UUID被弃用
 public void t2(){
     User user = new User();
     user.setId(5L);
-    user.setName("仝成龙");
+    user.setName("tcl");
     int i = userDao.updateById(user);//返回受影响行数 该方法参数传一个对象而不是ID
     System.out.println(i);
     //执行的SQL语句为：UPDATE user SET name=? WHERE id=? 
@@ -229,7 +229,7 @@ public void t2(){
 二次测试
 User user = new User();
 user.setId(5L);
-user.setName("仝成龙");
+user.setName("tcl");
 user.setAge(22);
 int i = userDao.updateById(user);//返回受影响行数
 System.out.println(i);

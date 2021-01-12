@@ -64,13 +64,13 @@ docker pull kibana:7.7.0
 #### 2、运行镜像产生容器
 
 ```shell
-docker run --name kibanatcl -e ELASTICSEARCH_HOSTS=http://39.98.204.116:9200 -p 5601:5601 -d kibana:7.7.0
+docker run --name kibanatcl -e ELASTICSEARCH_HOSTS=http://ip:9200 -p 5601:5601 -d kibana:7.7.0
 ```
 
 #### 3、链接Kibana 别忘了开启防火墙指定端口
 
 ```http
-http://39.98.204.116:5601
+http://ip:5601
 ```
 
 访问效果

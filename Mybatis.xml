@@ -15,9 +15,9 @@ I.mybatis配置文件
 	        "http://mybatis.org/dtd/mybatis-3-config.dtd">
 	<!-- 主要配置 -->
 	<configuration>
-	    <environments default="mysql">
+	    <environments default="oracle">
 	    	<!-- 环境 -->
-	        <environment id="mysql">
+	        <environment id="oracle">
 	        	<!-- 事务类型 -->
 	            <transactionManager type="JDBC"></transactionManager>
 	            <!-- 数据源，池 -->
@@ -25,8 +25,8 @@ I.mybatis配置文件
 	            	<!-- 数据库连接四大属性 -->
 	                <property name="driver" value="com.oracle.jdbc.OracleDriver"/>
 	                <property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
-	                <property name="username" value="scott"/>
-	                <property name="password" value="kate"/>
+	                <property name="username" value="username"/>
+	                <property name="password" value="password"/>
 	            </dataSource>
 	        </environment>
 	    </environments>
@@ -172,8 +172,8 @@ properties标签
 		<properties>
 	        <property name="driver" value="com.mysql.jdbc.Driver"/>
 	        <property name="url" value="jdbc:mysql://localhost:3306/test"/>
-	        <property name="username" value="root"/>
-	        <property name="password" value="kate"/>
+	        <property name="username" value="username"/>
+	        <property name="password" value="password"/>
 	    </properties>
 	    配置了properties后下面的引用语法：${name}
 
@@ -255,8 +255,8 @@ typeAliases标签
                 <!--四大连接数据库属性-->
                 <property name="driverClass" value="oracle.jdbc.OracleDriver"></property>
                 <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
-                <property name="user" value="scott"></property>
-                <property name="password" value="kate"></property>
+                <property name="user" value="username"></property>
+                <property name="password" value="password"></property>
                 <!-- c3p0相关属性 -->
                 <!--初始化时获取十个连接，取值应在minPoolSize与maxPoolSize之间 -->
                 <property name="initialPoolSize" value="10"></property>
@@ -622,8 +622,8 @@ mybatis整合spring
 	        <!--注入数据库连接属性-->
 	        <property name="driverClass" value="oracle.jdbc.OracleDriver"/>
 	        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
-	        <property name="user" value="scott"/>
-	        <property name="password" value="kate"/>
+	        <property name="user" value="user"/>
+	        <property name="password" value="password"/>
 	    </bean>
 
 	    <!--配置映射接口  MapperFactoryBean -->

@@ -209,7 +209,7 @@ public Employee selectByLastName(String lastname){
 
 ```properties
 #配置redis链接的ip
-spring.redis.host=39.98.204.116
+spring.redis.host=ip
 #prot 默认 6379
 spring.redis.port=6379
 #密码
@@ -431,7 +431,7 @@ docker run -d -p 5672:5672 -p 15672:15672 -v /data/rabbitmq/rabbitmq.config:/etc
 #### **2、properties配置文件**
 
 ```properties
-spring.rabbitmq.host=39.98.204.116
+spring.rabbitmq.host=ip
 spring.rabbitmq.port=5672
 spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
@@ -604,7 +604,7 @@ docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -p 9200:9200 -p 9300:9300 --na
 **b、properties配置文件**
 
 ```properties
-spring.elasticsearch.rest.uris=http://39.98.204.116:9200
+spring.elasticsearch.rest.uris=http://ip:9200
 ```
 
 **c、添加数据**
@@ -739,9 +739,9 @@ springboot中集成了javaMailSender作为发送邮件的对象，并且帮助�
 
 ```properties
 #你的邮箱用户名
-spring.mail.username=2895110093@qq.com
+spring.mail.username=邮箱
 #如果使用qq邮箱发送，就应该有他的校验码，需要发送短信后接受到，如果使用其他邮箱，就直接写密码
-spring.mail.password=pztakgikddwnddha
+spring.mail.password=校验码(可选)
 #你邮箱所在的服务器
 spring.mail.host=smtp.qq.com
 #springboot2.x的配置如下
@@ -792,9 +792,9 @@ public void t2() throws Exception{
     //发送静态文件所调用的方法，第一个参数为文件的名字，要指定后缀，第二个参数可以是一个流，也可以是一个文件
     helper.addAttachment("a.jpg",new File("C:\\Users\\Machenike\\Pictures\\Saved Pictures\\b.jpg"));
     //需要发送到哪里
-    helper.setTo("2895110093@qq.com");
+    helper.setTo("邮箱");
     //这个邮件来自哪里
-    helper.setFrom("2895110093@qq.com");
+    helper.setFrom("邮箱");
     mailSender.send(mimeMessage);
 }
 ```
@@ -1165,7 +1165,7 @@ public class TicketServiceImpl implements TicketService {
 dubbo.application.name=ticket
 
 # 注册中心(zookeeper在虚拟机)的地址
-dubbo.registry.address=zookeeper://39.98.204.116:2181
+dubbo.registry.address=zookeeper://ip:2181
 
 # dubbo 注册时要扫描的包 他会去扫描 @dubboService 注解所标注的类
 dubbo.scan.base-packages=cn.kate.service
@@ -1207,7 +1207,7 @@ public class Consumer {
 dubbo.application.name=consumer
 
 # 注册中心(zookeeper在虚拟机)的地址 一定是同一个注册中心
-dubbo.registry.address=zookeeper://39.98.204.116:2181 
+dubbo.registry.address=zookeeper://ip:2181 
 ```
 
 #### 4、结果
@@ -1421,7 +1421,7 @@ public class SwaggerConfig {
             "APIS", // 组
             DEFAULT_CONTACT,  // 作者信息描述和简介
             "Apache 2.0", // 开源协议和版本号
-            "http://121.89.216.65:86/xsk_car/login.html", // url地址
+            "url", // url地址
             new ArrayList()
         );
     }

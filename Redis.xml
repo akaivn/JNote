@@ -280,9 +280,9 @@ Redis
 				2.所有的jedis类的方法都是redis的命令
 	Redis连接池工具类的配置
 		public class JedisPoolUtils {
-			private static final String ip = "192.168.1.104";
+			private static final String ip = "ip";
 			private static final Integer port = 6379;
-			private static final String password = "kate";
+			private static final String password = "password";
 			private static JedisPoolConfig jedisPoolConfig;
 			private static JedisPool jedisPool;
 			private static Jedis jedis;
@@ -328,7 +328,7 @@ Redis
 			b.配置单机的Jedis客户端
 				<!--redis链接密码-->
 			    <bean id="redisPassword" class="org.springframework.data.redis.connection.RedisPassword">
-			        <constructor-arg name="thePassword" value="kate"></constructor-arg>
+			        <constructor-arg name="thePassword" value="password"></constructor-arg>
 			    </bean>
 
 			    <!--单机的Jedis-->
@@ -342,7 +342,7 @@ Redis
 			        <!--指定服务器端口-->
 			        <property name="port" value="6379"/>
 			        <!--指定服务器地址-->
-			        <property name="hostName" value="192.168.1.104"/>
+			        <property name="hostName" value="ip"/>
 			        <!--password-->
 			        <!--需要注意的是当spring-data-redis为2.0及以上时，这里需要引入的password为一个bean-->
 			        <property name="password" ref="redisPassword"/>

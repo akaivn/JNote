@@ -1,3 +1,7 @@
+> 说明
+
+**此文档的所有ip，port都需要替换为安装时对应的ip，port**
+
 #### 常用命令
 
 ```shell
@@ -252,7 +256,7 @@ docker run -d --network=host --privileged=true --name trackertcl -v /data/tracke
 ##### 3、启动storage，挂载文件
 
 ```shell
-docker run -d --network=host --name storagetcl -e TRACKER_SERVER=81.68.111.193:22122 -v /data/storage:/var/fdfs -e GROUP_NAME=default_group delron/fastdfs storage
+docker run -d --network=host --name storagetcl -e TRACKER_SERVER=ip:22122 -v /data/storage:/var/fdfs -e GROUP_NAME=default_group delron/fastdfs storage
 ```
 
 ##### 4、进入storage容器命令
@@ -526,7 +530,7 @@ INSERT INTO roles (username, role) VALUES ('nacos', 'ROLE_ADMIN');
 ##### 3、运行镜像
 
 ```shell
-docker run -d -e PREFER_HOST_MODE=ip -e MODE=standalone -e SPRING_DATASOURCE_PLATFORM=mysql -e MYSQL_MASTER_SERVICE_HOST=81.68.111.193 -e MYSQL_MASTER_SERVICE_PORT=3306 -e MYSQL_MASTER_SERVICE_USER=root -e MYSQL_MASTER_SERVICE_PASSWORD=kate -e MYSQL_MASTER_SERVICE_DB_NAME=nacos_config -e MYSQL_SLAVE_SERVICE_HOST=81.68.111.193 -e MYSQL_SLAVE_SERVICE_PORT=3306 -v /data/nacos/logs:/home/nacos/logs -p 8848:8848 --name nacostcl nacos/nacos-server:1.1.4
+docker run -d -e PREFER_HOST_MODE=ip -e MODE=standalone -e SPRING_DATASOURCE_PLATFORM=mysql -e MYSQL_MASTER_SERVICE_HOST=ip -e MYSQL_MASTER_SERVICE_PORT=3306 -e MYSQL_MASTER_SERVICE_USER=root -e MYSQL_MASTER_SERVICE_PASSWORD=kate -e MYSQL_MASTER_SERVICE_DB_NAME=nacos_config -e MYSQL_SLAVE_SERVICE_HOST=ip -e MYSQL_SLAVE_SERVICE_PORT=3306 -v /data/nacos/logs:/home/nacos/logs -p 8848:8848 --name nacostcl nacos/nacos-server:1.1.4
 ```
 
 ##### 4、访问
@@ -611,7 +615,7 @@ code: kate
 ##### 1、运行命令
 
 ```shell
-docker run -d -p 666:80 -e MYSQL_HOST=81.68.111.193 -e MYSQL_PORT=3306 -e MYSQL_DATABASE=github -e MYSQL_USERNAME=root -e MYSQL_PASSWORD=kate --name code6-server code6
+docker run -d -p 666:80 -e MYSQL_HOST=ip -e MYSQL_PORT=3306 -e MYSQL_DATABASE=github -e MYSQL_USERNAME=root -e MYSQL_PASSWORD=kate --name code6-server code6
 ```
 
 ##### 2、访问

@@ -299,3 +299,161 @@ Exchange 和Queue的绑定可以是多对多的关系。
 
 ---
 
+### 消息模型
+
+#### 直连
+
+![image-20210112085405998](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/092825-342131.png)
+
+- p代表生产者(provider/publisher)
+- c代表消费者(consumer)
+
+**该方式为 p直连 queue 生产消息并投放，c从queue中取出 p生产的数据**
+
+> 生产者Api
+
+```java
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+@Test
+public void send() throws Exception{
+    // 1、创建链接工厂
+    ConnectionFactory factory = new ConnectionFactory();
+    // 2、设置rabbitmq主机地址
+    factory.setHost("81.68.111.193");
+    // 3、设置端口
+    factory.setPort(5672);
+    // 4、设置连接哪个虚拟主机
+    factory.setVirtualHost("ems");
+    // 5、设置访问虚拟主机的用户名和密码
+    factory.setUsername("ems");
+    factory.setPassword("ems");
+
+    // 6、获取链接对象
+    Connection connection = factory.newConnection();
+    // 7、获取链接中的 信道 用于绑定队列来消费消息
+    Channel channel = connection.createChannel();
+    /**
+         * 8、定义队列开始
+         * @param s：队列名称，如果获取的队列名称不存在会自动创建
+         * @param b：durable是否持久化，如果持久化，消息队列关闭时存储到磁盘 true为持久化
+         * @param b1：exclusive是否独占队列，如果为true表示独占，只有此链接能消费
+         * @param b2：autoDelete队列消费完成时，是否自动删除，true表肯定
+         * @param map：arguments额外的参数
+         */
+    channel.queueDeclare("hello",false,false,false,null);
+
+    /**
+         * 9、发送消息到队列
+         * @param s：exchange交换机名称，直连模式下无交换机
+         * @param s1：queue队列名称
+         * @param basicProperties：除消息外额外的设置
+         * @param byte[]：消息体字节数组
+         */
+    channel.basicPublish("","hello",null,"hello world2!".getBytes());
+
+    // 10、关闭链接和通道（先开后关）
+    channel.close();
+    connection.close();
+}
+```
+
+> web界面变化
+
+![image-20210112092708761](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/092838-199080.png)
+
+> 消费者Api
+
+```java
+import com.rabbitmq.client.*;
+public static void main(String[] args) throws Exception{
+    ConnectionFactory factory = new ConnectionFactory();
+    factory.setHost("81.68.111.193");
+    factory.setPort(5672);
+    factory.setVirtualHost("ems");
+    factory.setUsername("ems");
+    factory.setPassword("ems");
+
+    Connection connection = factory.newConnection();
+    Channel channel = connection.createChannel();
+
+    channel.queueDeclare("hello",false,false,false,null);
+    /**
+         * @param s:queue队列名称
+         * @param b:消息的自动确认
+         * @param consumer：消费时的回调
+         */
+    channel.basicConsume("hello",true, new DefaultConsumer(channel){
+        /**
+             * @param consumerTag
+             * @param envelope
+             * @param properties
+             * @param body 消息体
+             * @throws IOException
+             */
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+            System.out.println(new String(body));
+        }
+    });
+
+    //不关闭链接，客户端会监听队列，一有消息马上消费
+}
+```
+
+部分代码重复，可以提取一个工具类来封装公共的代码
+
+**注：如果队列中有很多条消息，当开启consumer客户端时，c会直接消费完所有消息队列中的消息**
+
+#### 工具类封装
+
+```java
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+
+/**
+ * @Author: cltong
+ * @Date: 2021/1/12 9:52
+ */
+public class RabbitMQUtil {
+    private static ConnectionFactory factory = new ConnectionFactory();
+    public static Connection connection = null;
+    private static Channel channel = null;
+    static {
+        factory.setHost(ip);
+        factory.setPort(port);
+        factory.setVirtualHost(host);
+        factory.setUsername(username);
+        factory.setPassword(password);
+    }
+
+    public static Connection getConnection() throws Exception{
+        connection = factory.newConnection();
+        return connection;
+    }
+
+    public static Channel getChannel () throws Exception{
+        connection = factory.newConnection();
+        channel = connection.createChannel();
+        return channel;
+    }
+
+    public static void release(Channel var2) throws Exception{
+        if(var2==null){
+            if(channel!=null){
+                channel.close();
+            }
+        }
+        var2.close();
+
+        if(connection!=null){
+            connection.close();
+        }
+    }
+}
+```
+
+
+

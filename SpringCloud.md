@@ -2605,11 +2605,11 @@ curl http://localhost:9527/pay/port -H "X-Request-Id:1234"
 *6.Host Route Predicate：指定请求Host时匹配*
 
 ```yaml
-- Host=**.riskate.club
+- Host=**.ip
 ```
 
 ```shell
-curl http://localhost:9527/pay/port -H "Host: www.riskate.club"
+curl http://localhost:9527/pay/port -H "Host: www.ip"
 ```
 
 *7.Method Route Predicate：指定请求方式时匹配*
@@ -3210,7 +3210,7 @@ spring:
             - springcloud-config
       label: main # master已非默认分支
   rabbitmq:
-    host: riskate.club #Tencent云服务器RabbitMQ地址
+    host: ip #Tencent云服务器RabbitMQ地址
     port: 5672
     username: guest
     password: guest
@@ -3232,7 +3232,7 @@ management:
 
 ```yaml
 rabbitmq:
-  host: riskate.club #Tencent云服务器RabbitMQ地址
+  host: ip #Tencent云服务器RabbitMQ地址
   port: 5672
   username: guest
   password: guest
@@ -3433,7 +3433,7 @@ spring:
           environment: # 设置rabbitmq的相关的环境配置
             spring:
               rabbitmq:
-                host: riskate.club
+                host: ip
                 port: 5672
                 username: develop
                 password: develop
@@ -3911,7 +3911,7 @@ bash startup.sh -m standalone
 启动后可访问来查看nacos页面：
 
 ```http
-http:riskate.club:8848/nacos
+http:ip:8848/nacos
 ```
 
 密码和账号默认为 **nacos**
@@ -3945,7 +3945,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: www.riskate.club:8848 #配置Nacos地址
+        server-addr: www.ip:8848 #配置Nacos地址
 
 management:
   endpoints:
@@ -4039,7 +4039,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: riskate.club:8848
+        server-addr: ip:8848
 # 这个就是controller等会要用到的地址，会使用springEL引用它
 service:
   url: http://nacos-pay-provider
@@ -4146,9 +4146,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: riskate.club:8848 #服务注册中心地址
+        server-addr: ip:8848 #服务注册中心地址
       config:
-        server-addr: riskate.club:8848 #配置中心地址
+        server-addr: ip:8848 #配置中心地址
         file-extension: yaml #指定yaml格式的配置
 ```
 
@@ -4260,7 +4260,7 @@ Namespace配置可尝试使用如下实例：
 
 ```yaml
 config:
-    server-addr: riskate.club:8848 #配置中心地址
+    server-addr: ip:8848 #配置中心地址
     file-extension: yaml #指定yaml格式的配置
     namespace: private # 指定命名空间
     #group: GROUP_TEST # 指定组
@@ -4276,7 +4276,7 @@ bootstrap.yaml
 
 ```yaml
 config:
-    server-addr: riskate.club:8848 #配置中心地址
+    server-addr: ip:8848 #配置中心地址
     file-extension: yaml #指定yaml格式的配置
     namespace: d3030867-48b3-41ed-87ba-79f22a4635e1 # 指定命名空间ID
     #group: GROUP_TEST # 指定组
@@ -4358,7 +4358,7 @@ https://github.com/alibaba/nacos/blob/develop/config/pom.xml
 spring.datasource.platform=mysql
  
 db.num=1
-db.url.0=jdbc:mysql://riskate.club:3306/nacos_config?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true
+db.url.0=jdbc:mysql://ip:3306/nacos_config?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true
 db.user=root
 db.password=kate
 ```
@@ -4400,9 +4400,9 @@ docker run -d -p 1111:80 --name nginxnacos -v /data/nginx/nacos/conf:/etc/nginx/
 示例：
 
 ```shell
-riskate.club:3333
-riskate.club:6666
-riskate.club:9999
+ip:3333
+ip:6666
+ip:9999
 ```
 
 **7、编辑Nacos的启动脚本startup.sh，使它能够接受不同的启动端**
@@ -4541,10 +4541,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: riskate.club:8848 # nacos地址
+        server-addr: ip:8848 # nacos地址
     sentinel:
       transport:
-#        dashboard: riskate.club:8858
+#        dashboard: ip:8858
         dashboard: localhost:8080
         port: 8719  #默认8719，假如被占用了会自动从8719开始依次+1扫描。直至找到未被占用的端口
 
@@ -4976,7 +4976,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: riskate.club:8848
+        server-addr: ip:8848
     sentinel:
       transport:
         dashboard: localhost:8080
@@ -5162,7 +5162,7 @@ http://localhost:84/consumer/paymentSQL/1
 datasource:
           ds1:
             nacos:
-              server-addr: riskate.club:8848
+              server-addr: ip:8848
               dataId: ${spring.application.name}
               groupId: DEFAULT_GROUP
               data-type: json
@@ -5284,14 +5284,14 @@ store {
 
 db {
 	driverClassName = "com.mysql.jdbc.Driver"
-    url = "jdbc:mysql://riskate.club:3306/seata"
+    url = "jdbc:mysql://ip:3306/seata"
     user = "root"
     password = "kate"
 }
 
 # 用的时候再改就行
 redis{
-	host = "riskate.club"
+	host = "ip"
     port = "6379"
     password = "kate"
 }
@@ -5328,7 +5328,7 @@ registry{
     
     nacos {
     application = "seata-server"
-    serverAddr = "riskate.club:8848"
+    serverAddr = "ip:8848"
     group = "SEATA_GROUP"
     namespace = ""
     cluster = "default"
@@ -5366,8 +5366,8 @@ spring:
         tx-service-group: kate
 ```
 
-修改完毕后执行`1.3.0/conf`下的`nacos-config.sh`命令为:`sh nacos-config.sh 81.68.111.193`
-`81.68.111.193`为nacos地址,按实际情况修改即可
+修改完毕后执行`1.3.0/conf`下的`nacos-config.sh`命令为:`sh nacos-config.sh ip`
+`ip`为nacos地址,按实际情况修改即可
 
 将配置推送到nacos后可以在配置列表看到
 
@@ -5549,11 +5549,11 @@ spring:
         tx-service-group: default
     nacos:
       discovery:
-        server-addr: riskate.club
+        server-addr: ip
         port: 8848
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://riskate.club:3306/seata_order
+    url: jdbc:mysql://ip:3306/seata_order
     username: root
     password: kate
 
@@ -5601,7 +5601,7 @@ store {
     ## mysql/oracle/postgresql/h2/oceanbase etc.
     dbType = "mysql"
     driverClassName = "com.mysql.jdbc.Driver"
-    url = "jdbc:mysql://riskate.club:3306/seata"
+    url = "jdbc:mysql://ip:3306/seata"
     user = "root"
     password = "kate"
     minConn = 5
@@ -5636,7 +5636,7 @@ registry {
 
   nacos {
     application = "seata-server"
-    serverAddr = "riskate.club:8848"
+    serverAddr = "ip:8848"
     group = "SEATA_GROUP"
     namespace = ""
     cluster = "default"
@@ -5982,7 +5982,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://riskate.club:3306/seata_storage
+    url: jdbc:mysql://ip:3306/seata_storage
     username: root
     password: kate 
     
@@ -6161,7 +6161,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://riskate.club:3306/seata_account
+    url: jdbc:mysql://ip:3306/seata_account
     username: root
     password: kate 
 
