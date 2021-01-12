@@ -321,9 +321,9 @@ public void send() throws Exception{
     // 1、创建链接工厂
     ConnectionFactory factory = new ConnectionFactory();
     // 2、设置rabbitmq主机地址
-    factory.setHost("81.68.111.193");
+    factory.setHost("ip");
     // 3、设置端口
-    factory.setPort(5672);
+    factory.setPort(port);
     // 4、设置连接哪个虚拟主机
     factory.setVirtualHost("ems");
     // 5、设置访问虚拟主机的用户名和密码
@@ -369,8 +369,8 @@ public void send() throws Exception{
 import com.rabbitmq.client.*;
 public static void main(String[] args) throws Exception{
     ConnectionFactory factory = new ConnectionFactory();
-    factory.setHost("81.68.111.193");
-    factory.setPort(5672);
+    factory.setHost("ip");
+    factory.setPort(port);
     factory.setVirtualHost("ems");
     factory.setUsername("ems");
     factory.setPassword("ems");
@@ -406,7 +406,7 @@ public static void main(String[] args) throws Exception{
 
 **注：如果队列中有很多条消息，当开启consumer客户端时，c会直接消费完所有消息队列中的消息**
 
-#### 工具类封装
+##### 工具类封装
 
 ```java
 import com.rabbitmq.client.Channel;
@@ -440,13 +440,14 @@ public class RabbitMQUtil {
         return channel;
     }
 
-    public static void release(Channel var2) throws Exception{
-        if(var2==null){
+    public static void release(Channel var1) throws Exception{
+        if(var1==null){
             if(channel!=null){
                 channel.close();
             }
+        }else{
+            var1.close();
         }
-        var2.close();
 
         if(connection!=null){
             connection.close();
@@ -455,5 +456,149 @@ public class RabbitMQUtil {
 }
 ```
 
+##### 参数详解
 
+在上述消息模型中我们简单的实现了一下点对点发布的代码，其中 **信道与消息推送时的部分参数** 我们在此做一个详解
 
+上述代码是这样的
+
+provider/publisher
+
+```java
+// 只是定义信道
+channel.queueDeclare("hello",false,false,false,null);
+// 这一步才是推送消息到队列
+channel.basicPublish("","hello",null,"hello world2!".getBytes());
+```
+
+consumer
+
+```java
+channel.queueDeclare("hello",false,false,false,null);
+```
+
+虽然上述文档中的 **Javadoc注释** 已经向我们说明了参数的意义，但这里还有要补充的另外几点
+
+-   消息生产者生产什么样的消息，消费者就要对应起来消费，不然会抛出IOException
+-   想要队列持久化到硬盘时，需要配置 **durable为true** ，想要消息也一同跟着队列持久化时，需要配置 **prop为 MessageProperties.PERSISTENT_TEXT_PLAIN**
+-   autoDelete 配置如果为 true，表示当消费者消费完队列后就会自动删除队列(前提是消费者断开了与队列的链接)
+
+#### 工作队列(Work Queue)
+
+Work Queues，也被称为（Task queues)，任务模型。当消息处理比较耗时的时候，可能**生产消息的速度会远远大于消息的消费速度**。长此以往，**消息就会堆积越来越多，无法及时处理**。此时就可以使用work模型:**让多个消费者绑定到一个队列，共同消费队列中的消息**。队列中的消息一旦消费，就会消失，因此任务是不会被重复执行的。
+
+![image-20210112204634077](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/204637-766466.png)
+
+-   P:生产者:任务的发布者
+-   c1:消费者,领取任务并且完成任务，假设完成速度较慢
+-   C2:消费者2:领取任务并完成任务，假设完成速度快
+
+##### 代码编写
+
+provider/publisher
+
+```java
+@Test
+public void send() throws Exception{
+    Channel channel = RabbitMQUtil.getChannel();
+
+    // 设置信道与队列绑定
+    channel.queueDeclare("work",true,false,false,null);
+
+    // 循环发送消息
+    for (int i = 0; i < 10; i++) {
+        channel.basicPublish("","work", MessageProperties.PERSISTENT_TEXT_PLAIN, (i + "work queue").getBytes());
+    }
+
+    // 关闭链接
+    RabbitMQUtil.release(channel);
+}
+```
+
+consumer1/consumer2
+
+```java
+public static void main(String[] args) throws Exception {
+
+    Channel channel = RabbitMQUtil.getChannel();
+
+    channel.queueDeclare("work",true,false,false,null);
+
+    channel.basicConsume("work",true,new DefaultConsumer(channel){
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+            System.out.println("消费者一：" + new String(body));
+        }
+    });
+}
+```
+
+##### 启动测试
+
+![image-20210112210324610](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/210325-324791.png)
+
+![image-20210112210338589](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/210339-204883.png)
+
+**总结:默认情况下，RabbitMQ将按顺序将每个消息发送给下一个使用者。平均而言，每个消费者都会收到相同数量的消息。这种分发消息的方式称为循环。**
+
+##### 问题引出
+
+我们此时做一个猜想，既然默认是平均分配的，那么假如使其中一个消费者消费的速度变慢，会发生什么？
+
+consumer1改造
+
+```java
+channel.basicConsume("work",true,new DefaultConsumer(channel){
+    @Override
+    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+        try {
+            // 加入线程休眠
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("消费者一：" + new String(body));
+    }
+});
+```
+
+新的测试结果如下
+
+![image-20210112210707217](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/210707-457270.png)
+
+此时consumer1虽然也在消费队列，但是消费的速度变慢，**在队列中如果有大量的消息时，就会造成消息堆积**，故平均分配的模式弊端就此展露
+
+解决方式引出？如何更改平均分配的策略？
+
+##### 消息确认和能者多劳
+
+在以往的代码中，我们都会选择使用消费者自动确认消息，这样消息队列会认为所有的消息都已分配给不同的消费者而马上清空所有队列中的消息，消费者1虽然执行慢，但是它已经从消息队列中拿到了所有的消息，故而会一个一个消费，从而拖慢速度，因此我们需要**先关闭消息自动确认**
+
+```java
+channel.basicConsume("work",false,new DefaultConsumer(channel){});
+```
+
+紧接着因为执行消费队列的速度很快，我们不好把握队列中消息流失的速度，因此需要设置每次只消费一条消息，避免线程执行快带来的不可预估性
+
+```java
+channel.basicQos(1);
+```
+
+最后，因为我们关闭了自动确认，如果一直不确认消息被消费，那么消息队列中就会一直保留该消息，因此我们需要手动确认消息
+
+```java
+/**
+ * 手动确认消息，执行一条确认一条
+ * @param1 tag:代表确认哪条消息被消费的标志
+ * @param2 b:是否开启多个消息同时确认？因为我们在上述代码中每次只执行一条，Qps都是1，所以这里选择false
+ */
+channel.basicAck(envelope.getDeliveryTag(),false);
+```
+
+上述代码编写完成后，就可以实现能者多劳，而业务执行慢的消费者或者中途宕机的消费者因为没有确认消息，就会被剩下的消费者接替掉手中的工作，从而达到消息的不丢失
+
+>   测试如下
+
+![image-20210112214555031](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/214555-111682.png)
+
+![image-20210112214608502](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/214609-191410.png)
