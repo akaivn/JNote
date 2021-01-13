@@ -244,7 +244,7 @@ Exchange 和Queue的绑定可以是多对多的关系。
 
 ​	**topic 交换器通过模式匹配分配消息的路由键属性，将路由键和某个模式进行匹配，此时队列需要绑定到一个模式上。它将路由键和绑定键的字符串切分成单词，这些单词之间用点隔开。它同样也会识别两个通配符：符号“#”和符号 * 。#匹配0个或多个单词，* 匹配一个单词。**
 
-## Hello World
+## Getting Start
 
 >   回顾AMQP协议流程
 
@@ -462,7 +462,7 @@ public class RabbitMQUtil {
 
 上述代码是这样的
 
-provider/publisher
+>   provider/publisher
 
 ```java
 // 只是定义信道
@@ -471,7 +471,7 @@ channel.queueDeclare("hello",false,false,false,null);
 channel.basicPublish("","hello",null,"hello world2!".getBytes());
 ```
 
-consumer
+>   consumer
 
 ```java
 channel.queueDeclare("hello",false,false,false,null);
@@ -493,9 +493,9 @@ Work Queues，也被称为（Task queues)，任务模型。当消息处理比较
 -   c1:消费者,领取任务并且完成任务，假设完成速度较慢
 -   C2:消费者2:领取任务并完成任务，假设完成速度快
 
-##### 代码编写
+##### 示例
 
-provider/publisher
+>   provider/publisher
 
 ```java
 @Test
@@ -515,7 +515,7 @@ public void send() throws Exception{
 }
 ```
 
-consumer1/consumer2
+>   consumer1/consumer2
 
 ```java
 public static void main(String[] args) throws Exception {
@@ -545,7 +545,7 @@ public static void main(String[] args) throws Exception {
 
 我们此时做一个猜想，既然默认是平均分配的，那么假如使其中一个消费者消费的速度变慢，会发生什么？
 
-consumer1改造
+>   consumer1改造
 
 ```java
 channel.basicConsume("work",true,new DefaultConsumer(channel){
@@ -595,10 +595,214 @@ channel.basicQos(1);
 channel.basicAck(envelope.getDeliveryTag(),false);
 ```
 
-上述代码编写完成后，就可以实现能者多劳，而业务执行慢的消费者或者中途宕机的消费者因为没有确认消息，就会被剩下的消费者接替掉手中的工作，从而达到消息的不丢失
+上述示例完成后，就可以实现能者多劳，而业务执行慢的消费者或者中途宕机的消费者因为没有确认消息，就会被剩下的消费者接替掉手中的工作，从而达到消息的不丢失
 
 >   测试如下
 
 ![image-20210112214555031](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/214555-111682.png)
 
 ![image-20210112214608502](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/214609-191410.png)
+
+#### 扇出(fanout)
+
+某些业务场景下，我们希望同一条消息可以被不同的消费者消费，fanout模型就可以帮助我们完成这项业务
+
+fanout:又叫广播，指生产者将消息发送到交换机后，由交换机来选择该消息可以被哪些消费者消费，决定消费者可以消费消息的不再是生产者和队列，而是exchange
+
+![image-20210113193811292](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/13/193818-93912.png)
+
+-   P:生产者，向exchange发送消息
+-   X: exchange(交换机)，接收生产者的消息，然后把消息递交给与之绑定的队列
+-   c1∶消费者，消费队列中的消息
+-   c2∶消费者，消费队列中的消息
+
+
+
+在广播模式下，消息发送流程是这样的:
+
+-   可以有多个消费者
+-   每个消费者有自己的queue (队列)
+-   每个队列都要绑定到Exchange(交换机)
+-   生产者发送的消息，只能发送到交换机，交换机来决定要发给哪个队列，生产者无法决定
+-   交换机把消息发送给绑定过的所有队列
+-   队列的消费者都能拿到消息。实现一条消息被多个消费者消费
+
+##### 示例
+
+>   provider/publisher
+
+```java
+@Test
+public void send() throws Exception{
+    Channel channel = RabbitMQUtil.getChannel();
+
+    /**
+         * 定义交换机
+         * @param1 exchange：指定交换机的名称，如果虚拟主机中没有此交换机则会自动创建
+         * @param2 type：指定交换机的类型，此处为广播模式：fanout
+         */
+    channel.exchangeDeclare("logs","fanout");
+
+    /**
+         * 发送消息
+         * @param1 exchange：交换机名称
+         * @param2 routingKey：路由键，此模型用不到，后面的模型再说
+         * @param3 props：消息的其他属性——路由头等
+         * @param4 byte[]：消息体
+         */
+    channel.basicPublish("logs","", null,"fanout模型消息".getBytes());
+
+    RabbitMQUtil.release(channel);
+}
+```
+
+>   consumer1/consumer2/conumer3 ...
+
+```java
+public static void main(String[] args) throws Exception{
+    Channel channel = RabbitMQUtil.getChannel();
+
+    // 声明交换机
+    channel.exchangeDeclare("logs","fanout");
+
+    // 创建临时队列
+    String queueName = channel.queueDeclare().getQueue();
+
+    /**
+         * 绑定交换机与队列
+         * @param1 queue：队列名
+         * @param2 exchange：交换机名
+         * @param3 routingKey：路由键
+         */
+    channel.queueBind(queueName,"logs",null);
+
+    // 消费消息
+    channel.basicConsume(queueName,true,new DefaultConsumer(channel){
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+            System.out.println("消费者一：" + new String(body));
+        }
+    });
+}
+```
+
+注：此处需要注意的是 **routingKey** 虽然此模型没有用到，但是不能赋值为 null，需要为空字符串，否则会抛出 IOException
+
+#### 路由(Routing)
+
+在上述 **fanout** 模型处，我们留了一个小尾巴 `routingKey`，此节来详细说明一下
+
+首先，我们需要提出一个问题：fanout 模型是任何消费者都能消费的广播模型，如果我们假设只允许某些消费者才能消费到，应该如果实现？ fanout 无法指定消费者消费指定的消息
+
+故，路由的概念就衍生了，我们通过使用一个路由键（routingKey）来绑定交换机与队列，这样，交换机只会根据路由键的规则将消息推送给指定的队列，而与指定队列绑定的消费者则指定消费到此队列的消息
+
+##### Routing-Direct
+
+**Direct** 路由模式，又叫做直连。为路由的模式之一
+
+![image-20210113201404176](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/13/201406-415022.png)
+
+-   P:生产者，向exchange发送消息，发送消息时，会指定一个routing key
+-   X: exchange(交换机)，接收生产者的消息，然后把消息递交给与routing key完全匹配的队列
+-   c1∶消费者，其所在队列指定了需要routing key为error的消息
+-   c2∶消费者，其所在队列指定了需要routing key为info、error、warning 的消息
+
+
+
+在Direct模式下：
+
+-   队列与交换机的绑定，不能是任意绑定了，而是要指定一个 routingKey(路由键)
+-   消息的发送方在向exchange发送消息时，也必须指定消息的 routingKey
+-   exchange不再把消息交给每一个绑定的队列，而是根据消息的routingKey进行判断，只有队列的routingKey与消息的routingKey完全一致，才会接收到消息
+
+###### 示例
+
+>   provider/publisher
+
+```java
+@Test
+public void send() throws Exception {
+    Channel channel = RabbitMQUtil.getChannel();
+    channel.exchangeDeclare("logs_direct","direct");
+    String routingKey = "error";
+    String message = "direct发出的日志等级为：[" + routingKey +"] 的消息";
+    channel.basicPublish("logs_direct",routingKey,null,message.getBytes());
+    RabbitMQUtil.release(channel);
+}
+```
+
+>   consumer1/consumer2
+
+```java
+public static void main(String[] args) throws Exception {
+    Channel channel = RabbitMQUtil.getChannel();
+    channel.exchangeDeclare("logs_direct","direct");
+    String queue = channel.queueDeclare().getQueue();
+    String routingKey1 = "warning";
+    String routingKey2 = "debug";
+    String routingKey3 = "error";
+    // 表示该信道同时绑定了三种不同的路由键
+    channel.queueBind(queue,"logs_direct",routingKey1);
+    channel.queueBind(queue,"logs_direct",routingKey2);
+    channel.queueBind(queue,"logs_direct",routingKey3);
+    channel.basicConsume(queue,true,new DefaultConsumer(channel){
+        @Override
+        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+            System.out.println("消费者一消费的消息为：" + new String(body));
+        }
+    });
+}
+```
+
+##### Routing-Topic
+
+**Topic**：又叫动态路由，解决的问题为上述直连的不灵活
+
+通过上述路由规则，我们实现了使不同的消费者能够消费到不同的消息，但是我们会发现，绑定的路由键不够灵活，可能会出现以下代码冗余的情况
+
+```java
+channel.queueBind(queue,"logs_direct",routingKey1);
+channel.queueBind(queue,"logs_direct",routingKey2);
+channel.queueBind(queue,"logs_direct",routingKey3);
+...
+```
+
+针对此问题，RabbitMQ的解决方案就是使用 **动态路由**，它支持以通配符的形式来声明路由键，匹配时也需依照声明的通配符来匹配消费对应的消息
+
+这种模型routingKey一般都是由一个或多个单词组成，多个单词之间以"."分割，例如: item.insert
+
+![image-20210113205542843](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/13/205543-428443.png)
+
+此流程图角色不再阐述
+
+>   支持的通配符
+
+-   *：必须匹配一个单词
+-   #：匹配 0 个或多个单词
+
+###### 示例
+
+>   provider/publisher
+
+```java
+channel.exchangeDeclare("topics","topic");
+```
+
+
+
+>   consumer1/consumer2
+
+```java
+channel.queueBind(queue,"topics","user.#");
+channel.queueBind(queue,"topics","user.*");
+```
+
+或
+
+```java
+channel.queueBind(queue,"topics","*.#.user.#");
+channel.queueBind(queue,"topics","#.user.*");
+```
+
+
+
