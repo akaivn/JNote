@@ -29,7 +29,7 @@ I.mybatis配置文件
 	                <property name="password" value="password"/>
 	            </dataSource>
 	        </environment>
-	    </environments>
+	    </environments> 
 	    <!-- 映射文件配置，位置，属性等 -->
 	    <mappers>
 	    </mappers>
