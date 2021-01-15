@@ -1249,7 +1249,7 @@ class ConsumerApplicationTests {
 
 ## 1、springboot提供的starter
 
--   a、导入依赖
+-   a、导入依赖 
 
 ```xml
 <dependency>

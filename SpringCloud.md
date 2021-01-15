@@ -3879,7 +3879,7 @@ GitHub：https://github.com/alibaba/Nacos
 
 下载后由**Xftp**上传到指定文件夹目录中，我们假设它为：*/usr/local/software/nacos*
 
-进入到指定文件夹后使用如下命令解压：
+进入到指定文件夹后使用如下命令解压： 
 
 ```shell
 tar -xvf xx.tar.gz

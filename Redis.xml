@@ -78,7 +78,7 @@ Redis
 		8.移除key的过期时间使key成为永久
 			$ persist key
 		9.根据通配条件查询key
-			$ keys var
+			$ keys var 
 			* :通配所有key
 				查询后显示的结果是每一个key 中间都会有一个 'key'字符串和每一个key隔开
 			? :通配一个字符

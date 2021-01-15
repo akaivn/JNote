@@ -1,6 +1,6 @@
 # Mybatis-Plus
 
-**特性和优点 详情见官网**   **[https://mybatis.plus]()**
+**特性和优点 详情见官网**   **[https://mybatis.plus]()** 
 
 ## 1、配合Springboot快速入门案例
 
