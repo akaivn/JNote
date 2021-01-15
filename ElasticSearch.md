@@ -17,21 +17,7 @@ ES简介不多说,Springboot高级有相关概述
 
 ## 2、ElasticSearch安装 (docker)
 
-### 1、拉取镜像
-
-```shell
-docker pull elasticsearch:7.7.0
-```
-
-### 2、运行
-
-**注意：elasticsearch初始化默认开启2G的堆内存空间，我们测试期间用不了这么大的内存，所以限制一下堆内存的使用并**
-
-**开放两个端口 默认为9200  9300为分布式的开放端口**
-
-```shell
-docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -e "discovery.type=single-node" -p 9200:9200 -p 9300:9300 --name elasticsearchtcl elasticsearch:7.7.0
-```
+详情见 ==DIS.md==
 
 ### 3、安装ElasticSearch数据展示工具   (来自chrome扩展)
 
@@ -55,23 +41,7 @@ github上搜索elasticsearch-head 连接elasticsearch可以直接避免跨域问
 
 ==Kibana要求必须和ES版本一致，如果使用非docker安装还要自己配置node.js环境==
 
-#### 1、拉取镜像
-
-```shell
-docker pull kibana:7.7.0
-```
-
-#### 2、运行镜像产生容器
-
-```shell
-docker run --name kibanatcl -e ELASTICSEARCH_HOSTS=http://ip:9200 -p 5601:5601 -d kibana:7.7.0
-```
-
-#### 3、链接Kibana 别忘了开启防火墙指定端口
-
-```http
-http://ip:5601
-```
+详情见 ==DIS.md==
 
 访问效果
 
