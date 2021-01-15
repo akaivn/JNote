@@ -77,7 +77,7 @@ AMQP (advanced message queuing protocol) 在2003年时被提出，最早用于�
 
 因为RabbitMQ基于Erlang语言，因此 如果直接使用 Windows 或者 CentOS 二进制包或者 .exe文件安装的话，还需要提前准备Erlang所依赖的库和环境，所以此次安装采用 Docker 的方式安装，详细安装步骤可参见 **DIS.md**
 
-### Common Command
+### 常用命令
 
 ```shell
 服务启动关闭：
@@ -155,7 +155,7 @@ web界面总览介绍图
 
 内部界面众多，不再一 一介绍，使用非常简单快捷
 
-### Term Introduction
+### 核心概念
 
 -   Message
 
@@ -228,7 +228,7 @@ Exchange 和Queue的绑定可以是多对多的关系。
 表示消息队列服务器实体
 ```
 
-### Exchange Type Introduction
+### 交换机类型
 
 **Exchange分发消息时根据类型的不同分发策略有区别，目前共四种类型：direct、fanout、topic、headers 。headers 匹配 AMQP 消息的 header 而不是路由键， headers 交换器和 direct 交换器完全一致，但性能差很多，目前几乎用不到了，所以直接看另外三种类型：**
 
@@ -804,5 +804,246 @@ channel.queueBind(queue,"topics","*.#.user.#");
 channel.queueBind(queue,"topics","#.user.*");
 ```
 
+### Springboot整合
 
+与Springboot整合后，操作RabbitMQ使用 `RabbitTemplate` 对象的一系列Api并联合Spring给我们提供的RabbitMQ的 **注解** 即可
+
+#### boot hello world
+
+- 引入依赖 (或使用Spring Initializr)
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-amqp</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.amqp</groupId>
+    <artifactId>spring-rabbit-test</artifactId>
+    <scope>test</scope>
+</dependency>
+```
+
+- provider
+
+```java
+@SpringBootTest
+public class Provider {
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Test
+    void t1(){
+        // 单单创建消息是不会创建发送的，只有有消费者时才会发送
+        rabbitTemplate.convertAndSend("boot-queue","springboot-rabbitmq");
+    }
+}
+```
+
+- consumer
+
+```java
+@Component
+/**
+ * @RabbitListener 代表此组件为RabbitMQ的消费类
+ * 它的详情属性对应了我们操作RabbitMQ Api时的队列的设置
+ * queuesToDeclare：表示没有则创建队列
+ */
+@RabbitListener(queuesToDeclare = {@Queue("boot-queue")})
+public class Consumer {
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    /**
+     * @RabbitHandler：表示此方法为RabbitMQ消费消息后的回调方法，参数为RabbitMQ传递过来的
+     * @param message
+     */
+    @RabbitHandler
+    public void outputMessage(String message){
+        System.out.println(message);
+    }
+}
+```
+
+#### boot work queue
+
+work queue工作队列模型整合
+
+provider
+
+```java
+@Autowired
+private RabbitTemplate rabbitTemplate;
+
+rabbitTemplate.convertAndSend("boot-work","springboot-rabbitmq" + i);
+```
+
+consumer
+
+```java
+@Component
+public class WrokConsumer {
+
+    // 此注解也可以作用于方法，表示会顺带处理回调的消息
+    @RabbitListener(queuesToDeclare = {@Queue("boot-work")})
+    public void receiveMessage(String message){
+        System.out.println(message);
+    }
+
+    // 此注解也可以作用于方法，表示会顺带处理回调的消息
+    @RabbitListener(queuesToDeclare = {@Queue("boot-work")})
+    public void receiveMessage2(String message){
+        System.out.println(message);
+    }
+}
+```
+
+**注：在Springboot中，默认的工作队列也采用的是平均分配消息的模式，如果想要实现能者多劳，我们需要额外的配置**
+
+#### boot fanout
+
+扇出，广播模式
+
+provider
+
+```java
+@Autowired
+private RabbitTemplate rabbitTemplate;
+
+/**
+         * @param1：exchange
+         * @param2：routingKey
+         * @param3：message
+         */
+rabbitTemplate.convertAndSend("logs","","fanout扇出模型");
+```
+
+consumer
+
+```java
+@RabbitListener(
+    bindings = {
+        @QueueBinding(
+            value = @Queue,// 如果不声明队列名，就会创建临时队列
+            exchange = @Exchange(value = "logs",type = "fanout")// 绑定交换机
+        )
+    }
+)
+public void receiveMessage1(String message){
+    System.out.println(message);
+}
+```
+
+#### boot routing direct
+
+routingKey 路由直连模式
+
+provider
+
+```java
+// 使用routingKey路由
+rabbitTemplate.convertAndSend("aaa","info","direct路由key");
+```
+
+consumer
+
+```java
+@RabbitListener(
+    bindings = {
+        @QueueBinding(
+            value = @Queue,
+            exchange = @Exchange(value = "aaa",type = "direct"),
+            key = {"warn"}
+        )
+    }
+)
+public void receiveMessage1(String message){
+    System.out.println(message);
+}
+```
+
+#### boot routing topic
+
+routingKey 动态路由模式，支持通配符
+
+provider
+
+```java
+rabbitTemplate.convertAndSend("bbb","warn.a","topic路由规则");
+```
+
+consumer
+
+```java
+@RabbitListener(
+    bindings = {
+        @QueueBinding(
+            value = @Queue,
+            exchange = @Exchange(value = "bbb",type = "topic"),
+            key = {"warn.*"}
+        )
+    }
+)
+```
+
+### MQ应用场景
+
+#### 异步处理
+
+场景说明：用户注册后，需要发注册邮件和注册[短信](https://cloud.tencent.com/product/sms?from=10680),传统的做法有两种：串行与并行
+
+- 串行方式:将注册信息写入数据库后,发送注册邮件,再发送注册短信,以上三个任务全部完成后才返回给客户端。 这有一个问题是,邮件,短信并不是必须的,它只是一个通知,而这种做法让客户端等待没有必要等待的东西
+
+![vvmok1ubkr](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160044-361299.png)
+
+- 将注册信息写入数据库后,发送邮件的同时,发送短信,以上三个任务完成后,返回给客户端,并行的方式能提高处理的时间
+
+![c8pw4v1qoe](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160122-130759.png)
+
+假设三个业务节点分别使用50ms,串行方式使用时间150ms,并行使用时间100ms。虽然并性已经提高的处理时间,但是,前面说过,邮件和短信对我正常的使用网站没有任何影响，客户端没有必要等着其发送完成才显示注册成功,因而是写入数据库后就返回
+
+- 消息队列：引入消息队列后，把发送邮件,短信不是必须的业务逻辑异步处理 
+
+![5r2kyi4vu7](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160209-945288.png)
+
+#### 应用解耦
+
+场景：双11是购物狂节,用户下单后,订单系统需要通知库存系统,传统的做法就是订单系统调用库存系统的接口
+
+![weaz95z0u3](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160339-7498.png)
+
+这种做法有一个缺点:
+
+- 当库存系统出现故障时,订单就会失败
+- 订单系统和库存系统高耦合
+
+引入消息队列 
+
+![uufioa2r7r](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160342-346197.png)
+
+- 订单系统:用户下单后,订单系统完成持久化处理,将消息写入消息队列,返回用户订单下单成功
+- 库存系统:订阅下单的消息,获取下单消息,进行库操作。 就算库存系统出现故障,消息队列也能保证消息的可靠投递,不会导致消息丢失
+
+#### 流量削峰
+
+流量削峰一般在秒杀活动中应用广泛 
+
+场景:秒杀活动，一般会因为流量过大，导致应用挂掉,为了解决这个问题，一般在应用前端加入消息队列
+
+作用: 
+
+1、可以控制活动人数，超过此一定阀值的订单直接丢弃
+
+2、可以缓解短时间的高流量压垮应用(应用程序按自己的最大处理能力获取订单) 
+
+![t0qgtelj6a](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160533-88143.png)
+
+- 用户的请求,服务器收到之后,首先写入消息队列,加入消息队列长度超过最大值,则直接抛弃用户请求或跳转到错误页面
+- 2.秒杀业务根据消息队列中的请求信息，再做后续处理
+
+## Advance
+
+### 系统架构图
+
+![yypy8o1azr](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160746-400946.jpeg)
 
