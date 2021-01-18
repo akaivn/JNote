@@ -2,7 +2,7 @@
 
 **此文档的所有ip，port都需要替换为安装时对应的ip，port**
 
-#### 常用命令
+#### Common Comment
 
 ```shell
 systemctl start docker 
@@ -46,7 +46,49 @@ apt-get update
 apt-get install vim
 ```
 
+#### Docker
 
+##### 1、检查内核版本
+
+必须是3.10及以上
+
+```shell
+uname -r
+```
+
+##### 2、安装docker
+
+```shell
+yum install docker -y
+```
+
+##### 3、启动
+
+```shell
+systemctl start docker
+```
+
+##### 4、查看版本
+
+```shell
+docker -v
+
+Docker version 1.12.6, build 3e8e77d/1.12.6
+```
+
+##### 5、开机启动
+
+```shell
+systemctl enable docker
+
+Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service
+```
+
+##### 6、停止
+
+```shell
+systemctl stop docker
+```
 
 #### MySQL
 
