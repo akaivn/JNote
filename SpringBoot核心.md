@@ -3390,24 +3390,7 @@ ip addr
 
 #### 2）、在linux虚拟机上安装docker
 
-步骤：
-
-```shell
-1、检查内核版本，必须是3.10及以上
-uname -r
-2、安装docker
-yum install docker
-3、输入y确认安装
-4、启动docker
-[root@localhost ~]# systemctl start docker
-[root@localhost ~]# docker -v
-Docker version 1.12.6, build 3e8e77d/1.12.6
-5、开机启动docker
-[root@localhost ~]# systemctl enable docker
-Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
-6、停止docker
-systemctl stop docker
-```
+详情见 ==DIS.md==
 
 ## 4、Docker常用命令&操作
 
