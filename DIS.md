@@ -84,7 +84,25 @@ systemctl enable docker
 Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service
 ```
 
-##### 6、停止
+##### 6、配置阿里云镜像仓库
+
+```shell
+1、访问自己的阿里云地址为
+https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors
+
+2、粘贴类似于如下命令放到shell里运行即可
+
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  xxx
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+##### 7、停止
 
 ```shell
 systemctl stop docker
