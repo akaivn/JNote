@@ -1051,6 +1051,8 @@ consumer
 
 默认情况下:**RabbitMQ** 代理操作所需的所有数据/状态都将跨所有节点复制。这方面的一个例外是消息队列，默认情况下，消息队列位于一个节点上，尽管它们可以从所有节点看到和访问
 
+##### 集群架构图
+
 ![image-20210117203716887](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/17/203718-217744.png)
 
 上面那句话的意思就是：**默认情况下，RabbitMQ提供的集群模式为普通集群，只是单纯的将Master主节点的Exchange复制了一份到每个子节点上，尽管所有子节点都可以拿到交换机和所有队列的信息，但实际上子节点不具备有故障转移、自动备份和容灾等功能**。当子节点复制了Master节点的交换机后，消费者也可以订阅子节点消费消息（**实际上，当消费者订阅子节点后，消费消息时，子节点只是单纯的去调用了Master节点的消息，然后返回给消费者**）
@@ -1063,11 +1065,236 @@ consumer
 
 ##### 集群搭建
 
+###### 环境准备
 
+由于我们在上述章节中并没有采用RabbitMQ普通的安装方式，所以我们依旧在本章节中使用基于Docker的方式来部署集群
+
+> 修改以往的运行命令
+
+- **rabbit_erlang_cookie** ，集群要求，所有的集群节点的erlang cookie都必须一致
+- **hostname** ，设置集群节点的主机名
+
+第一台RabbitMQ
+
+```shell
+docker run -d --hostname rabbit1 --name myrabbit1 -p 15672:15672 -p 5672:5672 -e RABBITMQ_ERLANG_COOKIE='rabbitcookie' 镜像id或镜像名
+```
+
+第二台RabbitMQ
+
+- **link** 是连接集群节点的重要属性
+
+```shell
+docker run -d --hostname rabbit2 --name myrabbit2 -p 15673:15672 5673:5672 --link myrabbit1:rabbit1 -e RABBITMQ_ERLANG_COOKIE='rabbitcookie' 镜像id或镜像名
+```
+
+第三台RabbitMQ
+
+连接前两台RabbitMQ的服务
+
+```shell
+docker run -d --hostname rabbit3 --name myrabbit3 -p 15674:15672 5674:5672 --link myrabbit1:rabbit1 --link myrabbit2:rabbit2 -e RABBITMQ_ERLANG_COOKIE='rabbitcookie' 镜像id或镜像名
+```
+
+注：启动命令上的 **RABBITMQ_ERLANG_COOKIE** 必须相同
+
+> 加入RabbitMQ节点到集群
+
+第一台RabbitMQ容器
+
+```shell
+docker exec -it myrabbit1 bash
+rabbitmqctl stop_app
+rabbitmqctl reset
+rabbitmqctl start_app
+exit
+```
+
+第二台RabbitMQ容器
+
+```shell
+docker exec -it myrabbit2 bash
+rabbitmqctl stop_app
+rabbitmqctl reset
+rabbitmqctl join_cluster --ram rabbit@rabbit1
+rabbitmqctl start_app
+exit
+```
+
+第二台RabbitMQ容器
+
+```shell
+docker exec -it myrabbit3 bash
+rabbitmqctl stop_app
+rabbitmqctl reset
+rabbitmqctl join_cluster --ram rabbit@rabbit1
+rabbitmqctl start_app
+exit
+```
+
+参数 **--ram** 表示设置为内存节点，忽略次参数默认为磁盘节点
+
+启动了3个节点，1个磁盘节点和2个内存节点
+
+> 配置相同的Erlang Cookie
+
+有些特殊的情况，比如已经运行了一段时间的几个单个物理机，我们在之前没有设置过相同的Erlang Cookie值，现在我们要把单个的物理机部署成集群，实现我们需要同步Erlang的Cookie值
+
+> 1.为什么要配置相同的erlang cookie？
+
+因为RabbitMQ是用Erlang实现的，Erlang Cookie相当于不同节点之间相互通讯的秘钥，Erlang节点通过交换Erlang Cookie获得认证。
+
+> 2.Erlang Cookie的位置
+
+要想知道Erlang Cookie位置，首先要取得RabbitMQ启动日志里面的home dir路径，作为根路径。使用：docker logs 容器名称 查看，如下图：
+
+![img](http://icdn.apigo.cn/blog/rabbitmq-homedir.png)
+
+所以Erlang Cookie的全部路径就是
+
+```shell
+/var/lib/rabbitmq/.erlang.cookie
+```
+
+**注意：每个人的erlang cookie位置可能不同，一定要查看自己的home dir路径。**
+
+> 3.复制Erlang Cookie到其他RabbitMQ节点
+
+获取到第一个RabbitMQ的Erlang Cookie之后，只需要把这个文件复制到其他RabbitMQ节点即可。
+
+物理机和容器之间复制命令如下：
+
+- 容器复制文件到物理机：docker cp 容器名称:容器目录 物理机目录
+- 物理机复制文件到容器：docker cp 物理机目录 容器名称:容器目录
+
+设置Erlang Cookie文件权限：
+
+```shell
+chmod 600 /var/lib/rabbitmq/.erlang.cookie
+```
+
+> 打开测试地址，查看集群节点
+
+![image-20210123121603897](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/23/121604-649738.png)
+
+我们访问三个web管理界面，尝试使用程序发送消息到队列，我们会发现，消息队列和交换机如果是在master节点创建的，那么立刻就会同步到其余的slave节点
+
+slave节点的RabbitMQ服务虽然也能给我们提供服务，但是，如果主节点down掉，所有的slave节点都会丢失信息，即使slave节点在正常运行，也无法正常提供服务，所以，这种普通的集群是需要master节点一直存活着的
+
+###### 实例
+
+接下来我们来使用一个实例证明
+
+> 1、回归到第一章节我们的 hello world 实例，我们将**RabbitMQUtil**的端口先改到master主节点对应的RabbitMQ服务
+
+```java
+static {
+    factory.setPort(5672);
+}
+```
+
+> 2、启动消费者发送消息到对应master节点队列
+
+> 3、发送消息后，我们将端口改为两个内存节点(slave)中的一个
+
+```java
+static {
+    factory.setPort(5673);
+    // 或
+    factory.setPort(5674);
+}
+```
+
+> 4、启动消费者消费消息
+
+![image-20210124100556871](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/24/100557-37722.png)
+
+我们看到消息依旧被消费，证明了salve节点可以接受用户请求、消费消息，它调用master节点的消息，然后把消息返回给消费者，与此同时，master节点必须保持可用，当master down掉时，剩下的slave节点也无法继续服务
+
+**slave节点相当于为master节点做了负载的效果**
+
+注：`当使用docker集群时，重启或关闭master节点会导致配置失效，slave节点不可用`
+
+![image-20210124102051853](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/24/102052-23314.png)
+
+解决方式：==重启所有的slave节点即可==
 
 #### 镜像集群（高可用）
 
+`RabbitMQ普通集群模式，是将交换机、绑定、队列的元数据复制到集群里的任何一个节点，但队列内容只存在于特定的节点中，客户端通过连接集群中任意一个节点，即可以生产和消费集群中的任何队列内容（因为每个节点都有集群中所有队列的元数据信息，如果队列内容不在本节点，则本节点会从远程节点获取内容，然后提供给消费者消费）`
+
+从该模式不难看出，普通集群可以让不同的繁忙队列从属于不同的节点，这样可以减轻单节点的压力，提升吞吐量，**但是普通集群不能保证队列的高可用性，因为一旦队列所在节点宕机直接导致该队列无法使用，只能等待重启**
+
 显然，对于大型分布式系统而言，这并不是一个高可用的解决方案，基于普通集群的架构之上RabbitMQ还为我们提供了另一种集群模式：**镜像集群（高可用）**
+
+**镜像的存在等于打包了一个一个的队列到镜像中，使所有的节点复制镜像到自己的环境中，拥有此队列的镜像相当于拥有了真正的队列**
+
+##### 集群架构图
+
+![image-20210124103556150](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/24/103557-384160.png)
+
+##### 集群搭建
+
+RabbitMQ高可用的镜像集群不需要额外编写代码，只需要在普通集群的架构上配置一下相应的策略即可
+
+策略说明
+
+```shell
+rabbitmqctl set_policy [-p vhost>] [--priority <priority>] [--apply-to <apply-to>] <name> <cpattern> <definition>
+
+-p Vhost:可选参数，针对指定vhost下的queue进行设置
+Name :policy的名称
+Pattern : queue的匹配模式(正则表达式)
+Definition:镜像定义，包括三个部分ha-mode，ha-params，ha-sync-mode
+	ha-mode:指明镜像队列的模式，有效值为all/exactly/nodes
+		all:表示在集群中所有的节点上进行镜像
+		exactly:表示在指定个数的节点上进行镜像，节点的个数由ha-params指定
+		nodes:表示在指定的节点上进行镜像，节点名称通过ha-params指定
+	ha-params: ha-mode模式需要用到的参数
+	ha-sync-mode:进行队列中消息的同步方式，有效值为automatic和manual
+	priority:可选参数, policy的优先级
+```
+
+###### 命令行模式
+
+需要先进入到docker容器中
+
+```shell
+docker exec -it <容器名 或 容器 id> bash 
+```
+
+```shell
+# 查看当前所有策略
+rabbitmqctl list_policies
+
+# 添加策略
+rabbitmqctl set_policy ha-all '>hello' '{"ha-mode" : "all","ha-sync-mode":"automatic"}'
+
+# 说明:
+# 1、'ha-all':策略名
+# 2、策略正则表达式为 ^ 表示所有匹配所有队列名称^hello:匹配hello开头队列
+# 3、定义
+	# 'ha-mode'
+		# all:表示所有的集群都进行镜像
+	# 'ha-sync-mode'
+		# atomatic:表示所有的队列中的消息自动同步		
+		
+# 移除策略
+rabbitmqctl clear_policy <name>
+
+# 命令行帮助
+rabbitmqctl --help
+```
+
+###### web界面模式
+
+![image-20210124111748922](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/24/111750-59997.png)
+
+![image-20210124112525084](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/24/112525-491661.png)
+
+##### Springboot整合
+
+详情见：https://blog.csdn.net/qq_45491757/article/details/105712530
 
 ### 系统架构图
 
