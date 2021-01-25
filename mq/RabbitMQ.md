@@ -1,5 +1,7 @@
 # RabbitMQ
 
+​																![ths rabbitmq version is](https://img.shields.io/badge/rabbitmq-v3.7.26-ff69b4?logo=rabbitmq)![the springboot version is](https://img.shields.io/badge/springboot-v2.3.4-blue?logo=spring)
+
 ## Introduction
 
 >   什么是MQ

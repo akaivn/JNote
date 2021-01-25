@@ -1,5 +1,7 @@
 # ElasticSearch
 
+​										![the ElasticSearch version is](https://img.shields.io/badge/ElasticSearch-v7.7.0-green?logo=elasticsearch)![](https://img.shields.io/badge/Kibana-v7.7.0-ff69b4?logo=Kibana)![](https://img.shields.io/badge/IK Analyzer-v7.7.0-red)![](https://img.shields.io/badge/sprinboot-v2.3.4-blue?logo=spring)
+
 ES简介不多说,Springboot高级有相关概述
 
 ## 1、Solr简介
