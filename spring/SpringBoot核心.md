@@ -1,6 +1,6 @@
 # 一、Spring Boot 入门
 
-![](https://img.shields.io/badge/Springboot-v2.2.1-blue?logo=spring)
+![Springboot](https://img.shields.io/badge/Springboot-v2.2.1-blue?logo=spring)
 
 ## 1、Spring Boot 简介
 

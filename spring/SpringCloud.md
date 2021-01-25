@@ -1,6 +1,8 @@
 # SpringCloud
 
-![](https://img.shields.io/badge/springboot-v2.3.4-blue?logo=spring)![](https://img.shields.io/badge/springcloud-v Hoxton.SR8-green?logo=spring)![](https://img.shields.io/badge/Zookeeper-v3.6.1-red?logo=zookeeper)![](https://img.shields.io/badge/Consul-v1.9.2-pink?logo=consul)![](https://img.shields.io/badge/Zipkin-v2.12.9-purple?logo=zipkin)![](https://img.shields.io/badge/Nacos server-v1.1.4-green?logo=nacos)![](https://img.shields.io/badge/Sentinel-v sentinel dashboard-yellow?logo=sentinel)![](https://img.shields.io/badge/Seata-v seata server-orange?logo=seata)
+​		![Springboot](https://img.shields.io/badge/Springboot-v2.3.4-blue?logo=spring)![SpringCloud](https://img.shields.io/badge/SpringCloud-v Hoxton.SR8-green?logo=spring)![Zookeeper](https://img.shields.io/badge/Zookeeper-v3.6.1-red?logo=zookeeper)![Consul](https://img.shields.io/badge/Consul-v1.9.2-pink?logo=consul)![Zipkin](https://img.shields.io/badge/Zipkin-v2.12.9-purple?logo=zipkin)![Nacos](https://img.shields.io/badge/Nacos server-v1.1.4-green?logo=nacos)![Sentinel](https://img.shields.io/badge/Sentinel-v sentinel dashboard-yellow?logo=sentinel)																
+
+![Seata](https://img.shields.io/badge/Seata-v seata server-orange?logo=seata)
 
 ## 简介
 

@@ -1,6 +1,6 @@
 # RabbitMQ
 
-​																![ths rabbitmq version is](https://img.shields.io/badge/rabbitmq-v3.7.26-ff69b4?logo=rabbitmq)![the springboot version is](https://img.shields.io/badge/springboot-v2.3.4-blue?logo=spring)
+​																![RabbitMQ](https://img.shields.io/badge/rabbitmq-v3.7.26-ff69b4?logo=rabbitmq)![Springboot](https://img.shields.io/badge/Springboot-v2.3.4-blue?logo=spring)
 
 ## Introduction
 
