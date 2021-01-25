@@ -20,12 +20,11 @@ https://img.shields.io/badge/技术名称-v此处为版本号-标签颜色?logo=
 
 在md文档中嵌入包含超链接的页面标签需要使用嵌入html代码的方式，例如
 
-<p style = "center">
+<p align = "center">
     <a target="_blank" href="https://docs.spring.io/spring-boot/docs/current/api/">
     	<img src = "https://img.shields.io/badge/Springboot-v2.3.4-blue?logo=spring" alt = "Springboot"/>
     </a>
 </p>
-
 
 shields标签网址：https://img.shields.io
 
