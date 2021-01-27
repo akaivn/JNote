@@ -13,7 +13,7 @@ https://img.shields.io/badge/技术名称-v此处为版本号-标签颜色?logo=
 
 ![This is the simple example](https://img.shields.io/badge/MacBook-v0.1.0-blue?logo=java) 
 
-以图片的形式插入，可嵌入网页和md文档。复杂页面标签可参照
+以图片的形式插入，可嵌入网页和md文档。复杂页面标签可参照以下官网，md文档插入连同超链接跳转请参考以下示例
 
 > 实例(包含超链接)
 
