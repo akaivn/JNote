@@ -1,6 +1,6 @@
 ## JUC并发编程
 
-![Java](https://img.shields.io/badge/Java-JDK1.8-red?logo=java)
+![Java](https://img.shields.io/badge/JDK-1.8-red?logo=java)
 
 ### 1、JUC简介
 
