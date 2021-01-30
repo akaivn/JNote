@@ -1,8 +1,9 @@
 # JVM
 
 <p align = "center">
-    <a href = “https://docs.oracle.com/javase/8/docs/api/index.html” target = "_blank"><img src= "https://img.shields.io/badge/Java-1.8-red?logo=java" alt=""/></a>
+    <a href = “https://docs.oracle.com/javase/8/docs/api/index.html” target = "_blank"><img src= "https://img.shields.io/badge/JDK-1.8-red?logo=java" alt=""/></a>
 </p>
+
 
 ## Introduction
 
@@ -70,9 +71,122 @@ Google：https://zh.wikipedia.org/wiki/Java%E8%99%9A%E6%8B%9F%E6%9C%BA
 
 Java不同于c、c++、c#的最大原因就是Java拥有自动的回收和管理内存的机制，因此阿里巴巴Java开发手册也名言道：任何Java程序都不允许显示的调用 `System.GC()` 来手动回收内存
 
+### 跨平台
 
+Java是一门跨平台的语言，而Java所依托的虚拟机JVM是 `一个跨语言的平台`，如下图
 
+![image-20210129110407755](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/29/110409-322095.png)
 
+如图中所示，任何语言都可以把自己的**API、一系列的高级语言**最终都编译为遵循JVM虚拟机规范的 `字节码文件` ，在下文我们同称为 **JVM字节码文件**，依托JVM即可以执行任何高级语言的API
+
+JVM不只是可以单单的运行 Java字节码
+
+### 虚拟机
+
+先今，有三大非常有名的JVM虚拟机，分别为 `Hotspot`、`JRockit`、`IBM J9`
+
+目前我们使用的最多的还是 Hotspot VM + JRockit 的整合(同属Oracle)，过多关于Hotspot VM的介绍可自行百度
+
+查看当前安装的VM，可执行
+
+```shell
+$ java -version
+
+java version "1.8.0_271"
+Java(TM) SE Runtime Environment (build 1.8.0_271-b09)
+Java HotSpot(TM) 64-Bit Server VM (build 25.271-b09, mixed mode)
+```
+
+### 整体结构
+
+![image-20210129111816585](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/29/111817-451089.png)
+
+### 执行流程
+
+![image-20210129112105198](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/30/101039-435987.png)
+
+这里需要注意的是：在JVM中，JIT负责编译和缓存需要循环执行的字节码，翻译字节码和JIT编译器同时存在，分工不同，提升效率
+
+### 编译器架构
+
+Java编译器输入的指令流基本上是一种基于**栈的指令集**架构，另外一种指令集架构则是基于**寄存器的指令集**架构。
+
+#### 特点和区别
+
+具体来说:这两种架构之间的区别:
+
+- 基于栈式架构的特点
+  - 设计和实现更简单，适用于资源受限的系统
+  - 避开了寄存器的分配难题:使用零地址指令方式分配
+  - 指令流中的指令大部分是零地址指令，其执行过程依赖于操作栈。指令集更小，编译器容易实现
+  - 不需要硬件支持，可移植性更好，更好实现跨平台·基于寄存器架构的特点
+- 基于寄存器的指令集架构的特点
+  - 典型的应用是x86的二进制指令集:比如传统的Pc以及Android的Davlik虚拟机
+  - 指令集架构则完全依赖硬件，可移植性差
+  - 性能优秀和执行更高效
+  - 花费更少的指令去完成一项操作
+  - 在大部分情况下，基于寄存器架构的指令集往往都以一地址指令、二地址指令和三地址指令为主，而基于栈式架构的指令集却是以零地址指令为主
+
+#### 栈实例
+
+接下来我们来使用一个实例看看编译的步骤
+
+```java
+public class StackStruTest {
+    public static void main(String[] args) {
+        int i = 3;
+        int j = 4;
+        int k = i + j ;
+    }
+}
+```
+
+以上代码运行后的栈保存在.class字节码中，进入到字节码文件目录内，使用如下命令反编译字节码
+
+```shell
+$ javap -v StackStruTest.class
+```
+
+反编译后得到如下栈执行流程
+
+```shell
+ Code:
+      stack=2, locals=4, args_size=1
+         0: iconst_3 # 把第一个常量放到索引1的位置
+         1: istore_1
+         2: iconst_4 # 把第二个常量放到索引2的位置
+         3: istore_2
+         4: iload_1 # 分别加载过来
+         5: iload_2
+         6: iadd # Add
+         7: istore_3 # 相加的结果存入索引3
+         8: return
+```
+
+### JVM声明周期
+
+JVM的声明周期为三个阶段分别为：启动、执行、退出
+
+#### 启动
+
+Java虚拟机的启动是通过引导类加载器(**bootstrap class loader**)创建一个初始类(**initial class**)来完成的，这个类是由虚拟机的具体实现指定的
+
+#### 执行
+
+- 一个运行中的Java虚拟机有着一个清晰的任务:执行Java程序。
+
+- 程序开始执行时他才运行，程序结束时他就停止。
+- **执行一个所谓的Java程序的时候，真真正正在执行的是一个叫做Java虚拟机的进程**
+
+#### 退出
+
+有如下的几种情况会导致JVM退出:
+
+- 程序正常执行结束
+- 程序在执行过程中遇到了异常或错误而异常终止
+- 由于操作系统出现错误而导致Java虚拟机进程终止
+- 某线程调用Runtime类或system类的exit方法，或 Runtime类的halt方法，并且Java安全管理器也允许这次exit或halt操作
+- 除此之外，JNI (Java Native Interface)规范描述了用JNIInvocation API来加载或卸载Java虚拟机时，Java虚拟机的退出情况
 
 ## RAM And GC
 
