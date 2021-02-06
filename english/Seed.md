@@ -1,4 +1,27 @@
 `据说：每个单词只要在15个不同的场合见过、读过、记忆过，就会变成深度记忆，永远停留在你的脑海中！`
+
+#### 英语十大词性
+
+n. noun：名词
+
+pron. pronoun：代词
+
+v. verb：动词
+
+num. number：数词
+
+adj. adjective：形容词
+
+adv. adverb：副词
+
+prep. preposition：介词
+
+art. article：冠词
+
+conj. conjunction：连词
+
+int. interjection：感叹词
+
 #### 2021/2/5
 
 enjoyment：n. 享受、乐趣
@@ -30,3 +53,35 @@ doom：n. 厄运、判定
 volcanic：adj. 火山的、猛烈的
 
 forum：n. 论坛、法庭
+
+#### 2021/2/6
+
+set：n. 一套、一副
+
+healthful：adj. 健康的
+
+catton：n. 棉花
+
+experience：n. 经验
+
+misunderstanding：n. 误解、误会
+
+comfort：n. 安慰
+
+extraordinary：adj. 非同寻常的
+
+adulthood：n. 成人、成人期
+
+location：n. 位置
+
+automatic：adj. 自动的
+
+designer：n. 设计师
+
+system：n. 系统
+
+goverment：n. 政府
+
+opinion：n. 意见
+
+whether：conj. 是否
