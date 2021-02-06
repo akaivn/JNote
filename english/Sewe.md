@@ -1,8 +1,8 @@
-# Sewe(Study English Word Everyday)
+### Sewe(Study English Word Everyday)
 
 `据说：每个单词只要在15个不同的场合见过、读过、记忆过，就会变成深度记忆，永远停留在你的脑海中！`
 
-## 英语十大词性
+#### 英语十大词性
 
 n. noun：名词
 
@@ -24,7 +24,7 @@ conj. conjunction：连词
 
 int. interjection：感叹词
 
-## 2021/2/5
+#### 2021/2/5
 
 enjoyment：n. 享受、乐趣
 
@@ -56,7 +56,7 @@ volcanic：adj. 火山的、猛烈的
 
 forum：n. 论坛、法庭
 
-## 2021/2/6
+#### 2021/2/6
 
 set：n. 一套、一副
 
