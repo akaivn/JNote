@@ -87,3 +87,35 @@ goverment：n. 政府
 opinion：n. 意见
 
 whether：conj. 是否
+
+#### 2021/2/7
+
+platform：n. 平台、站台
+
+speaker：n. 说话人、演讲人
+
+awareness：n. 意识、明白、知道
+
+shed：v. 流出（眼泪）、蜕皮、脱落
+
+acquire：v. （尤值靠自己努力、行动）
+
+bridge：n. 桥、桥梁
+
+geographic：adj. 地理学的、地理的
+
+reform：v. 改革、创新、改良、改进
+
+fluency：n. 流畅、流利
+
+mean：n. 平均值、中庸 v.表示
+
+deficit：n. 亏损、赤字
+
+sudden：adj. 突然的、意外的
+
+optimistic：adj. 乐观的、乐观主义的
+
+shadow：n. 阴影、影子 v. 把影子投在...
+
+harsh：adj. 严厉的、刺耳的
