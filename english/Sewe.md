@@ -119,3 +119,35 @@ optimistic：adj. 乐观的、乐观主义的
 shadow：n. 阴影、影子 v. 把影子投在...
 
 harsh：adj. 严厉的、刺耳的
+
+#### 2021/2/8
+
+generate：v. 产生、引起
+
+brown：n. 棕色、褐色
+
+keep：v. 保持、保留
+
+impulsive：adj. 冲动的
+
+researcher：n. 研究员
+
+pilot：n. 飞行员、领航员; adj. 实验性的; v. 给...领航、驾驶
+
+feel：v. 感觉到、触、摸
+
+victim：n. 受害者、牺牲品、祭品
+
+envolution：n. 进化、演变
+
+union：n. 联合、工会
+
+course：n. 发展、课程
+
+glory：n. 光荣、荣誉、赞颂
+
+enemy：n. 敌人、敌国
+
+spary：n. 浪花、喷雾
+
+waste：n. 废物、浪费
