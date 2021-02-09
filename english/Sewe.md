@@ -151,3 +151,36 @@ enemy：n. 敌人、敌国
 spary：n. 浪花、喷雾
 
 waste：n. 废物、浪费
+
+#### 2021/2/9
+
+horizon：n. 地平线、眼界
+
+reliable：adj. 可靠的、可信赖的
+
+appointment：n. 预约、委派
+
+purchase：v. 购买 n.所购之物
+
+exhaust：vt. 使筋疲力尽、耗尽
+
+oridinary：adj. 普通的、平常的
+
+submit：v. 提交、屈服
+
+secondary：adj. 第二的、次要的
+
+diary：n. 日记
+
+stamp：n. 印、章、邮票
+
+capacity：n. 产能、容量
+
+garage：n. 车库、修车厂
+
+useless：adj. 无用的、无价值的
+
+counter：n. 柜台、回击
+
+abmitious：adj. 有抱负的
+

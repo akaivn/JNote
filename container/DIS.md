@@ -229,6 +229,42 @@ code: kate
 http://ip
 ```
 
+#### Jenkins
+
+##### 1、拉取镜像
+
+```shell
+docker pull jenkins/jenkins
+```
+
+##### 2、运行命令
+
+```shell
+docker run -u root -d -p 50000:50000 -p 56354:8080 --name jenkins -v /data/jenkins:/var/jenkins_home [镜像id]
+```
+
+##### 3、访问
+
+```http
+http://ip:56354
+```
+
+##### 4、账号/密码 (默认)
+
+```shell
+跟随指引
+可从挂载文件 /data/jenkins/secrets/initialAdminPassword 处查看
+或
+docker logs -f [容器id | 容器名]
+```
+
+##### 5、是否创建用户
+
+```txt
+如果使用 admin 账户继续、此后账户密码为 admin/默认生成密码
+否则，创建用户需自己牢记密码和分配对应的权限
+```
+
 #### RabbitMQ
 
 ##### 1、拉取镜像
