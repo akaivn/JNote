@@ -184,3 +184,34 @@ counter：n. 柜台、回击
 
 abmitious：adj. 有抱负的
 
+#### 2021/2/10
+
+ceremony: n. 典礼
+
+confront: vt. 与...对峙
+
+desire: n. 渴望、欲望
+
+region: n. 地区、地域
+
+regulation: n. 法则、规章
+
+indoor: adj. 室内的
+
+fruitful: adj. 硕果累累的
+
+create: v. 创造、产生
+
+concentration: n. 聚集、专注
+
+object: n. 物体、宾语
+
+selfish: adj. 自私的
+
+salary: n. 工资
+
+throughout: prep. 在...期间
+
+cage: n. 笼、鸟笼
+
+costly: adj. 昂贵的、代价高的
