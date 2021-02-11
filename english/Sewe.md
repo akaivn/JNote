@@ -215,3 +215,36 @@ throughout: prep. 在...期间
 cage: n. 笼、鸟笼
 
 costly: adj. 昂贵的、代价高的
+
+#### 2021/2/11
+
+relation：n. 家属、亲属
+
+repersentative：n. 代理、代表 adj. 典型的
+
+inferior：adj. (地位、等级)低等的
+
+delay：v. 推迟、磨蹭
+
+customer：n. 顾客
+
+additional：adj. 增加的、附加的
+
+religion：n. 宗教、宗教信仰
+
+immune：adj. 免疫的、有免疫力的
+
+suburb：n.郊区
+
+mad：adj. 异常狂暴的、蠢笨的
+
+influential：adj. 有影响力的
+
+visual：adj. 看的、视觉的
+
+glimpse：n. 一瞥 v. 一瞥
+
+purple：n. 紫色
+
+painting：n. 绘画、画作
+

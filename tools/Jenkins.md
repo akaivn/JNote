@@ -1,8 +1,14 @@
 # Jenkins
 
 <p align = "center">
-    <a href="https://www.jenkins.io/" target="_Blank"><img src="https://img.shields.io/badge/Jenkins-2.263.3 LTS-orange?logo=Jenkins" alt="Jenkins"/></a>
+    <a href="https://www.jenkins.io/" target="_Blank"><img src="https://img.shields.io/badge/Jenkins-v2.263.3 LTS-orange?logo=Jenkins" alt="Jenkins"/></a>
+    <a href="https://maven.apache.org/" target="_Blank"><img src="https://img.shields.io/badge/Maven-v3.3.6-yellow?logo=Apache Maven" alt="Apache Maven"/></a>
+    <a href="https://git-scm.com/" target="_Blank"><img src="https://img.shields.io/badge/Git-v2.29.0-pink?logo=Git" alt="Git"/></a>
+    <a href="https://tomcat.apache.org/" target="_Blank"><img src="https://img.shields.io/badge/Tomcat-v9.0.39-purple?logo=Apache Tomcat" alt="Apache Tomcat"/></a>
+    <a href="https://www.docker.com/" target="_Blank"><img src="https://img.shields.io/badge/Docker-v1.13.1-green?logo=Docker" alt="Docker"/></a>
+    <a href="https://www.spring.io/" target="_Blank"><img src="https://img.shields.io/badge/Springboot-v2.3.4-blue?logo=spring" alt="spring"/></a>
 </p>
+
 
 ## Introduction
 
@@ -122,5 +128,69 @@ Windows系统的文件路径可能为 `C:/Users/用户名/.jenkins/secrets/initi
 
 如果不创建用户，选择使用 admin 方式继续访问，那么 密码和账号被默认更改为 `admin/默认生成密码` 可访问 **admin->settings->password** 修改密码
 
-### 使用Maven构建程序
+### Maven(web)
+
+#### 前提说明
+
+- 本节重要介绍基于`maven web`项目的自动化部署
+- 本节介绍适用于所有`Linux`系统的`Java`程序，如果使用的是Windows,那么以下脚本处位置，需要更换为`Windows`脚本
+- 本节所用技术为：`Maven(web)+Git+GitHub+Tomcat+Jenkins`
+- 版本管理可依据文档头部描述
+
+#### 环境准备
+
+- Maven web项目的创建，并推送到Github指定仓库
+- Jenkins的安装完成
+
+#### 开始构建
+
+以下步骤全部使用截图说明，需要额外说明时才会使用文字标注
+
+- 启动Jenkins
+
+来到初始页面
+
+配置Jenkins全局设置
+
+![image-20210210180552955](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/180602-558343.png)
+
+![image-20210210180836567](C:\Users\chengjuan\AppData\Roaming\Typora\typora-user-images\image-20210210180836567.png)
+
+> Maven
+
+![image-20210210181208623](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181209-336763.png)
+
+![image-20210210180933575](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/180934-809089.png)
+
+> JDK
+
+![image-20210210181025868](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181027-959909.png)
+
+> Git
+
+![image-20210210181056317](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181056-536674.png)
+
+返回主目录，点击创建工程
+
+![image-20210210175729166](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/175730-787820.png)
+
+![a](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/180308-694829.png)
+
+来到如下界面
+
+![image-20210210181337511](C:\Users\chengjuan\AppData\Roaming\Typora\typora-user-images\image-20210210181337511.png)
+
+配置Git源码管理
+
+![image-20210210181720215](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181720-408644.png)
+
+需要添加GitHub账户和密码，如下
+
+![image-20210210181908492](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181908-638352.png)
+
+![image-20210210182327329](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/182328-458505.png)
+
+Linux就执行shell脚本，windows就执行批处理命令
+
+这里拿Linux作为演示，选择执行shell脚本后，在文本框中输入脚本
 

@@ -31,3 +31,11 @@ shields标签网址：https://img.shields.io
 
 ![Page Views Count](https://badges.toozhao.com/badges/01ETFADJ4NJFQTMEJ7DBVXXEPY/green.svg) 
 
+### 特别声明
+
+本笔记是个人及小伙伴汇编的学习笔记，感谢内部所涉及到的所有三方链接，如有侵权行为，请联系我删除！
+
+### 联系方式
+
+![QQ](https://img.shields.io/badge/QQ-2895110093-orange) ![Wechat](https://img.shields.io/badge/Wechat-T2895110093-pink) ![Twitter](https://img.shields.io/badge/Twitter-2895110093@qq.com-purple?logo=Twitter) ![Facebook](https://img.shields.io/badge/Facebook-2895110093@qq.com-purple?logo=Facebook)
+
