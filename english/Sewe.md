@@ -248,3 +248,34 @@ purple：n. 紫色
 
 painting：n. 绘画、画作
 
+#### 2021/2/12
+
+token：n. 代金券、象征
+
+moltiply：v. 乘、繁殖、增加
+
+prevail：v. 流行的
+
+mysterious：adj. 神秘的
+
+deny：vt. 否认
+
+quote：v. 报价 n. 引用
+
+undertake：v. 保证、承包、承担
+
+resistant：adj. 有抵抗力的
+
+measure：vt. 测量
+
+capture：vt. 抓捕、捕获
+
+absort：vt. 吸收、汲取
+
+focus：n. 焦点、焦距
+
+propose：vt. 提议 vi. 求婚
+
+ban：n. 禁令、禁止
+
+recial：adj. 种族的、人种的
