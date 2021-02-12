@@ -9,7 +9,7 @@ This directory on my GitHub is my daily study notes
 https://img.shields.io/badge/技术名称-v此处为版本号-标签颜色?logo=所对应的技术logo
 ```
 
-> 实例(不含超链接)
+> 示例(不含超链接)
 
 ![This is the simple example](https://img.shields.io/badge/MacBook-v0.1.0-blue?logo=java) 
 
