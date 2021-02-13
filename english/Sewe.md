@@ -279,3 +279,36 @@ propose：vt. 提议 vi. 求婚
 ban：n. 禁令、禁止
 
 recial：adj. 种族的、人种的
+
+#### 2021/2/13
+
+bias：n. 倾斜、偏心、偏见、偏爱
+
+claim：v. 断言、声称
+
+sense：n. 感官、感觉
+
+determined：adj. 有决心的
+
+principle：n. 原则
+
+margin：n. 页面空白的、边缘
+
+possible：adj. 可能的
+
+instruction：n. 说明、指令
+
+outward：adj. 外面的
+
+temporary：adj. 暂时的
+
+means：n. 方法
+
+supervision：n. 监管、监督
+
+ratio：n. 比例、比率
+
+massive：adj. 巨大的
+
+among：prep. 在...之中、在...中间
+
