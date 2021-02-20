@@ -39,7 +39,7 @@ shields标签网址：https://img.shields.io
 
 ![QQ](https://img.shields.io/badge/QQ-2895110093-orange) ![Wechat](https://img.shields.io/badge/Wechat-T2895110093-pink) ![Twitter](https://img.shields.io/badge/Twitter-2895110093@qq.com-purple?logo=Twitter) ![Facebook](https://img.shields.io/badge/Facebook-2895110093@qq.com-purple?logo=Facebook)
 
-### 支持
+### 浏览器支持(模板)
 <table>
 <thead>
 <tr>
