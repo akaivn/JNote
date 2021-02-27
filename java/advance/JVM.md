@@ -5,7 +5,7 @@
 </p>
 
 
-## Introduction
+## 简介
 
 ### 前言
 
@@ -188,23 +188,25 @@ Java虚拟机的启动是通过引导类加载器(**bootstrap class loader**)创
 - 某线程调用Runtime类或system类的exit方法，或 Runtime类的halt方法，并且Java安全管理器也允许这次exit或halt操作
 - 除此之外，JNI (Java Native Interface)规范描述了用JNIInvocation API来加载或卸载Java虚拟机时，Java虚拟机的退出情况
 
-## RAM And GC
+## 内存与垃圾回收
 
-### 内存结构概述
+### 类加载器
 
-#### 类加载简图
+#### 内存结构概述
+
+##### 类加载简图
 
 ![image-20210221160816625](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/21/160817-496526.png)
 
 
 
-#### 类加载详细图
+##### 类加载详细图
 
 ![classloader](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/21/160944-621831.png)
 
-### 类的加载及类的加载过程
+#### 类的加载及类的加载过程
 
-#### 类加载器的作用
+##### 类加载器的作用
 
 ![image-20210221161631796](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/21/161632-34956.png)
 
@@ -220,9 +222,9 @@ Java虚拟机的启动是通过引导类加载器(**bootstrap class loader**)创
 
 ![image-20210221162802691](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/21/162802-527241.png)
 
-#### 类加载阶段
+##### 类加载阶段
 
-##### 第一阶段 Loading
+###### 第一阶段 Loading
 
 ![image-20210221162932313](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/21/162933-87990.png)
 
@@ -242,7 +244,7 @@ Java虚拟机的启动是通过引导类加载器(**bootstrap class loader**)创
 - 从专有数据库中提取.class文件，比较少见
 - 从加密文件中获取，典型的防class文件被反编译的保护措施
 
-##### 第二阶段 Linking
+###### 第二阶段 Linking
 
 类加载器进入第二阶段为 **链接** 该阶段主要为以下三个步骤
 
@@ -282,7 +284,7 @@ public class Hello{
 
 ![image-20210221164633688](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/21/164634-318975.png)
 
-##### 第三阶段 Initialization
+###### 第三阶段 Initialization
 
 第三阶段为初始化
 
@@ -435,7 +437,7 @@ class ByClassLoad {
 线程1结束了
 ```
 
-#### 类加载器分类
+##### 类加载器分类
 
 JVM支持两种类型的类加载器，分别为**引导类加载器（BootstrapClassLoader）和自定义类加载器User-Defined ClassLoader)**
 
@@ -483,7 +485,7 @@ public class ClassLoaderTest {
 
 **我们无法获取最顶级的BootstrapClassLoader，第一是因为不予许我们随意访问，第二是因为它是底层的类加载器，使用c、c++编写**
 
-##### Bootstrap ClassLoader
+###### Bootstrap ClassLoader
 
 启动类加载器
 
@@ -494,7 +496,7 @@ public class ClassLoaderTest {
 - 加载扩展类和应用程序类加载器，并指定为他们的父类加载器
 - 出于安全考虑，Bootstrap启动类加载器只加载包名为java、javax、sun等开头的类
 
-##### Extension ClassLoader
+###### Extension ClassLoader
 
 扩展类加载器
 
@@ -503,7 +505,7 @@ public class ClassLoaderTest {
 - 父类加载器为启动类加载器
 - 从java.ext.dirs系统属性所指定的目录中加载类库，或从JDK的安装目录的jre/lib/ext子目录（扩展目录)下加载类库。**如果用户创建的JAR放在此目录下，也会自动由扩展类加载器加载**
 
-##### App ClassLoader
+###### App ClassLoader
 
 系统类加载器
 
@@ -514,7 +516,7 @@ public class ClassLoaderTest {
 - 该类加载是程序中默认的类加载器，一般来说Java应用的类都是由它来完成加载
 - 通过classLoader#getsystemclassLoader ()方法可以获取到该类加载器
 
-#### 用户自定义类加载器
+##### 用户自定义类加载器
 
 在Java的日常应用程序开发中，类的加载几乎是由上述3种类加载器相互配合执行的，在必要时，我们还可以自定义类加载器，来定制类的加载方式
 
@@ -531,7 +533,7 @@ public class ClassLoaderTest {
 - 在JDK1.2之前,在自定义类加载器时，总会去继承classLoader类并重写loadclass ()方法，从而实现自定义的类加载类，但是在JDK1.2之后已不再建议用户去覆盖loadclass ()方法，而是建议把自定义的类加载逻辑写在findclass ()方法中
 - 在编写自定义类加载器时，如果没有太过于复杂的需求，可以直接继承URLClassLoader类，这样就可以避免自己去编写findclass ()方法及其获取字节码流的方式，使自定义类加载器编写更加简洁
 
-#### ClassLoader
+##### ClassLoader
 
 ClassLoader类，它是一个抽象类，其后所有的类加载器都继承自classLoader(不包括启动类加载器)
 
@@ -559,18 +561,178 @@ public static void main(String[] args) {
 }
 ```
 
-#### 双亲委派
+##### 双亲委派
 
+> 什么是 `双亲委派` 
 
+Java虚拟机对class文件采用的是按需加载的方式，也就是说当需要使用该类时才会将它的class文件加载到内存生成class对象。而且加载某个类的class文件时，Java虚拟机采用的是双亲委涨模式，即`把请求交由父类处理`，它是一种任务委派模式
 
-## ByteCode And ClassLoader
+> 工作原理
 
+如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行
 
+如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器
 
+如果父类加载器可以完成类加载任务，就成功返回，**倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载**，这就是双亲委派模式
 
+![image-20210227143114239](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/27/143115-380021.png)
 
-## PerformenceMonitor And Optimize
+我们来举一个栗子：
 
+在idea的 **java** 包下新建 全限定类型为 `java.lang.String` 类
 
+有如下代码：
 
-## Interview
+```java
+public class String {
+    
+    static {
+        System.out.println("自定义String对象");
+    }
+    
+}
+```
+
+在另一个类中我们尝试加载它：
+
+```java
+public class Customer {
+
+    public static void main(String[] args) {
+        String str = new String();
+        System.out.println(str);
+    }
+}
+```
+
+如果加载成功，应该会出现 static 代码块中的打印语句，但是根据双亲委派机制，首先：又应用类加载器向上委托，交给扩展类加载器，扩展类加载器再次向上委托，交给启动类加载器，启动类加载器一看在自己加载的范围内有String 类，所有，就会加载原系统的String对象，而不会加载自定义的String类
+
+接下来我们还想尝试，使用自定义String类来运行main方法，看能不能执行？
+
+```java
+public class String {
+
+    static {
+        System.out.println("自定义String对象!");
+    }
+
+    public static void main(String[] args) {
+        System.out.println("原系统String对象是没有main方法的！");
+    }
+
+}
+```
+
+运行后为：
+
+![image-20210227144314372](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/27/144314-325916.png)
+
+**由此便证明了根本不是由我们的系统类加载器来加载的自定义String类**
+
+例二：
+
+我们在java.lang包下去加一个定义的类 ShkStart 看是否能够正常执行
+
+```java
+public class ShkStart {
+    public static void main(String[] args) {}
+}
+```
+
+执行结果如下：
+
+![image-20210227145541390](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/27/145543-247820.png)
+
+我们自定义类时，java.lang包是由引导类加载器加载的，我们在这个包下新建自定义类引导类加载器是无法识别的，因此就会报错，这也就是为什么我们自定义的包名不能是java已有的由非应用类加载器加载的包名
+
+> 双亲委派有什么优势？
+
+1. 避免类的重复加载
+2. 保护程序安全，防止核心API被随意篡改
+   - 自定义类：自定义 `java.lang.String` 没有被加载。
+   - 自定义类：`java.lang.ShkStart`（报错：阻止创建 `java.lang` 开头的类）
+
+> 沙箱安全机制概念
+
+什么是沙箱？
+
+docker有沙箱机制，360的安全运行有沙箱机制，什么是沙箱呢？
+
+沙箱是指单独的独立出一份空间，在里面运行程序或做其他操作出现问题时都无法影响和干扰外部的环境，沙箱是独立的
+
+1. 自定义String类时：在加载自定义String类的时候会率先使用引导类加载器加载，而引导类加载器在加载的过程中会先加载`jdk`自带的文件（rt.jar包中`java.lang.String.class`），报错信息说没有main方法，就是因为加载的是rt.jar包中的String类
+2. 这样可以保证对java核心源代码的保护
+
+> 如何判断两个Class对象完全相同
+
+在JVM中表示两个class对象是否为同一个类存在两个必要条件：
+
+1. 类的全限定类名必须一致
+2. **加载这个类的ClassLoader（指ClassLoader实例对象）必须相同** 换句话说，在JVM中，即使这两个类对象（class对象）来源同一个Class文件，被同一个虚拟机所加载，但只要加载它们的ClassLoader实例对象不同，那么这两个类对象也是不相等的
+
+> 对类加载器的引用
+
+1. JVM必须知道一个类型是由启动加载器加载的还是由用户类加载器加载的
+2. **如果一个类型是由用户类加载器加载的，那么JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中**
+3. 当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的（后面讲）
+
+### 运行时数据区
+
+#### 运行时数据区结构
+
+> 此章把运行时数据区里比较少的地方讲一下。虚拟机栈，堆，方法区这些地方后续再讲
+
+本节所讲的是运行时数据区，它是在类完成加载后执行的阶段
+
+![image-20210227152635256](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/27/152636-769687.png)
+
+当我们通过前面的：类的加载 --> 验证 --> 准备 --> 解析 --> 初始化，这几个阶段完成后，就会用到执行引擎对我们的类进行使用，同时执行引擎将会使用到我们运行时数据区
+
+![img](https://cdn.jsdelivr.net/gh/youthlql/lql_img/JVM/chapter_003/0002.png)
+
+##### 运行时数据区与内存
+
+也就是准备执行引擎执行时的一些数据
+
+1. 内存是非常重要的系统资源，是硬盘和CPU的中间仓库及桥梁，承载着操作系统和应用程序的实时运行。JVM内存布局规定了Java在运行过程中内存申请、分配、管理的策略，保证了JVM的高效稳定运行。**不同的JVM对于内存的划分方式和管理机制存在着部分差异**。结合JVM虚拟机规范，来探讨一下经典的JVM内存布局。
+2. 我们通过磁盘或者网络IO得到的数据，都需要先加载到内存中，然后CPU从内存中获取数据进行读取，也就是说内存充当了CPU和磁盘之间的桥梁
+
+![img](https://cdn.jsdelivr.net/gh/youthlql/lql_img/JVM/chapter_003/0004.jpg)
+
+上图的元数据区是JDK8之后的规范，原来这里叫做 `Method Area` 方法区，同时JDK8之后，出现的 `Code Cache` （代码缓存）也属于**非堆空间**
+
+##### 线程的内存空间
+
+1. Java虚拟机定义了若干种程序运行期间会使用到的运行时数据区：其中有一些会随着虚拟机启动而创建，随着虚拟机退出而销毁。另外一些则是与线程一一对应的，这些与线程对应的数据区域会随着线程开始和结束而创建和销毁
+2. 灰色的为单独线程私有的，红色的为多个线程共享的。即：
+   - 线程独有：独立包括程序计数器、栈、本地方法栈
+   - 线程间共享：堆、堆外内存（永久代或元空间、代码缓存）
+
+![img](https://cdn.jsdelivr.net/gh/youthlql/lql_img/JVM/chapter_003/0005.png)
+
+##### Runtime
+
+**每个JVM只有一个Runtime实例**。即为运行时环境，相当于内存结构的中间的那个框框：运行时环境
+
+#### 线程
+
+##### JVM 线程
+
+1. 线程是一个程序里的运行单元。JVM允许一个应用有多个线程并行的执行
+2. 在Hotspot JVM里，每个线程都与操作系统的本地线程直接映射
+   - 当一个Java线程准备好执行以后，此时一个操作系统的本地线程也同时创建。Java线程执行终止后，本地线程也会回收
+3. 操作系统负责将线程安排调度到任何一个可用的CPU上。一旦本地线程初始化成功，它就会调用Java线程中的run()方法
+
+##### JVM系统线程
+
+- 如果你使用`jconsole`或者是任何一个调试工具，都能看到在后台有许多线程在运行。这些后台线程不包括调用`public static void main(String[])`的main线程以及所有这个main线程自己创建的线程
+- 这些主要的后台系统线程在Hotspot JVM里主要是以下几个：
+
+1. **虚拟机线程**：这种线程的操作是需要JVM达到安全点才会出现。这些操作必须在不同的线程中发生的原因是他们都需要JVM达到安全点，这样堆才不会变化。这种线程的执行类型括"stop-the-world"的垃圾收集，线程栈收集，线程挂起以及偏向锁撤销
+2. **周期任务线程**：这种线程是时间周期事件的体现（比如中断），他们一般用于周期性操作的调度执行
+3. **GC线程**：这种线程对在JVM里不同种类的垃圾收集行为提供了支持
+4. **编译线程**：这种线程在运行时会将字节码编译成到本地代码
+5. **信号调度线程**：这种线程接收信号并发送给JVM，在它内部通过调用适当的方法进行处理
+
+#### PC寄存器
+
