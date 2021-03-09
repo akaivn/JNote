@@ -79,9 +79,9 @@ Docker version 1.12.6, build 3e8e77d/1.12.6
 ##### 5、开机启动
 
 ```shell
-systemctl enable docker
-
-Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service
+$ systemctl enable docker
+# 提示如下
+# Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service
 ```
 
 ##### 6、配置阿里云镜像仓库
@@ -125,7 +125,7 @@ docker pull mysql
 ##### 2、运行命令
 
 ```shell
-docker run -p 3306:3306 --name mysqltcl -e MYSQL_ROOT_PASSWORD=kate -d mysql:[tag] --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=kate -d mysql:[tag] --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 ```
 
 ##### 3、是否挂载
@@ -151,7 +151,7 @@ docker pull redis:5.0
 ##### 2、运行命令
 
 ```shell
-docker run -d -p 6379:6379 --name redistcl -v /data/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf -v /data/redis/data:/data redis:5.0 redis-server /usr/local/etc/redis/redis.con --appendonly yes
+docker run -d -p 6379:6379 --name redis -v /data/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf -v /data/redis/data:/data redis:5.0 --appendonly yes
 ```
 
 ##### 3、与内置客户端容器交互
@@ -184,7 +184,7 @@ docker pull tomcat:9.0
 ##### 2、运行命令
 
 ```shell
-docker run -d --name tomcattcl -p 8080:8080 -v /data/tomcat/webapps:/usr/local/tomcat/webapps 镜像名:[Tag]
+docker run -d --name tomcat -p 8080:8080 -v /data/tomcat/webapps:/usr/local/tomcat/webapps 镜像名:[Tag]
 ```
 
 *到tomcat8以后，通过浏览器访问默认为8080页面，因为tomcat的文件夹的webapps文件夹里没有任何文件，它默认的测试文件在webapps.dist下*
@@ -213,7 +213,7 @@ docker pull nginx
 ##### 2、运行命令
 
 ```shell
-docker run -d -p 80:80 --name nginxtcl -v /data/nginx/conf:/etc/nginx/conf -v /data/nginx/nginx.conf:/etc/nginx/nginx.conf nginx
+docker run -d -p 80:80 --name nginx -v /data/nginx/conf:/etc/nginx/conf -v /data/nginx/nginx.conf:/etc/nginx/nginx.conf nginx
 ```
 
 ##### 3、是否挂载
@@ -276,7 +276,7 @@ docker pull rabbitmq:3.7.26-management
 ##### 2、运行命令
 
 ```shell
-docker run -d -p 5672:5672 -p 15672:15672 --name rabbitmqtcl 镜像id
+docker run -d -p 5672:5672 -p 15672:15672 --name rabbitmq 镜像id
 ```
 
 ##### 3、访问
@@ -306,7 +306,7 @@ docker pull elasticsearch:7.7.0
 开放两个端口 默认为9200  9300为分布式的开放端口
 
 ```shell
-docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -e "discovery.type=single-node" -p 9200:9200 -p 9300:9300 --name elasticsearchtcl elasticsearch:7.7.0
+docker run -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -e "discovery.type=single-node" -p 9200:9200 -p 9300:9300 --name elasticsearch elasticsearch:7.7.0
 ```
 
 #### Kibanna
@@ -320,7 +320,7 @@ docker pull kibana:7.7.0
 ##### 2、运行镜像产生容器
 
 ```shell
-docker run --name kibanatcl -e ELASTICSEARCH_HOSTS=http://ip:9200 -p 5601:5601 -d kibana:7.7.0
+docker run --name kibana -e ELASTICSEARCH_HOSTS=http://ip:9200 -p 5601:5601 -d kibana:7.7.0
 ```
 
 ##### 3、访问
@@ -342,7 +342,7 @@ docker pull portainer/portainer
 ##### 2、运行命令
 
 ```shell
-docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock --name prtainertcl  portainer/portainer
+docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock --name prtainer  portainer/portainer
 ```
 
 ##### 3、访问
@@ -366,7 +366,7 @@ docker pull openzipkin/zipkin
 ##### 2、运行镜像
 
 ```shell
-docker run -d -p 9411:9411 --name zipkintcl openzipkin/zipkin 
+docker run -d -p 9411:9411 --name zipkin openzipkin/zipkin 
 ```
 
 ##### 3、访问
@@ -386,19 +386,19 @@ docker pull delron/fastdfs
 ##### 2、启动tracker，挂载文件
 
 ```shell
-docker run -d --network=host --privileged=true --name trackertcl -v /data/tracker:/var/fdfs docker.io/delron/fastdfs tracker
+docker run -d --network=host --privileged=true --name tracker -v /data/tracker:/var/fdfs docker.io/delron/fastdfs tracker
 ```
 
 ##### 3、启动storage，挂载文件
 
 ```shell
-docker run -d --network=host --name storagetcl -e TRACKER_SERVER=ip:22122 -v /data/storage:/var/fdfs -e GROUP_NAME=default_group delron/fastdfs storage
+docker run -d --network=host --name storage -e TRACKER_SERVER=ip:22122 -v /data/storage:/var/fdfs -e GROUP_NAME=default_group delron/fastdfs storage
 ```
 
 ##### 4、进入storage容器命令
 
 ```shell
-docker exec -it storagetcl bash
+docker exec -it storage bash
 ```
 
 ##### 5、端口说明
@@ -666,7 +666,7 @@ INSERT INTO roles (username, role) VALUES ('nacos', 'ROLE_ADMIN');
 ##### 3、运行镜像
 
 ```shell
-docker run -d -e PREFER_HOST_MODE=ip -e MODE=standalone -e SPRING_DATASOURCE_PLATFORM=mysql -e MYSQL_MASTER_SERVICE_HOST=ip -e MYSQL_MASTER_SERVICE_PORT=3306 -e MYSQL_MASTER_SERVICE_USER=root -e MYSQL_MASTER_SERVICE_PASSWORD=kate -e MYSQL_MASTER_SERVICE_DB_NAME=nacos_config -e MYSQL_SLAVE_SERVICE_HOST=ip -e MYSQL_SLAVE_SERVICE_PORT=3306 -v /data/nacos/logs:/home/nacos/logs -p 8848:8848 --name nacostcl nacos/nacos-server:1.1.4
+docker run -d -e PREFER_HOST_MODE=ip -e MODE=standalone -e SPRING_DATASOURCE_PLATFORM=mysql -e MYSQL_MASTER_SERVICE_HOST=ip -e MYSQL_MASTER_SERVICE_PORT=3306 -e MYSQL_MASTER_SERVICE_USER=root -e MYSQL_MASTER_SERVICE_PASSWORD=kate -e MYSQL_MASTER_SERVICE_DB_NAME=nacos_config -e MYSQL_SLAVE_SERVICE_HOST=ip -e MYSQL_SLAVE_SERVICE_PORT=3306 -v /data/nacos/logs:/home/nacos/logs -p 8848:8848 --name nacos nacos/nacos-server:1.1.4
 ```
 
 ##### 4、访问
@@ -702,7 +702,7 @@ docker pull bladex/sentinel-dashboard
 ##### 2、运行命令
 
 ```shell
-docker run --name sentineltcl -d -p 8858:8858 bladex/sentinel-dashboard
+docker run --name sentinel -d -p 8858:8858 bladex/sentinel-dashboard
 ```
 
 ##### 3、访问
@@ -724,7 +724,7 @@ docker pull seataio/seata-server
 ##### 2、运行命令
 
 ```shell
-docker run -d --name seatatcl -p 8091:8091 -e SEATA_CONFIG_NAME=file:/root/seata-config/registry -v /data/seata/:/root/seata-config --privileged=true seataio/seata-server
+docker run -d --name seata -p 8091:8091 -e SEATA_CONFIG_NAME=file:/root/seata-config/registry -v /data/seata/:/root/seata-config --privileged=true seataio/seata-server
 ```
 
 -e 为环境变量配置，后面的值表示使用挂载的那个目录的配置文件

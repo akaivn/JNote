@@ -39,25 +39,6 @@ shields标签网址：https://img.shields.io
 
 ![QQ](https://img.shields.io/badge/QQ-2895110093-orange) ![Wechat](https://img.shields.io/badge/Wechat-T2895110093-pink) ![Twitter](https://img.shields.io/badge/Twitter-2895110093@qq.com-purple?logo=Twitter) ![Facebook](https://img.shields.io/badge/Facebook-2895110093@qq.com-purple?logo=Facebook)
 
-### 浏览器支持(模板)
-<table>
-<thead>
-<tr>
-<th><a href="http://godban.github.io/browsers-support-badges/" rel="nofollow"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" style="max-width:100%;"></a><br>IE / Edge</th>
-<th><a href="http://godban.github.io/browsers-support-badges/" rel="nofollow"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" style="max-width:100%;"></a><br>Firefox</th>
-<th><a href="http://godban.github.io/browsers-support-badges/" rel="nofollow"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" style="max-width:100%;"></a><br>Chrome</th>
-<th><a href="http://godban.github.io/browsers-support-badges/" rel="nofollow"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" style="max-width:100%;"></a><br>Safari</th>
-<th><a href="http://godban.github.io/browsers-support-badges/" rel="nofollow"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" style="max-width:100%;"></a><br>Opera</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>IE11, Edge</td>
-<td>last 2 versions</td>
-<td>last 2 versions</td>
-<td>last 2 versions</td>
-<td>last 2 versions</td>
-</tr>
-</tbody>
-</table>
+
+
 
