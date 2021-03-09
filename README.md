@@ -1,4 +1,4 @@
-### MacBook
+### JNote
 This directory on my GitHub is my daily study notes
 
 每一个笔记都应该标明所用的技术的版本，使用 `页面标签` 的形式能够更便捷的寻找和发现
