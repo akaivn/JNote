@@ -690,7 +690,37 @@ http://riskate.club:8848/nacos
 重新启动nacos即可
 
 **2、docker内需要更换MySQL数据库版本号**
-
+##### 2.x版本以上启动方式为
+```shell
+docker run -d \
+	-e PREFER_HOST_MODE=ip/hostname \
+	-e MODE=standalone \
+	-e SPRING_DATASOURCE_PLATFORM=mysql \
+	-e MYSQL_SERVICE_HOST=ip/hostname \
+	-e MYSQL_SERVICE_PORT=3306 \
+	-e MYSQL_SERVICE_USER=username \
+	-e MYSQL_SERVICE_PASSWORD=password \
+	-e MYSQL_SERVICE_DB_NAME=表名 \
+	-v /data/nacos/logs:/home/nacos/logs \
+	-p 8848:8848 \
+	--name nacos nacos/nacos-server
+```
+##### 参数说明
+```txt
+属性名称    描述  选项
+MODE    系统启动方式: 集群/单机   cluster/standalone默认 cluster
+NACOS_SERVERS   nacos cluster address   p1:port1空格ip2:port2 空格ip3:port3
+PREFER_HOST_MODE    支持IP还是域名模式  hostname/ip 默认 ip
+NACOS_SERVER_PORT   Nacos 运行端口  默认 8848
+NACOS_SERVER_IP 多网卡模式下可以指定IP    
+SPRING_DATASOURCE_PLATFORM  standalone support mysql    mysql / 空 默认:空
+MYSQL_SERVICE_HOST  mysql host  
+MYSQL_SERVICE_PORT  mysql database port 默认 : 3306
+MYSQL_SERVICE_DB_NAME   mysql database name 
+MYSQL_SERVICE_USER  username of database    
+MYSQL_SERVICE_PASSWORD  password of database
+```
+详情见：https://github.com/nacos-group/nacos-docker/blob/master/README_ZH.md
 #### Sentinel
 
 ##### 1、拉取镜像
