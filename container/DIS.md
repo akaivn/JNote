@@ -663,34 +663,12 @@ INSERT INTO users (username, password, enabled) VALUES ('nacos', '$2a$10$EuWPZHz
 INSERT INTO roles (username, role) VALUES ('nacos', 'ROLE_ADMIN');
 ```
 
-##### 3、运行镜像
+##### 3、运行镜像（Old）
 
 ```shell
 docker run -d -e PREFER_HOST_MODE=ip -e MODE=standalone -e SPRING_DATASOURCE_PLATFORM=mysql -e MYSQL_MASTER_SERVICE_HOST=ip -e MYSQL_MASTER_SERVICE_PORT=3306 -e MYSQL_MASTER_SERVICE_USER=root -e MYSQL_MASTER_SERVICE_PASSWORD=kate -e MYSQL_MASTER_SERVICE_DB_NAME=nacos_config -e MYSQL_SLAVE_SERVICE_HOST=ip -e MYSQL_SLAVE_SERVICE_PORT=3306 -v /data/nacos/logs:/home/nacos/logs -p 8848:8848 --name nacos nacos/nacos-server:1.1.4
 ```
-
-##### 4、访问
-
-```http
-http://riskate.club:8848/nacos
-```
-
-`account and password: [nacos nacos]`
-
-##### 相关问题
-
-**Failed to obtain JDBC Connection; nested exception is org.apache.commons.dbcp.SQLNestedException: Cannot create PoolableConnectionFactory (Could not create connection to database server. Attempted reconnect 3 times. Giving up.)**
-
-这是因为Nacos自带MySQL链接版本太低，解决方法如下：
-
-**1、docker外可使用如下方式解决**
-
-在nacos目录下新建/plugins/mysql目录，将mysql对应版本的mysql-connection的jar包放到该文件夹中
-
-重新启动nacos即可
-
-**2、docker内需要更换MySQL数据库版本号**
-##### 2.x版本以上启动方式为
+##### 3、运行镜像（New）
 ```shell
 docker run -d \
 	-e PREFER_HOST_MODE=ip/hostname \
@@ -721,6 +699,27 @@ MYSQL_SERVICE_USER  username of database
 MYSQL_SERVICE_PASSWORD  password of database
 ```
 详情见：https://github.com/nacos-group/nacos-docker/blob/master/README_ZH.md
+
+##### 4、访问
+
+```http
+http://riskate.club:8848/nacos
+```
+
+`account and password: [nacos nacos]`
+
+##### 相关问题
+
+**Failed to obtain JDBC Connection; nested exception is org.apache.commons.dbcp.SQLNestedException: Cannot create PoolableConnectionFactory (Could not create connection to database server. Attempted reconnect 3 times. Giving up.)**
+
+这是因为Nacos自带MySQL链接版本太低，解决方法如下：
+
+**docker外可使用如下方式解决**
+
+在nacos目录下新建/plugins/mysql目录，将mysql对应版本的mysql-connection的jar包放到该文件夹中
+
+重新启动nacos即可
+
 #### Sentinel
 
 ##### 1、拉取镜像
