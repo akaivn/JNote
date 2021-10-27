@@ -108,6 +108,12 @@ Windows系统的文件路径可能为 `C:/Users/用户名/.jenkins/secrets/initi
 
 将密码粘贴到框内后，点击继续
 
+Linux下输入命令查看：
+
+```shell
+cat /root/.jenkins/secrets/initialAdminPassword
+```
+
 ###### 自定义Jenkins插件
 
 解锁 Jenkins之后，在 **Customize Jenkins** 页面内， 您可以安装任何数量的有用插件作为您初始步骤的一部分
@@ -121,36 +127,29 @@ Windows系统的文件路径可能为 `C:/Users/用户名/.jenkins/secrets/initi
 - Maven Integration：可以在 **create-job** 处创建 Maven项目
 - Deploy to container：可以打包后部署到容器
 - Publish Over SSH：可以以 ssh 的方式推送给远程Servlet容器
+- Warnings Next Generation：静态代码分析和检查
+- Email Extension Template：扩展发送邮箱配置
+- Gitee: 与gitee的代码 CI/CD
+- Blue Ocean: 支持以新的方式运行Jenkins
+- Config File Provider：支持的运行外部的配置文件，例如Maven的Settings.xml
 
 ###### 创建第一个管理员用户
+
+![image-20211027153641699](imgs/image-20211027153641699.png)
 
 最后，在customizing Jenkins with plugins之后，Jenkins要求您创建第一个管理员用户。 . 出现**创建第一个管理员用户**页面时， 请在各个字段中指定管理员用户的详细信息，然后单击 **保存完成** 当 **Jenkins准备好了** 出现时，单击*开始使用 Jenkins*。
 
 如果不创建用户，选择使用 admin 方式继续访问，那么 密码和账号被默认更改为 `admin/默认生成密码` 可访问 **admin->settings->password** 修改密码
 
-### Maven(web)
+###### 实例配置
 
-#### 前提说明
+配置Jenkins的节点URL，可使用默认配置，也可延后配置
 
-- 本节重要介绍基于`maven web`项目的自动化部署
-- 本节介绍适用于所有`Linux`系统的`Java`程序，如果使用的是Windows,那么以下脚本处位置，需要更换为`Windows`脚本
-- 本节所用技术为：`Maven(web)+Git+GitHub+Tomcat+Jenkins`
-- 版本管理可依据文档头部描述
+![image-20211027153818736](imgs/image-20211027153818736.png)
 
-#### 环境准备
+### 全局配置
 
-- Maven web项目的创建，并推送到Github指定仓库
-- Jenkins的安装完成
-
-#### 开始构建
-
-以下步骤全部使用截图说明，需要额外说明时才会使用文字标注
-
-- 启动Jenkins
-
-来到初始页面
-
-配置Jenkins全局设置
+Jenkins全局设置
 
 ![image-20210210180552955](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/180602-558343.png)
 
@@ -170,27 +169,51 @@ Windows系统的文件路径可能为 `C:/Users/用户名/.jenkins/secrets/initi
 
 ![image-20210210181056317](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181056-536674.png)
 
-返回主目录，点击创建工程
+#### 全局凭证配置
 
-![image-20210210175729166](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/175730-787820.png)
+![image-20211027154620391](imgs/image-20211027154620391.png)
 
-![a](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/180308-694829.png)
+配置Gitee用户名
 
-来到如下界面
+配置Gitee APIV5 Token
 
-![image-20210210181337511](C:\Users\chengjuan\AppData\Roaming\Typora\typora-user-images\image-20210210181337511.png)
+配置 ssh私钥 （可选）
 
-配置Git源码管理
+配置好后为
 
-![image-20210210181720215](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181720-408644.png)
+![image-20211027155811001](imgs/image-20211027155811001.png)
 
-需要添加GitHub账户和密码，如下
+---
 
-![image-20210210181908492](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181908-638352.png)
+#### 设置配置
 
-![image-20210210182327329](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/182328-458505.png)
+Gitee配置
 
-Linux就执行shell脚本，windows就执行批处理命令
+![image-20211027160434396](imgs/image-20211027160434396.png)
 
-这里拿Linux作为演示，选择执行shell脚本后，在文本框中输入脚本
+Email配置
+
+Extended E-mail Notification
+
+先配置Jenkins Location下的邮件管理员地址
+
+![image-20211027160642966](imgs/image-20211027160642966.png)
+
+等下要配置的 from 邮箱要跟上面的管理员地址邮箱一致
+
+![image-20211027161307609](imgs/image-20211027161307609.png)
+
+![image-20211027162353985](imgs/image-20211027162353985.png)
+
+继续往下看：
+
+![image-20211027161608588](imgs/image-20211027161608588.png)
+
+还有最后一点：
+
+![image-20211027161738969](imgs/image-20211027161738969.png)
+
+配置完后我们可以在下面使用测试的方式，发下邮件测试是否成功
+
+![image-20211027161847069](imgs/image-20211027161847069.png)
 

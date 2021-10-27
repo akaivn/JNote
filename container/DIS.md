@@ -270,7 +270,7 @@ docker logs -f [容器id | 容器名]
 ##### 1、拉取镜像
 
 ```shell
-docker pull rabbitmq:3.7.26-management
+docker pull rabbitmq:3.9.7-management
 ```
 
 ##### 2、运行命令
