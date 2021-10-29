@@ -34,7 +34,7 @@ Jenkins 支持各种运行方式，可通过系统包、Docker 或者通过一�
 
 可如图所示：
 
-![Jenkins-Flow](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/08/094003-710577.png)
+![Jenkins-Flow](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029093956712.png)
 
 ## Getting Start
 
@@ -48,7 +48,7 @@ Jenkins 支持各种运行方式，可通过系统包、Docker 或者通过一�
 
 war包官网下载地址：https://www.jenkins.io/download/
 
-![image-20210208100051763](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/08/100055-164144.png)
+![image-20210208100051763](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094000539.png)
 
 在此页面下载指定版本的war文件即可
 
@@ -94,7 +94,7 @@ http://ip:自定义端口或默认端口
 
 访问上述链接后可能会来到如下界面
 
-![jenkins1-page](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/08/102317-970195.jpeg)
+![jenkins1-page](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094007285.jpeg)
 
 Windows系统的文件路径可能为 `C:/Users/用户名/.jenkins/secrets/initialAdminPassword`
 
@@ -104,7 +104,7 @@ Windows系统的文件路径可能为 `C:/Users/用户名/.jenkins/secrets/initi
 
 可如图：
 
-![setup-jenkins2](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/08/102327-994007.png)
+![setup-jenkins2](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094013393.png)
 
 将密码粘贴到框内后，点击继续
 
@@ -135,7 +135,7 @@ cat /root/.jenkins/secrets/initialAdminPassword
 
 ###### 创建第一个管理员用户
 
-![image-20211027153641699](imgs/image-20211027153641699.png)
+![image-20211027153641699](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029093902019.png)
 
 最后，在customizing Jenkins with plugins之后，Jenkins要求您创建第一个管理员用户。 . 出现**创建第一个管理员用户**页面时， 请在各个字段中指定管理员用户的详细信息，然后单击 **保存完成** 当 **Jenkins准备好了** 出现时，单击*开始使用 Jenkins*。
 
@@ -145,33 +145,31 @@ cat /root/.jenkins/secrets/initialAdminPassword
 
 配置Jenkins的节点URL，可使用默认配置，也可延后配置
 
-![image-20211027153818736](imgs/image-20211027153818736.png)
+![image-20211027153818736](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029093915701.png)
 
 ### 全局配置
 
 Jenkins全局设置
 
-![image-20210210180552955](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/180602-558343.png)
-
-![image-20210210180836567](C:\Users\chengjuan\AppData\Roaming\Typora\typora-user-images\image-20210210180836567.png)
+![image-20210210180552955](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029093943800.png)
 
 > Maven
 
-![image-20210210181208623](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181209-336763.png)
+![image-20210210181208623](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094053593.png)
 
-![image-20210210180933575](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/180934-809089.png)
+![image-20210210180933575](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094059694.png)
 
 > JDK
 
-![image-20210210181025868](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181027-959909.png)
+![image-20210210181025868](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094104092.png)
 
 > Git
 
-![image-20210210181056317](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202102/10/181056-536674.png)
+![image-20210210181056317](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094108253.png)
 
 #### 全局凭证配置
 
-![image-20211027154620391](imgs/image-20211027154620391.png)
+![image-20211027154620391](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094112327.png)
 
 配置Gitee用户名
 
@@ -181,7 +179,7 @@ Jenkins全局设置
 
 配置好后为
 
-![image-20211027155811001](imgs/image-20211027155811001.png)
+![image-20211027155811001](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094117028.png)
 
 ---
 
@@ -189,7 +187,7 @@ Jenkins全局设置
 
 Gitee配置
 
-![image-20211027160434396](imgs/image-20211027160434396.png)
+![image-20211027160434396](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094146249.png)
 
 Email配置
 
@@ -197,23 +195,23 @@ Extended E-mail Notification
 
 先配置Jenkins Location下的邮件管理员地址
 
-![image-20211027160642966](imgs/image-20211027160642966.png)
+![image-20211027160642966](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094150718.png)
 
 等下要配置的 from 邮箱要跟上面的管理员地址邮箱一致
 
-![image-20211027161307609](imgs/image-20211027161307609.png)
+![image-20211027161307609](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094153927.png)
 
-![image-20211027162353985](imgs/image-20211027162353985.png)
+![image-20211027162353985](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094157442.png)
 
 继续往下看：
 
-![image-20211027161608588](imgs/image-20211027161608588.png)
+![image-20211027161608588](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094200699.png)
 
 还有最后一点：
 
-![image-20211027161738969](imgs/image-20211027161738969.png)
+![image-20211027161738969](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094203671.png)
 
 配置完后我们可以在下面使用测试的方式，发下邮件测试是否成功
 
-![image-20211027161847069](imgs/image-20211027161847069.png)
+![image-20211027161847069](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094206931.png)
 
