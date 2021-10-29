@@ -39,6 +39,9 @@ shields标签网址：https://img.shields.io
 
 ![QQ](https://img.shields.io/badge/QQ-2895110093-orange) ![Wechat](https://img.shields.io/badge/Wechat-T2895110093-pink) ![Twitter](https://img.shields.io/badge/Twitter-2895110093@qq.com-purple?logo=Twitter) ![Facebook](https://img.shields.io/badge/Facebook-2895110093@qq.com-purple?logo=Facebook)
 
-
+### Tip
+此仓库原地址为：[https://github.com/akaivn/JNote](https://github.com/akaivn/JNote)
+Gitee仓库地址为：[https://gitee.com/QianKa/JNote](https://gitee.com/QianKa/JNote)
+Gitee的仓库每周跟Github同步一次，所以可能存在延迟问题，观看最新笔记请移步Github
 
 
