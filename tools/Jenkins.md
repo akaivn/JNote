@@ -114,7 +114,7 @@ Linux下输入命令查看：
 cat /root/.jenkins/secrets/initialAdminPassword
 ```
 
-###### 自定义Jenkins插件
+###### Jenkins插件
 
 解锁 Jenkins之后，在 **Customize Jenkins** 页面内， 您可以安装任何数量的有用插件作为您初始步骤的一部分
 
@@ -124,14 +124,16 @@ cat /root/.jenkins/secrets/initialAdminPassword
 
 除此之外，你可能需要用到额外的几个插件，可依次下载：
 
-- Maven Integration：可以在 **create-job** 处创建 Maven项目
-- Deploy to container：可以打包后部署到容器
-- Publish Over SSH：可以以 ssh 的方式推送给远程Servlet容器
-- Warnings Next Generation：静态代码分析和检查
-- Email Extension Template：扩展发送邮箱配置
-- Gitee: 与gitee的代码 CI/CD
-- Blue Ocean: 支持以新的方式运行Jenkins
-- Config File Provider：支持的运行外部的配置文件，例如Maven的Settings.xml
+- **Maven Integration：可以在 create-job 处创建 Maven项目**
+- **Deploy to container：可以打包后部署到容器**
+- **Publish Over SSH：可以以 ssh 的方式推送给远程Servlet容器**
+- **Warnings Next Generation：静态代码分析和检查**
+- **Email Extension Template：扩展发送邮箱配置**
+- **Gitee: 与gitee的代码 CI/CD**
+- **Blue Ocean: 支持以新的方式运行Jenkins**
+- **Config File Provider：支持的运行外部的配置文件，例如Maven的Settings.xml**
+- **Git Parameter: 允许在构建时传入指定分支，按照分支构建项目**
+- **Pipeline Utility Steps：允许使用readMavenPom()等方法，详情请见：[https://www.jenkins.io/zh/doc/pipeline/steps/pipeline-utility-steps/]()**
 
 ###### 创建第一个管理员用户
 
@@ -214,4 +216,259 @@ Extended E-mail Notification
 配置完后我们可以在下面使用测试的方式，发下邮件测试是否成功
 
 ![image-20211027161847069](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029094206931.png)
+
+在Jenkins中添加全局Maven文件，文件的目的是为了指定仓库地址（将项目打成docker镜像并上传到仓库）
+
+![image-20211029101606710](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029101609043.png)
+
+---
+
+![image-20211029101630578](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029101632390.png)
+
+---
+
+![image-20211029101719545](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029101721273.png)
+
+提交后，编写和配置settings.xml
+
+在servers标签中添加如下标签
+
+```xml
+<server>
+    <id>你的id</id>
+    <username>你的用户名</username>
+    <password>你的密码</password>
+</server>
+```
+
+之后在全局配置中我们更改Maven的配置
+
+![image-20211029102051308](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029102053091.png)
+
+### 整合Springboot项目实现自动部署
+
+项目工程预览
+
+![image-20211029102521027](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029102523980.png)
+
+#### Dockerfile
+
+```dockerfile
+FROM openjdk:11-jre
+ARG JAR_FILE
+ADD ${JAR_FILE} app.jar
+RUN echo 'Asia/Shanghai' >/etc/timezone
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ENTRYPOINT ["java","-Xms256m","-Xmx256m","-jar","/app.jar"]
+```
+
+#### Jenkinsfile
+
+```shell
+pipeline {
+    agent any
+
+    tools {
+        git '2.27.0'
+        maven '3.8.3'
+    }
+
+    environment {
+        GIT_PATH="https://gitee.com/jcsun/weed.git"
+        PROJECT_NAME=readMavenPom().getArtifactId()
+        PROJECT_VERSION=readMavenPom().getVersion()
+        // Jenkins需要开放脚本执行权限 --> 管理Jenkins(Manage Jenkins) --> 开放执行脚本(In-process Script Approval) --> Approval
+        IMAGE_PATH=readMavenPom().getProperties().getProperty('docker.image.prefix')
+    }
+
+    stages {
+        stage('Pull Code') {
+            steps {
+                echo '--------------------------------------------- Get the code from Gitee ---------------------------------------------'
+                checkout([$class: 'GitSCM', branches: [[name: '*/${branch}']], extensions: [], userRemoteConfigs: [[credentialsId: 'Gitee Account (JC)', url: "${GIT_PATH}"]]])
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                echo '--------------------------------------------- clean package build push ---------------------------------------------'
+                sh 'mvn clean deploy'
+            }
+        }
+
+        stage('Deploy Project') {
+            steps {
+                echo '--------------------------------------------- Deployment the project ---------------------------------------------'
+                sh "docker ps -aq --filter 'name=${PROJECT_NAME}' | grep -q . && docker stop ${PROJECT_NAME} && docker rm --force ${PROJECT_NAME} || true"
+
+                // other method
+                script {
+                    def image = sh returnStdout: true, script: 'docker images -q --filter "reference=${IMAGE_PATH}/${PROJECT_NAME}:*"'
+                    if (image != null && image != "") {
+                        echo "Delete old image \n ${image}"
+                        sh 'docker rmi --force $(docker images -q --filter "reference=${IMAGE_PATH}/${PROJECT_NAME}:*")'
+                    }
+                }
+
+                sh "docker run -d -p 666:666 --name ${PROJECT_NAME} ${IMAGE_PATH}/${PROJECT_NAME}:${PROJECT_VERSION}"
+
+                script {
+                    def unmarked = sh returnStdout: true, script: 'docker images -q --filter "dangling=true"'
+                    if(unmarked != null && unmarked != ""){
+                        echo "Delete unlabeled images \n $unmarked"
+                        sh 'docker rmi $(docker images -q --filter "dangling=true")'
+                    }
+                }
+
+            }
+        }
+    }
+    post {
+        always {
+            echo '--------------------------------------------- post always code check start... ---------------------------------------------'
+            recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), javaDoc()]
+            recordIssues enabledForFailure: true, tool: pmdParser()
+            emailext (
+               subject: '${DEFAULT_SUBJECT}',
+               body: '${DEFAULT_CONTENT}',
+               to: '${DEFAULT_RECIPIENTS}'
+            )
+        }
+    }
+}
+```
+
+#### pom.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.5</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.jc</groupId>
+    <artifactId>weed</artifactId>
+    <version>1.4.6</version>
+    <name>weed</name>
+    <description>Demo project for Spring Boot</description>
+    <packaging>jar</packaging>
+
+    <properties>
+        <java.version>11</java.version>
+        <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
+        <docker.image.prefix>registry.cn-shanghai.aliyuncs.com/imgcenter</docker.image.prefix>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.15.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--加快PMD的执行速度，同时保持分析的质量。-->
+                    <analysisCache>true</analysisCache>
+                    <!-- 如果出现错误，则中止构建并抛出错误 -->
+                    <failOnViolation>false</failOnViolation>
+                    <!-- 打印错误结果 -->
+                    <printFailingErrors>true</printFailingErrors>
+                    <!--禁止link插件启用-->
+                    <linkXRef>false</linkXRef>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile-maven-version}</version>
+                <executions>
+                    <execution>
+                        <id>aliyun</id>
+                        <goals>
+                            <!--如果package时不想用docker打包,就注释掉这个goal-->
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <tag>${project.version}</tag>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                    <!--Dockerfile参数-->
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.${project.packaging}</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
+
+#### 快速开始
+
+创建一个Jenkins Pipline Job
+
+![image-20211029103030102](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029103031755.png)
+
+---
+
+![image-20211029103102259](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029103103967.png)
+
+---
+
+![image-20211029103343214](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029103344924.png)
+
+---
+
+继续往下走来到 `构建触发器`
+
+这一步需要配置webhook相关的配置，目的是为了Git上传到代码仓库后，代码仓库能够通知Jenkins拉取最新的代码
+
+![image-20211029103721399](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029103724335.png)
+
+将链接拷贝到Gitee Webhook处，将密码在Jenkins生成后也拷贝过去
+
+![image-20211029103900877](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029103902602.png)
+
+---
+
+之后可以测试一下是否联通成功，如果成功，应该是下面的页面
+
+![image-20211029103954736](https://gitee.com/QianKa/image-bucket/raw/master/typora/2021/10/29/20211029103956350.png)
+
+---
 
