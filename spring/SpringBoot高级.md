@@ -399,7 +399,7 @@ docker run -d -p 5672:5672 -p 15672:15672 -v /data/rabbitmq/rabbitmq.config:/etc
 
 ---
 
-![image-20201118194347463](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/18/194347-293302.png)
+![image-20201118194347463](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/18/194347-293302.png)
 
 ---
 
@@ -407,11 +407,11 @@ docker run -d -p 5672:5672 -p 15672:15672 -v /data/rabbitmq/rabbitmq.config:/etc
 
 ---
 
-![image-20201118194450823](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/18/194451-350221.png)
+![image-20201118194450823](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/18/194451-350221.png)
 
 ---
 
-![image-20201118194604719](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/18/194604-867214.png)
+![image-20201118194604719](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/18/194604-867214.png)
 
 ---
 
@@ -1173,7 +1173,7 @@ dubbo.scan.base-packages=cn.kate.service
 
 #### 3、启动服务
 
-![image-20200825205005728](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/25/205006-966.png)
+![image-20200825205005728](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/25/205006-966.png)
 
 ### 4、服务消费者
 
@@ -1229,7 +1229,7 @@ class ConsumerApplicationTests {
 
 结果图实例：
 
-![image-20200825205956211](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/25/205957-659240.png)
+![image-20200825205956211](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/25/205957-659240.png)
 
 ==需要注意是：当服务消费者要消费的前提是服务提供者已经启动==
 

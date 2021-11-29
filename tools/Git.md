@@ -149,7 +149,7 @@ git branch --set-upstream-to=origin/<branch>
 
 ---
 
-![image-20201111213632232](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/11/213633-597869.png)
+![image-20201111213632232](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/11/213633-597869.png)
 
 ---
 
@@ -157,7 +157,7 @@ git branch --set-upstream-to=origin/<branch>
 
 ---
 
-![image-20201111213742434](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/11/213744-739101.png)
+![image-20201111213742434](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/11/213744-739101.png)
 
 ---
 
@@ -167,7 +167,7 @@ file-->settings-->version control-->File Status Colors
 
 ---
 
-![image-20201111214010559](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/11/214011-61524.png)
+![image-20201111214010559](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/11/214011-61524.png)
 
 ---
 

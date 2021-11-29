@@ -46,7 +46,7 @@ RabbitMQ 比以 Kafka可靠，Kafka更适合 IO 高吞吐的处理，一般应�
 
 RabbitMQ是一个基于 `AMQP`协议的消息中间件工具，基于Erlang语言开发和编写
 
-![image-20210111192843499](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/11/192844-598053.png)
+![image-20210111192843499](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/11/192844-598053.png)
 
 ---
 
@@ -67,7 +67,7 @@ AMQP (advanced message queuing protocol) 在2003年时被提出，最早用于�
 
 >   AMQP协议模型
 
-![image-20210111192757429](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/11/192800-299696.png)
+![image-20210111192757429](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/11/192800-299696.png)
 
 >   官网
 
@@ -153,7 +153,7 @@ rabbitmqctl start_app
 
 web界面总览介绍图
 
-![image-20210111201518844](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/11/201519-241201.png)
+![image-20210111201518844](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/11/201519-241201.png)
 
 内部界面众多，不再一 一介绍，使用非常简单快捷
 
@@ -250,7 +250,7 @@ Exchange 和Queue的绑定可以是多对多的关系。
 
 >   回顾AMQP协议流程
 
-![image-20210111201207140](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/11/201209-678704.png)
+![image-20210111201207140](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/11/201209-678704.png)
 
 >   文字流程
 
@@ -263,11 +263,11 @@ Exchange 和Queue的绑定可以是多对多的关系。
 
 >   官网提供的消息模型和各语言的支持
 
-![image-20210111204556820](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/11/204557-118287.png)
+![image-20210111204556820](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/11/204557-118287.png)
 
-![image-20210111204619475](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/11/204620-365130.png)
+![image-20210111204619475](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/11/204620-365130.png)
 
-![image-20210111204637977](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/11/204639-785770.png)
+![image-20210111204637977](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/11/204639-785770.png)
 
 ---
 
@@ -287,17 +287,17 @@ Exchange 和Queue的绑定可以是多对多的关系。
 
 >   创建虚拟主机
 
-![image-20210111211727243](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/11/211727-310854.png)
+![image-20210111211727243](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/11/211727-310854.png)
 
 **我们为了演示和学习，再另外创建一个用户来操作单独的虚拟主机**
 
 >   创建用户
 
-![image-20210111211532496](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/11/211532-150110.png)
+![image-20210111211532496](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/11/211532-150110.png)
 
 >   设置虚拟主机
 
-![image-20210111212017905](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/11/212018-318549.png)
+![image-20210111212017905](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/11/212018-318549.png)
 
 ---
 
@@ -305,7 +305,7 @@ Exchange 和Queue的绑定可以是多对多的关系。
 
 #### 直连
 
-![image-20210112085405998](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/092825-342131.png)
+![image-20210112085405998](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/12/092825-342131.png)
 
 - p代表生产者(provider/publisher)
 - c代表消费者(consumer)
@@ -363,7 +363,7 @@ public void send() throws Exception{
 
 > web界面变化
 
-![image-20210112092708761](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/092838-199080.png)
+![image-20210112092708761](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/12/092838-199080.png)
 
 > 消费者Api
 
@@ -489,7 +489,7 @@ channel.queueDeclare("hello",false,false,false,null);
 
 Work Queues，也被称为（Task queues)，任务模型。当消息处理比较耗时的时候，可能**生产消息的速度会远远大于消息的消费速度**。长此以往，**消息就会堆积越来越多，无法及时处理**。此时就可以使用work模型:**让多个消费者绑定到一个队列，共同消费队列中的消息**。队列中的消息一旦消费，就会消失，因此任务是不会被重复执行的。
 
-![image-20210112204634077](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/204637-766466.png)
+![image-20210112204634077](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/12/204637-766466.png)
 
 -   P:生产者:任务的发布者
 -   c1:消费者,领取任务并且完成任务，假设完成速度较慢
@@ -537,9 +537,9 @@ public static void main(String[] args) throws Exception {
 
 ##### 启动测试
 
-![image-20210112210324610](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/210325-324791.png)
+![image-20210112210324610](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/12/210325-324791.png)
 
-![image-20210112210338589](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/210339-204883.png)
+![image-20210112210338589](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/12/210339-204883.png)
 
 **总结:默认情况下，RabbitMQ将按顺序将每个消息发送给下一个使用者。平均而言，每个消费者都会收到相同数量的消息。这种分发消息的方式称为循环。**
 
@@ -566,7 +566,7 @@ channel.basicConsume("work",true,new DefaultConsumer(channel){
 
 新的测试结果如下
 
-![image-20210112210707217](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/210707-457270.png)
+![image-20210112210707217](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/12/210707-457270.png)
 
 此时consumer1虽然也在消费队列，但是消费的速度变慢，**在队列中如果有大量的消息时，就会造成消息堆积**，故平均分配的模式弊端就此展露
 
@@ -601,9 +601,9 @@ channel.basicAck(envelope.getDeliveryTag(),false);
 
 >   测试如下
 
-![image-20210112214555031](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/214555-111682.png)
+![image-20210112214555031](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/12/214555-111682.png)
 
-![image-20210112214608502](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/12/214609-191410.png)
+![image-20210112214608502](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/12/214609-191410.png)
 
 #### 扇出(fanout)
 
@@ -611,7 +611,7 @@ channel.basicAck(envelope.getDeliveryTag(),false);
 
 fanout:又叫广播，指生产者将消息发送到交换机后，由交换机来选择该消息可以被哪些消费者消费，决定消费者可以消费消息的不再是生产者和队列，而是exchange
 
-![image-20210113193811292](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/13/193818-93912.png)
+![image-20210113193811292](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/13/193818-93912.png)
 
 -   P:生产者，向exchange发送消息
 -   X: exchange(交换机)，接收生产者的消息，然后把消息递交给与之绑定的队列
@@ -702,7 +702,7 @@ public static void main(String[] args) throws Exception{
 
 **Direct** 路由模式，又叫做直连。为路由的模式之一
 
-![image-20210113201404176](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/13/201406-415022.png)
+![image-20210113201404176](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/13/201406-415022.png)
 
 -   P:生产者，向exchange发送消息，发送消息时，会指定一个routing key
 -   X: exchange(交换机)，接收生产者的消息，然后把消息递交给与routing key完全匹配的队列
@@ -773,7 +773,7 @@ channel.queueBind(queue,"logs_direct",routingKey3);
 
 这种模型routingKey一般都是由一个或多个单词组成，多个单词之间以"."分割，例如: item.insert
 
-![image-20210113205542843](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/13/205543-428443.png)
+![image-20210113205542843](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/13/205543-428443.png)
 
 此流程图角色不再阐述
 
@@ -996,23 +996,23 @@ consumer
 
 - 串行方式:将注册信息写入数据库后,发送注册邮件,再发送注册短信,以上三个任务全部完成后才返回给客户端。 这有一个问题是,邮件,短信并不是必须的,它只是一个通知,而这种做法让客户端等待没有必要等待的东西
 
-![vvmok1ubkr](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160044-361299.png)
+![vvmok1ubkr](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/15/160044-361299.png)
 
 - 将注册信息写入数据库后,发送邮件的同时,发送短信,以上三个任务完成后,返回给客户端,并行的方式能提高处理的时间
 
-![c8pw4v1qoe](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160122-130759.png)
+![c8pw4v1qoe](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/15/160122-130759.png)
 
 假设三个业务节点分别使用50ms,串行方式使用时间150ms,并行使用时间100ms。虽然并性已经提高的处理时间,但是,前面说过,邮件和短信对我正常的使用网站没有任何影响，客户端没有必要等着其发送完成才显示注册成功,因而是写入数据库后就返回
 
 - 消息队列：引入消息队列后，把发送邮件,短信不是必须的业务逻辑异步处理 
 
-![5r2kyi4vu7](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160209-945288.png)
+![5r2kyi4vu7](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/15/160209-945288.png)
 
 #### 应用解耦
 
 场景：双11是购物狂节,用户下单后,订单系统需要通知库存系统,传统的做法就是订单系统调用库存系统的接口
 
-![weaz95z0u3](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160339-7498.png)
+![weaz95z0u3](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/15/160339-7498.png)
 
 这种做法有一个缺点:
 
@@ -1021,7 +1021,7 @@ consumer
 
 引入消息队列 
 
-![uufioa2r7r](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160342-346197.png)
+![uufioa2r7r](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/15/160342-346197.png)
 
 - 订单系统:用户下单后,订单系统完成持久化处理,将消息写入消息队列,返回用户订单下单成功
 - 库存系统:订阅下单的消息,获取下单消息,进行库操作。 就算库存系统出现故障,消息队列也能保证消息的可靠投递,不会导致消息丢失
@@ -1038,7 +1038,7 @@ consumer
 
 2、可以缓解短时间的高流量压垮应用(应用程序按自己的最大处理能力获取订单) 
 
-![t0qgtelj6a](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160533-88143.png)
+![t0qgtelj6a](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/15/160533-88143.png)
 
 - 用户的请求,服务器收到之后,首先写入消息队列,加入消息队列长度超过最大值,则直接抛弃用户请求或跳转到错误页面
 - 2.秒杀业务根据消息队列中的请求信息，再做后续处理
@@ -1055,7 +1055,7 @@ consumer
 
 ##### 集群架构图
 
-![image-20210117203716887](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/17/203718-217744.png)
+![image-20210117203716887](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/17/203718-217744.png)
 
 上面那句话的意思就是：**默认情况下，RabbitMQ提供的集群模式为普通集群，只是单纯的将Master主节点的Exchange复制了一份到每个子节点上，尽管所有子节点都可以拿到交换机和所有队列的信息，但实际上子节点不具备有故障转移、自动备份和容灾等功能**。当子节点复制了Master节点的交换机后，消费者也可以订阅子节点消费消息（**实际上，当消费者订阅子节点后，消费消息时，子节点只是单纯的去调用了Master节点的消息，然后返回给消费者**）
 
@@ -1177,7 +1177,7 @@ chmod 600 /var/lib/rabbitmq/.erlang.cookie
 
 > 打开测试地址，查看集群节点
 
-![image-20210123121603897](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/23/121604-649738.png)
+![image-20210123121603897](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/23/121604-649738.png)
 
 我们访问三个web管理界面，尝试使用程序发送消息到队列，我们会发现，消息队列和交换机如果是在master节点创建的，那么立刻就会同步到其余的slave节点
 
@@ -1209,7 +1209,7 @@ static {
 
 > 4、启动消费者消费消息
 
-![image-20210124100556871](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/24/100557-37722.png)
+![image-20210124100556871](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/24/100557-37722.png)
 
 我们看到消息依旧被消费，证明了salve节点可以接受用户请求、消费消息，它调用master节点的消息，然后把消息返回给消费者，与此同时，master节点必须保持可用，当master down掉时，剩下的slave节点也无法继续服务
 
@@ -1217,7 +1217,7 @@ static {
 
 注：`当使用docker集群时，重启或关闭master节点会导致配置失效，slave节点不可用`
 
-![image-20210124102051853](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/24/102052-23314.png)
+![image-20210124102051853](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/24/102052-23314.png)
 
 解决方式：==重启所有的slave节点即可==
 
@@ -1233,7 +1233,7 @@ static {
 
 ##### 集群架构图
 
-![image-20210124103556150](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/24/103557-384160.png)
+![image-20210124103556150](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/24/103557-384160.png)
 
 ##### 集群搭建
 
@@ -1290,9 +1290,9 @@ rabbitmqctl --help
 
 ###### web界面模式
 
-![image-20210124111748922](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/24/111750-59997.png)
+![image-20210124111748922](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/24/111750-59997.png)
 
-![image-20210124112525084](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/24/112525-491661.png)
+![image-20210124112525084](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/24/112525-491661.png)
 
 ##### Springboot整合
 
@@ -1300,5 +1300,5 @@ rabbitmqctl --help
 
 ### 系统架构图
 
-![yypy8o1azr](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202101/15/160746-400946.jpeg)
+![yypy8o1azr](https://gitee.com/QianKa/image-bucket/raw/master/typora/202101/15/160746-400946.jpeg)
 

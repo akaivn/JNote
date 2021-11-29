@@ -16,7 +16,7 @@
 
 ### 应用架构的演变
 
-![image-20200826202101306](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/202102-586476.png)
+![image-20200826202101306](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/202102-586476.png)
 
 拆开上图来分别叙说
 
@@ -24,7 +24,7 @@
 
 所有的功能单体集中到一台服务器中， 不方便维护和扩展 
 
-![image-20200826203437940](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/203439-908020.png)
+![image-20200826203437940](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/203439-908020.png)
 
 #### 2、MVC，垂直架构
 
@@ -36,7 +36,7 @@
 
 -   页面的修改可能也会引起此服务器上的项目进行重新打包和部署
 
-![image-20200826203603058](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/203604-283693.png)
+![image-20200826203603058](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/203604-283693.png)
 
 #### 3、RPC，远程过程调用
 
@@ -44,11 +44,11 @@
 
 此时RPC问题暴露出来，我们需要一个能够解决RPC问题的服务组件或工具
 
-![image-20200826203735618](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/203737-33128.png)
+![image-20200826203735618](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/203737-33128.png)
 
 
 
-![image-20200826203903557](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/203905-467164.png)
+![image-20200826203903557](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/203905-467164.png)
 
 #### 4、流动计算架构
 
@@ -56,7 +56,7 @@
 
 流动式架构由此而生
 
-![image-20200826203925108](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/203927-723245.png)
+![image-20200826203925108](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/203927-723245.png)
 
 
 
@@ -68,11 +68,11 @@
 
 #### RPC的原理图
 
-![image-20200826204030618](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/204031-468401.png)
+![image-20200826204030618](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/204031-468401.png)
 
 
 
-![image-20200826204041331](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/204041-224012.png)
+![image-20200826204041331](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/204041-224012.png)
 
 ==RPC两个核心模块：通讯，序列化。==
 
@@ -84,7 +84,7 @@ Dubbo是阿里巴巴公司开源的一个高性能优秀的服务框架，使得
 
 ### 设计架构
 
-![image-20200826204552178](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/204553-245731.png)
+![image-20200826204552178](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/204553-245731.png)
 
 ### 核心概念
 
@@ -151,13 +151,13 @@ Dubbo是阿里巴巴公司开源的一个高性能优秀的服务框架，使得
 
 https://github.com/apache/incubator-dubbo-ops
 
-![image-20200826211627459](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/211628-244904.png)
+![image-20200826211627459](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/211628-244904.png)
 
 ###### 2、进入目录，修改dubbo-admin配置
 
 修改 src\main\resources\application.properties 指定zookeeper地址
 
-![image-20200826211744644](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/211747-102977.png)
+![image-20200826211744644](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/211747-102977.png)
 
 ###### 3、打包dubbo-admin
 
@@ -175,7 +175,7 @@ java -jar dubbo-admin-0.0.1-SNAPSHOT.jar
 
 默认使用root/root 登陆
 
-![image-20200826211902745](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/211906-773510.png)
+![image-20200826211902745](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/211906-773510.png)
 
 #### Linux安装
 
@@ -227,9 +227,9 @@ wget https://archive.apache.org/dist/zookeeper/zookeeper-3.4.11/zookeeper-3.4.11
 
 ###### 3、移动到指定位置并改名为zookeeper
 
-![image-20200826213328601](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/213329-758338.png)
+![image-20200826213328601](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/213329-758338.png)
 
-![image-20200826213337998](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/213338-895608.png)
+![image-20200826213337998](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/213338-895608.png)
 
 ###### 4、开机启动zookeeper
 
@@ -256,11 +256,11 @@ chkconfig --add zookeeper
 chkconfig --list
 ```
 
-![image-20200826213526022](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/195415-676298.png)
+![image-20200826213526022](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/195415-676298.png)
 
 增加权限
 
-![image-20200826213544870](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/195227-305955.png)
+![image-20200826213544870](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/195227-305955.png)
 
 
 
@@ -272,11 +272,11 @@ chkconfig --list
 
 到同一个目录下改个名字叫zoo.cfg
 
-![image-20200826213623896](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/26/213624-284268.png)
+![image-20200826213623896](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/26/213624-284268.png)
 
 启动zookeeper
 
-![image-20200826213637410](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/195230-357477.png)
+![image-20200826213637410](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/195230-357477.png)
 
 ##### Dubbo-admin
 
@@ -304,13 +304,13 @@ dubbo本身并不是一个服务软件。它其实就是一个jar包能够帮你
 
 为了演示方便，均使用maven-java工程
 
-![image-20200827201918356](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/201919-144057.png)
+![image-20200827201918356](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/201919-144057.png)
 
 **创建的用户工程模块因为需要被订单工程模块所消费，所以我们需要将bean包下的类和用户service复制到订单工程模块中，假如以后有很多的bean和service我们也需要这样做？==因此Dubbo建议我们将这些公共的接口和bean，以及异常都放到一个公共的工程模块中去，通过maven工程的引入来做调用，而自己的模块就专门负责来实现，并且由Dubbo完成调度和管理==**
 
 我们做一下抽离工作
 
-![image-20200827202907596](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/202908-962572.png)
+![image-20200827202907596](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/202908-962572.png)
 
 每个模块只做自己的实现，需要哪个功能时，从公共的工程中引用即可！
 
@@ -405,15 +405,15 @@ public static void main(String[] args) throws IOException {
 
 服务提供者
 
-![image-20200827211802577](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/211804-780825.png)
+![image-20200827211802577](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/211804-780825.png)
 
 提供的具体服务
 
-![image-20200827211655307](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/211657-302818.png)
+![image-20200827211655307](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/211657-302818.png)
 
 在哪个端口提供的
 
-![image-20200827211731869](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/211732-28209.png)
+![image-20200827211731869](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/211732-28209.png)
 
 ##### 配置服务消费者
 
@@ -469,21 +469,21 @@ public class MainApplication {
 
 IDEA 控制台显示
 
-![image-20200827213724876](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/213726-861663.png)
+![image-20200827213724876](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/213726-861663.png)
 
 **dubbo-admin 控制台显示**
 
 应用数＋1
 
-![image-20200827213810234](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/213811-835115.png)
+![image-20200827213810234](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/213811-835115.png)
 
 消费成功
 
-![image-20200827213843538](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/213844-786886.png)
+![image-20200827213843538](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/213844-786886.png)
 
 角色展示
 
-![image-20200827213914252](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/27/213914-611892.png)
+![image-20200827213914252](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/27/213914-611892.png)
 
 至此，一个简单的分布式工程环境就搭建好了！
 
@@ -515,7 +515,7 @@ mvn clean package -Dmavne.test.skip = true
 
 **7、启动页面如下**
 
-![image-20200828210520915](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/28/210521-379457.png)
+![image-20200828210520915](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/28/210521-379457.png)
 
 注：
 
@@ -527,7 +527,7 @@ mvn clean package -Dmavne.test.skip = true
 
 端口地址即为你修改的jetty端口，默认为8080，访问界面如下
 
-![image-20200828210743503](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/28/210744-885344.png)
+![image-20200828210743503](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/28/210744-885344.png)
 
 接下来我们将监控中心配置到项目工程中去
 
@@ -548,7 +548,7 @@ Simple Monitor 采用磁盘存储统计信息，请注意安装机器的磁盘�
 
 将项目重新启动并观察监控中心
 
-![image-20200828211526860](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/29/095408-645565.png)
+![image-20200828211526860](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/29/095408-645565.png)
 
 此时代表我们的监控中心整合完毕！
 
@@ -657,11 +657,11 @@ public class ConsumerApplication {
 
 **监控结果显示**
 
-![image-20200828221510204](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/28/221511-670541.png)
+![image-20200828221510204](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/28/221511-670541.png)
 
 图标方式
 
-![image-20200828221526272](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/28/221526-322069.png)
+![image-20200828221526272](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/28/221526-322069.png)
 
 ### 配置
 
@@ -669,7 +669,7 @@ public class ConsumerApplication {
 
 以上我们配置的Dubbo使用的是xml文件，或者使用的是properties配置文件，dubbo官方提供一个写死的配置文件名==dubbo.properties==，此配置文件主要来存放一些公共的配置。以下是这些配置文件加载的顺序
 
-![image-20200829101338188](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/29/101339-128115.png)
+![image-20200829101338188](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/29/101339-128115.png)
 
 #### 启动时检查
 
@@ -1004,7 +1004,7 @@ reference.setUrl("dubbo://10.20.130.230:20880/com.xxx.XxxService");
 
 应用根据权重被分配到各个服务
 
-![image-20200830091519261](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/30/091520-826272.png)
+![image-20200830091519261](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/30/091520-826272.png)
 
 问题：在一个截面上碰撞的概率高，但调用量越大分布越均匀，而且按概率使用权重后也比较均匀，有利于动态调整提供者权重
 
@@ -1012,7 +1012,7 @@ reference.setUrl("dubbo://10.20.130.230:20880/com.xxx.XxxService");
 
 按公约后的权重设置轮循比率
 
-![image-20200830091928493](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/30/091929-947803.png)
+![image-20200830091928493](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/30/091929-947803.png)
 
 问题：存在慢的提供者累积请求的问题，比如：第二台机器很慢，但没挂，当请求调到第二台时就卡在那，久而久之，所有请求都卡在调到第二台上
 
@@ -1020,7 +1020,7 @@ reference.setUrl("dubbo://10.20.130.230:20880/com.xxx.XxxService");
 
 相同活跃数的随机，活跃数指调用前后计数差
 
-![image-20200830092122974](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/30/092123-760790.png)
+![image-20200830092122974](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/30/092123-760790.png)
 
 问题：使慢的提供者收到更少请求，因为越慢的提供者的调用前后计数差会越大
 
@@ -1028,7 +1028,7 @@ reference.setUrl("dubbo://10.20.130.230:20880/com.xxx.XxxService");
 
 相同参数的请求总是发到同一提供者
 
-![image-20200830092234126](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/30/092234-962368.png)
+![image-20200830092234126](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/30/092234-962368.png)
 
 问题：当某一台提供者挂时，原本发往该提供者的请求，基于虚拟节点，平摊到其它提供者，不会引起剧烈变动。算法参见：http://en.wikipedia.org/wiki/Consistent_hashing
 
@@ -1046,7 +1046,7 @@ reference.setUrl("dubbo://10.20.130.230:20880/com.xxx.XxxService");
 
 均衡机制相关API如下：
 
-![image-20200830092649897](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/30/092650-585632.png)
+![image-20200830092649897](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/30/092650-585632.png)
 
 如何配置Dubbo的负载均衡？
 
@@ -1257,7 +1257,7 @@ Dubbo服务于服务间的通信采用的是Netty
 
 当服务请求过来时，程序为每一个请求创建一个线程，每一个线程对应每一个请求，未执行完毕时，线程中途不能退出，这就是阻塞式IO
 
-![image-20200831195400686](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/31/195401-714246.png)
+![image-20200831195400686](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/31/195401-714246.png)
 
 我们知道这样的话，一个线程只能处理一个资源请求，会造成性能上的浪费，效率也不高，此时NIO无疑是很好的选择
 
@@ -1273,7 +1273,7 @@ Selector：选择器也可以翻译为 **多路复用器**
 
 通过下图，可以了解到一个比较清晰的NIO机制
 
-![image-20200831200522136](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/31/200525-409392.png)
+![image-20200831200522136](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/31/200525-409392.png)
 
 它的几个事件分别为：
 
@@ -1288,13 +1288,13 @@ Netty是一个异步事件驱动（NIO）的网络应用程序框架， 用于�
 
 >   Netty的原理图
 
-![image-20200831200807019](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/31/200807-860552.png)
+![image-20200831200807019](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/31/200807-860552.png)
 
 #### Dubbo原理
 
 ##### 框架设计
 
-![image-20200902191757801](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/02/191801-69883.png)
+![image-20200902191757801](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/02/191801-69883.png)
 
 -   config 配置层：对外配置接口，以 ServiceConfig, ReferenceConfig 为中心，可以直接初始化配置类，也可以通过 spring 解析配置生成配置类
 -   proxy 服务代理层：服务接口透明代理，生成服务的客户端 Stub 和服务器端 Skeleton, 以 ServiceProxy 为中心，扩展接口为 ProxyFactory
@@ -1310,11 +1310,11 @@ Netty是一个异步事件驱动（NIO）的网络应用程序框架， 用于�
 
 >   标签解析
 
-![image-20200902192655070](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/02/192713-873987.png)
+![image-20200902192655070](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/02/192713-873987.png)
 
 程序启动后，依托Spring加载，会由Spring初始化器  `BeanDefinitionParser` 来解析配置文件，首先来到  `DubboNamespaceHandler` 来创建解析器 再由 `DubboBeanDefinitionParser`  里面有一个parse 解析方法来解析，每次读取配置文件的标签来创建和装配不同的Dubbo对象（这些对象是如何被创建的呢？他们是由一个构造器创创建，每次根据读取的标签的值和原本定死的字符串比较，如果相同就创建它们的对象详情见下图 ==来自构造器的前一步的初始化方法(init)== [1]），
 
-![1](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/02/194657-616081.png)
+![1](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/02/194657-616081.png)
 
 ##### 服务暴露
 

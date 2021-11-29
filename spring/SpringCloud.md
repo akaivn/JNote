@@ -18,7 +18,7 @@ SpringCloud GitHub地址：[springcloud](https://github.com/spring-projects/spri
 
 ### SpringCloud组件图
 
-![image-20200903200613969](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/03/200614-416148.png)
+![image-20200903200613969](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/03/200614-416148.png)
 
 ---
 
@@ -35,7 +35,7 @@ SpringCloud GitHub地址：[springcloud](https://github.com/spring-projects/spri
 
 替换组件图如下：
 
-![image-20200903201421390](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/03/201422-361317.png)
+![image-20200903201421390](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/03/201422-361317.png)
 
 ***
 
@@ -53,7 +53,7 @@ Springboot的版本以 1.x.x ，2.x.x 开头，前面的数字一旦发生变化
 
 下图为SpringCloud官网给出的版本配合
 
-![Springboot+SpringCloud](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/03/194704-920618.png)
+![Springboot+SpringCloud](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/03/194704-920618.png)
 
 最终版本确定（官网推荐）：
 
@@ -372,7 +372,7 @@ XRebel 是不间断运行在 web 应用的交互式分析器。可以看到网�
 
 示例图：
 
-![XRebel](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/05/125440-384114.png)
+![XRebel](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/05/125440-384114.png)
 
 ---
 
@@ -428,7 +428,7 @@ Eureka是Netflix开发的服务发现框架，本身是一个基于REST的服务
 
 Eureka架构图
 
-![image-20200905135807329](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/05/135808-60747.png)
+![image-20200905135807329](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/05/135808-60747.png)
 
 ---
 
@@ -494,7 +494,7 @@ eureka:
 
 访问结果如图：
 
-![Eureka实例](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/05/173852-350844.png)
+![Eureka实例](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/05/173852-350844.png)
 
 ###### 支付工程入驻(provider)
 
@@ -532,7 +532,7 @@ eureka:
 
 启动工程观察注册中心 **Eureka Server一定要提前开启**
 
-![image-20200905175701366](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/05/175701-50972.png)
+![image-20200905175701366](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/05/175701-50972.png)
 
 显示服务已注册进入注册中心
 
@@ -546,7 +546,7 @@ eureka:
 
 配置启动后，注册中心为下图
 
-![image-20200905180938054](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/05/193559-411950.png)
+![image-20200905180938054](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/05/193559-411950.png)
 
 此时，便可通过访问消费者的 http://localhost/consumer/1 来测试调用提供者的数据信息
 
@@ -560,7 +560,7 @@ eureka:
 
 ###### Eureka集群原理
 
-![image-20200906090525493](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/06/090529-512852.png)
+![image-20200906090525493](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/06/090529-512852.png)
 
 ---
 
@@ -631,7 +631,7 @@ service-url:
 
 **启动顺序一定要注意**
 
-![image-20200906101115794](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/06/101115-131875.png)
+![image-20200906101115794](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/06/101115-131875.png)
 
 服务成功注册，此时可访问order来消费提供者的服务
 
@@ -791,13 +791,13 @@ private org.springframework.cloud.client.discovery.DiscoveryClient discoveryClie
 
 -   结果如图
 
-![image-20200906122926574](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/06/122929-43904.png)
+![image-20200906122926574](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/06/122929-43904.png)
 
 #### Eureka自我保护
 
 ##### 什么是自我保护
 
-![image-20200905180938054](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/05/193559-411950.png)
+![image-20200905180938054](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/05/193559-411950.png)
 
 前面有说到Eureka自我保护机制，那什么是自我保护呢？
 
@@ -835,14 +835,14 @@ instance:
 
 -   开启Eureka Server 后观察
 
-![image-20200906163551535](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/06/163552-136077.png)
+![image-20200906163551535](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/06/163552-136077.png)
 
 ---
 
 -   开启Eureka Client provider 后，服务可以正常被注册
 -   关闭Eureka Client provider 程序后出现再刷新 Eureka Server后如下图
 
-![image-20200906163744471](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/06/163745-473762.png)
+![image-20200906163744471](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/06/163745-473762.png)
 
 此时Eureka Server 就会绝情的将 指定时间未发送心跳的服务剔除出 Server
 
@@ -960,7 +960,7 @@ $ ls /services
 
 停止provider-zk程序，观察Linux上节点下的`UUID` ，它是会像Eureka一样？过一段时间后接受不到心跳直接剔除？还是一没有直接就剔除？
 
-![image-20200906183128014](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/06/183128-457781.png)
+![image-20200906183128014](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/06/183128-457781.png)
 
 ---
 
@@ -1052,7 +1052,7 @@ consul agent -dev
 http://localhost:8500
 ```
 
-![image-20200908201934816](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/08/201935-451244.png)
+![image-20200908201934816](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/08/201935-451244.png)
 
 ---
 
@@ -1111,7 +1111,7 @@ public class PayController {
 
 -   启动程序
 
-![image-20200908203503592](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/08/203504-220919.png)
+![image-20200908203503592](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/08/203504-220919.png)
 
 ---
 
@@ -1167,7 +1167,7 @@ public class OrderController {
 
 -   启动应用程序
 
-![image-20200908204925317](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/08/204926-673463.png)
+![image-20200908204925317](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/08/204926-673463.png)
 
 ---
 
@@ -1179,7 +1179,7 @@ http://localhost/consumer/consul
 
 我们试试停掉服务再观察consul控制台界面
 
-![image-20200908210030726](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/08/210031-918376.png)
+![image-20200908210030726](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/08/210031-918376.png)
 
 ---
 
@@ -1213,7 +1213,7 @@ CAP理论的核心是:一个分布式系统不可能同时很好的满足一致�
 
 **AP-满足可用性，分区容忍性的系统，通常可能对—致性要求低一些。I**
 
-![image-20200908210832157](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/08/210833-780737.png)
+![image-20200908210832157](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/08/210833-780737.png)
 
 ##### 不同点
 
@@ -1223,7 +1223,7 @@ CAP理论的核心是:一个分布式系统不可能同时很好的满足一致�
 
 **结论:违背了一致性C的要求，只满足可用性和分区容错，即AP**
 
-![image-20200908210446713](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/08/210447-618655.png)
+![image-20200908210446713](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/08/210447-618655.png)
 
 ---
 
@@ -1233,7 +1233,7 @@ CAP理论的核心是:一个分布式系统不可能同时很好的满足一致�
 
 **结论:违背了可用性A的要求，只满足一致性和分区容错，即CP**
 
-![image-20200908211132557](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/08/211133-609246.png)
+![image-20200908211132557](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/08/211133-609246.png)
 
 ---
 
@@ -1255,7 +1255,7 @@ Ribbon目前也已进入维护模式，未来的替代方案为SpringCloud-Load 
 
 **将负载均衡逻辑集成到consumer, consumer从注册中心获知有那些地址可以用,然后自己再从这些地址中选择出一个合适的 provider**
 
-![preview](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/09/192429-609509.jpeg)
+![preview](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/09/192429-609509.jpeg)
 
 ---
 
@@ -1263,7 +1263,7 @@ Ribbon目前也已进入维护模式，未来的替代方案为SpringCloud-Load 
 
 **即在 consumer 和provider 之间使用独立的负载均衡设施(比如Nginx等,通过某种策略转发给provider )**
 
-![v2-a1b8be1be307b9b2c7faf70a2041c038_r](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/09/192543-795306.jpeg)
+![v2-a1b8be1be307b9b2c7faf70a2041c038_r](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/09/192543-795306.jpeg)
 
 ---
 
@@ -1386,7 +1386,7 @@ public class MainApplicationWithOrder {}
 
 类图如下，自行观看
 
-![image-20200910204331954](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/10/204333-481616.png)
+![image-20200910204331954](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/10/204333-481616.png)
 
 ---
 
@@ -1674,7 +1674,7 @@ logging:
 
 ---
 
-![image-20200914201405145](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/14/201405-77327.png)
+![image-20200914201405145](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/14/201405-77327.png)
 
 ---
 
@@ -1684,7 +1684,7 @@ logging:
 
 ==复杂分布式体系结构中的应用程序有数十个依赖关系，每个依赖关系在某些时候将不可避免地失败==
 
-![image-20200914201814244](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/14/201815-901386.png)
+![image-20200914201814244](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/14/201815-901386.png)
 
 ---
 
@@ -1878,15 +1878,15 @@ Apache Jmeter 可以用于对静态的和动态的资源（文件，Servlet，Pe
 -   切换中文可从 Options 中 选择
 -   创建线程组
 
-![image-20200916191458672](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/16/191459-449151.png)
+![image-20200916191458672](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/16/191459-449151.png)
 
 -   设置线程数和循环次数
 
-![image-20200916191812605](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/16/191814-24562.png)
+![image-20200916191812605](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/16/191814-24562.png)
 
 -   创建http请求并且配置我们需要进行测试的程序协议、地址和端口
 
-![image-20200916193331191](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/16/193332-830367.png)
+![image-20200916193331191](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/16/193332-830367.png)
 
 -   最后点击运行按钮即可创建线程发送请求
 
@@ -1896,7 +1896,7 @@ Apache Jmeter 可以用于对静态的和动态的资源（文件，Servlet，Pe
 
 最后的结论是：当**8001/sleep/{id}** 被堆积的线程访问时，会拖慢 **8001/{id}** 的速度，如下图，8001/{id} 也开始转圈
 
-![image-20200916194044368](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/16/194045-760117.png)
+![image-20200916194044368](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/16/194045-760117.png)
 
 ---
 
@@ -2032,7 +2032,7 @@ public String SleepGetPort_TimeOutHandler(Integer id){
 
 结果为：由Hystrix提供线程服务，顺利的返回我们的兜底方法，即使上方出现的不是超时，而是异常，结果依旧可行
 
-![image-20200916205951877](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/16/205952-934215.png)
+![image-20200916205951877](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/16/205952-934215.png)
 
 ---
 
@@ -2144,7 +2144,7 @@ public String normalGetPort (@PathVariable("id") Integer id){
 
 熔断其实是一个框架级的处理，那么这套熔断机制的设计，基本上业内用的是`断路器模式`，如`Martin Fowler`提供的状态转换图如下所示
 
-![image-20200924191416463](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/24/191418-722173.png)
+![image-20200924191416463](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/24/191418-722173.png)
 
 
 
@@ -2230,7 +2230,7 @@ public String paymentCircuitBreaker(@PathVariable("id") Integer id){
 
 流程图如下：
 
-![hystrix-command-flow-chart](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/24/202438-964869.png)
+![hystrix-command-flow-chart](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/24/202438-964869.png)
 
 ---
 
@@ -2238,7 +2238,7 @@ public String paymentCircuitBreaker(@PathVariable("id") Integer id){
 
 >   什么是Hystrix Dashboard
 
-![image-20200924203024585](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202009/24/203025-542942.png)
+![image-20200924203024585](https://gitee.com/QianKa/image-bucket/raw/master/typora/202009/24/203025-542942.png)
 
 `Dashboard` 环境搭建
 
@@ -2304,7 +2304,7 @@ hystrix:
 
 -   随后在9001 Dashboard工程中输入要监控的工程的地址，点击监控流即可到达监控页面
 
-![image-20201011152243508](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202010/11/152244-606997.png)
+![image-20201011152243508](https://gitee.com/QianKa/image-bucket/raw/master/typora/202010/11/152244-606997.png)
 
 ---
 
@@ -2320,11 +2320,11 @@ hystrix:
 
 复杂的监控图又如：
 
-![image-20201011152834126](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202010/11/152835-140884.png)
+![image-20201011152834126](https://gitee.com/QianKa/image-bucket/raw/master/typora/202010/11/152835-140884.png)
 
 ---
 
-![image-20201011152911709](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202010/11/152912-803482.png)
+![image-20201011152911709](https://gitee.com/QianKa/image-bucket/raw/master/typora/202010/11/152912-803482.png)
 
 ---
 
@@ -2332,7 +2332,7 @@ hystrix:
 
 微服务架构中网关所处的位置
 
-![Image](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202010/11/161057-604224.bmp)
+![Image](https://gitee.com/QianKa/image-bucket/raw/master/typora/202010/11/161057-604224.bmp)
 
 ---
 
@@ -2402,7 +2402,7 @@ SpringCloud Gateway拥有更多新特性：
 
 ##### Gateway位置定义
 
-![image-20201018083534625](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202010/18/083535-302969.png)
+![image-20201018083534625](https://gitee.com/QianKa/image-bucket/raw/master/typora/202010/18/083535-302969.png)
 
 ##### 核心概念
 
@@ -2504,7 +2504,7 @@ public RouteLocator routeLocator2(RouteLocatorBuilder routeLocatorBuilder){
 }
 ```
 
-![image-20201018103522605](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202010/18/103546-608844.png)
+![image-20201018103522605](https://gitee.com/QianKa/image-bucket/raw/master/typora/202010/18/103546-608844.png)
 
 ---
 
@@ -2785,7 +2785,7 @@ http://localhost:9527/pay/port?username=
 
 结果
 
-![image-20201108112745857](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/08/112748-629474.png)
+![image-20201108112745857](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/08/112748-629474.png)
 
 ---
 
@@ -2823,7 +2823,7 @@ SpringCloud Config分为*服务端和客户端两部分*。
 
 ---
 
-![image-20201108135833443](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/08/135834-74653.png)
+![image-20201108135833443](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/08/135834-74653.png)
 
 ---
 
@@ -3041,7 +3041,7 @@ http://localhost:3399/configInfo
 
 ---
 
-![image-20201111191450310](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/11/191452-563717.png)
+![image-20201111191450310](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/11/191452-563717.png)
 
 ---
 
@@ -3110,7 +3110,7 @@ SpringCloud Bus 工作流程
 
 ---
 
-![image-20201112201237838](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/12/201238-758380.png)
+![image-20201112201237838](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/12/201238-758380.png)
 
 ---
 
@@ -3122,7 +3122,7 @@ Spring Ccloud Bus能管理和传播分布式系统间的消息，就像一个分
 
 ---
 
-![image-20201112201555115](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/12/201555-90422.png)
+![image-20201112201555115](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/12/201555-90422.png)
 
 ---
 
@@ -3152,7 +3152,7 @@ ConfigClient实例都监听MQ中同一个topic(默认是springCloudBus)。当一
 
 ---
 
-![image-20201114155910489](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/14/171440-856922.png)
+![image-20201114155910489](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/14/171440-856922.png)
 
 ---
 
@@ -3160,7 +3160,7 @@ ConfigClient实例都监听MQ中同一个topic(默认是springCloudBus)。当一
 
 ---
 
-![image-20201114160005184](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/14/160007-636484.png)
+![image-20201114160005184](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/14/160007-636484.png)
 
 ---
 
@@ -3290,7 +3290,7 @@ curl -X POST "http://localhost:3366/actuator/bus-refresh/config-client:3399"
 
 ---
 
-![image-20201114171521700](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/14/171524-895222.png)
+![image-20201114171521700](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/14/171524-895222.png)
 
 ---
 
@@ -3328,7 +3328,7 @@ SpringCloud Stream为一些供应商的消息中间件产品提供了个性化�
 
 ---
 
-![image-20201115085816567](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/15/085817-666716.png)
+![image-20201115085816567](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/15/085817-666716.png)
 
 ---
 
@@ -3385,11 +3385,11 @@ Output对应生产者
 
 ---
 
-![image-20201115093053025](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/15/093054-864396.png)
+![image-20201115093053025](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/15/093054-864396.png)
 
 ---
 
-![image-20201117205514545](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/17/205516-132210.png)
+![image-20201117205514545](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/17/205516-132210.png)
 
 ---
 
@@ -3600,7 +3600,7 @@ public class ReceiveMessageController {
 
 ---
 
-![image-20201118204453113](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/18/204454-138664.png)
+![image-20201118204453113](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/18/204454-138664.png)
 
 ---
 
@@ -3675,17 +3675,17 @@ Zipkin是一款开源的分布式实时数据追踪系统（Distributed Tracking
 
 ---
 
-![image-20201121091304088](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/21/091305-229341.png)
+![image-20201121091304088](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/21/091305-229341.png)
 
 ---
 
 我们可将上图拆解来理解spanID 和 TraceID
 
-![image-20201121091515672](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/21/091516-665910.png)
+![image-20201121091515672](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/21/091516-665910.png)
 
 ---
 
-![image-20201121091616130](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/21/091617-47885.png)
+![image-20201121091616130](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/21/091617-47885.png)
 
 ---
 
@@ -3721,7 +3721,7 @@ http://localhost:9411/zipkin/
 
 ---
 
-![image-20201121092603449](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/21/092604-307071.png)
+![image-20201121092603449](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/21/092604-307071.png)
 
 本次测试观察Sleuth的调用链路，我们使用最简单的原微**服务服务提供者和消费者**，接下来就进入服务的改造
 
@@ -3744,7 +3744,7 @@ http://localhost:9411/zipkin/
 
 ---
 
-![image-20201121093402567](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/21/104043-124954.png)
+![image-20201121093402567](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/21/104043-124954.png)
 
 ---
 
@@ -3792,7 +3792,7 @@ public JsonResult consumerZipkinOrSleuth(){
 
 ---
 
-![image-20201121095945986](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/21/104044-816693.png)
+![image-20201121095945986](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/21/104044-816693.png)
 
 ---
 
@@ -3994,7 +3994,7 @@ public class PayController {
 
 ---
 
-![image-20201121175028354](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/21/175029-523734.png)
+![image-20201121175028354](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/21/175029-523734.png)
 
 ---
 
@@ -4006,17 +4006,17 @@ public class PayController {
 
 ---
 
-![image-20201121175549829](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/22/105207-546538.png)
+![image-20201121175549829](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/22/105207-546538.png)
 
 ---
 
-![image-20201121175753174](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/22/092451-158366.png)
+![image-20201121175753174](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/22/092451-158366.png)
 
 ---
 
 完成即可在Service出生成一个9001的复制工程启动类，我们启动它后再次观察nacos控制台
 
-![image-20201121175850358](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/21/175851-869508.png)
+![image-20201121175850358](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/21/175851-869508.png)
 
 ---
 
@@ -4088,7 +4088,7 @@ public class OrderController {
 
 Nacos能够不同于其他注册中心的是它能够在 `CP` 和 `AP` 之间自由切换
 
-![image-20201122105016991](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/22/105020-841502.png)
+![image-20201122105016991](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/22/105020-841502.png)
 
 我们在前面说过：CAP分别带表的意思
 
@@ -4112,11 +4112,11 @@ curl -X PUT '$NACOS_SERVER:8848/nacos/v1/ns/operator/switches?entry=serverMode&v
 
 ###### Nacos全景图
 
-![image-20201122104810463](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/22/104811-287414.png)
+![image-20201122104810463](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/22/104811-287414.png)
 
 ###### Nacos与其他注册中心的区别
 
-![image-20201122104945762](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/22/104946-736250.png)
+![image-20201122104945762](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/22/104946-736250.png)
 
 ##### Make 配置中心
 
@@ -4202,7 +4202,7 @@ ${spring.application.name}-${spring.profile.active}.${spring.cloud.nacos.config.
 
 然后我们了解规则之后就可以登录Nacos的控制台进行文件的创建了
 
-![image-20201122111606888](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/22/111609-283120.png)
+![image-20201122111606888](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/22/111609-283120.png)
 
 ---
 
@@ -4238,7 +4238,7 @@ http://localhost:3333/config/info
 
 ---
 
-![image-20201122141849988](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/22/141850-686902.png)
+![image-20201122141849988](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/22/141850-686902.png)
 
 ---
 
@@ -4310,7 +4310,7 @@ spring:
 
 ---
 
-![image-20201128082201633](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/28/082202-703933.png)
+![image-20201128082201633](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/28/082202-703933.png)
 
 ---
 
@@ -4320,7 +4320,7 @@ spring:
 
 ---
 
-![image-20201128082337663](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/28/082340-681323.png)
+![image-20201128082337663](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/28/082340-681323.png)
 
 ---
 
@@ -4419,7 +4419,7 @@ ip:9999
 
 nacos解压目录下的 /bin目录有startup.sh
 
-![image-20201128093039965](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/28/093041-411844.png)
+![image-20201128093039965](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/28/093041-411844.png)
 
 - ```shell
   while getopts ":m:f:s:c:p:P:" opt
@@ -4477,7 +4477,7 @@ ps -ef|grep nacos|grep -v grep|wc -l
 
 **主要特征**
 
-![image-20201129133514992](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/133516-143276.png)
+![image-20201129133514992](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/133516-143276.png)
 
 **Sentinel 分为两个部分**
 
@@ -4582,7 +4582,7 @@ http://localhost:8858
 
 ###### 简介
 
-![image-20201129150225285](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/150225-546130.png)
+![image-20201129150225285](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/150225-546130.png)
 
 - *资源名*:唯一名称，默认请求路径
 
@@ -4604,7 +4604,7 @@ http://localhost:8858
 
 **配置图：**
 
-![image-20201129153255059](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202012/06/191902-212398.png)
+![image-20201129153255059](https://gitee.com/QianKa/image-bucket/raw/master/typora/202012/06/191902-212398.png)
 
 ---
 
@@ -4616,7 +4616,7 @@ http://localhost:8858
 
 **配置图：**
 
-![image-20201129153331268](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/153332-116492.png)
+![image-20201129153331268](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/153332-116492.png)
 
 ---
 
@@ -4632,7 +4632,7 @@ http://localhost:8858
 
 **配置图：**
 
-![image-20201129153534446](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/153535-468961.png)
+![image-20201129153534446](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/153535-468961.png)
 
 ---
 
@@ -4647,11 +4647,11 @@ http://localhost:8858
 
 **PostMan测试步骤如下：**
 
-![image-20201129154355770](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/154356-471083.png)
+![image-20201129154355770](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/154356-471083.png)
 
 ---
 
-![image-20201129154808645](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/154809-392245.png)
+![image-20201129154808645](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/154809-392245.png)
 
 **返回结果：**同上
 
@@ -4659,7 +4659,7 @@ http://localhost:8858
 
 **配置：**
 
-![image-20201129160343313](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/160343-925185.png)
+![image-20201129160343313](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/160343-925185.png)
 
 ---
 
@@ -4669,7 +4669,7 @@ Sentinel 允许只根据某个入口的统计信息对资源限流，我们只�
 
 配置图：
 
-![image-20201129162014190](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/162014-699184.png)
+![image-20201129162014190](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/162014-699184.png)
 
 ---
 
@@ -4685,7 +4685,7 @@ Sentinel 允许只根据某个入口的统计信息对资源限流，我们只�
 
 配置图：
 
-![image-20201129162557777](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/162558-486703.png)
+![image-20201129162557777](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/162558-486703.png)
 
 匀速排队（`RuleConstant.CONTROL_BEHAVIOR_RATE_LIMITER`）方式会严格控制请求通过的间隔时间，也即是让请求以均匀的速度通过，对应的是漏桶算法。详细文档可以参考 [流量控制 - 匀速器模式](https://github.com/alibaba/Sentinel/wiki/流量控制-匀速排队模式)，具体的例子可以参见 [PaceFlowDemo](https://github.com/alibaba/Sentinel/blob/master/sentinel-demo/sentinel-demo-basic/src/main/java/com/alibaba/csp/sentinel/demo/flow/PaceFlowDemo.java)
 
@@ -4693,7 +4693,7 @@ Sentinel 允许只根据某个入口的统计信息对资源限流，我们只�
 
 <u>注：匀速排队模式暂时不支持 QPS > 1000 的场景</u>
 
-![image-20201129162507883](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/162509-789129.png)
+![image-20201129162507883](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/162509-789129.png)
 
 ---
 
@@ -4719,7 +4719,7 @@ Sentinel熔断降级会在调用链路中某个资源出现不稳定状态时（
 
 **配置图：**
 
-![image-20201129165120632](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/165121-667666.png)
+![image-20201129165120632](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/165121-667666.png)
 
 慢调用比例 (`SLOW_REQUEST_RATIO`)：选择以慢调用比例作为阈值，需要设置允许的慢调用 RT（即最大的响应时间），请求的响应时间大于该值则统计为慢调用。当单位统计时长（`statIntervalMs`）内请求数目大于设置的最小请求数目，并且慢调用的比例大于阈值，则接下来的熔断时长内请求会自动被熔断。经过熔断时长后熔断器会进入探测恢复状态（HALF-OPEN 状态），若接下来的一个请求响应时间小于设置的慢调用 RT 则结束熔断，若大于设置的慢调用 RT 则会再次被熔断
 
@@ -4729,7 +4729,7 @@ Sentinel熔断降级会在调用链路中某个资源出现不稳定状态时（
 
 **配置图：**
 
-![image-20201129170811603](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/170812-174838.png)
+![image-20201129170811603](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/170812-174838.png)
 
 异常比例 (`ERROR_RATIO`)：当单位统计时长（`statIntervalMs`）内请求数目大于设置的最小请求数目，并且异常的比例大于阈值，则接下来的熔断时长内请求会自动被熔断。经过熔断时长后熔断器会进入探测恢复状态（HALF-OPEN 状态），若接下来的一个请求成功完成（没有错误）则结束熔断，否则会再次被熔断。异常比率的阈值范围是 `[0.0, 1.0]`，代表 0% - 100%
 
@@ -4739,7 +4739,7 @@ Sentinel熔断降级会在调用链路中某个资源出现不稳定状态时（
 
 配置图：
 
-![image-20201129170947497](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202011/29/170947-648046.png)
+![image-20201129170947497](https://gitee.com/QianKa/image-bucket/raw/master/typora/202011/29/170947-648046.png)
 
 异常数 (`ERROR_COUNT`)：当单位统计时长内的异常数目超过阈值之后会自动进行熔断。经过熔断时长后熔断器会进入探测恢复状态（HALF-OPEN 状态），若接下来的一个请求成功完成（没有错误）则结束熔断，否则会再次被熔断
 
@@ -4756,7 +4756,7 @@ Sentinel熔断降级会在调用链路中某个资源出现不稳定状态时（
 
 配置图：
 
-![image-20201201160119554](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202012/01/160119-986944.png)
+![image-20201201160119554](https://gitee.com/QianKa/image-bucket/raw/master/typora/202012/01/160119-986944.png)
 
 ###### 限流
 
@@ -5140,7 +5140,7 @@ http://localhost:84/consumer/paymentSQL/1
 
 ##### 熔断框架比较
 
-![image-20201206184749899](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202012/06/184751-585464.png)
+![image-20201206184749899](https://gitee.com/QianKa/image-bucket/raw/master/typora/202012/06/184751-585464.png)
 
 ##### Sentinel持久化
 
@@ -5221,11 +5221,11 @@ Seata 是一款开源的分布式事务解决方案，致力于提供高性能�
 
 ##### Seata解决方案
 
-![image-20201212075230351](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202012/12/075235-130740.png)
+![image-20201212075230351](https://gitee.com/QianKa/image-bucket/raw/master/typora/202012/12/075235-130740.png)
 
 ---
 
-![image-20201212075816006](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202012/12/075817-210918.png)
+![image-20201212075816006](https://gitee.com/QianKa/image-bucket/raw/master/typora/202012/12/075817-210918.png)
 
 ##### Seata术语
 
@@ -5377,7 +5377,7 @@ spring:
 
 ---
 
-![image-20201212085334067](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202012/12/085335-632308.png)
+![image-20201212085334067](https://gitee.com/QianKa/image-bucket/raw/master/typora/202012/12/085335-632308.png)
 
 ##### 启动
 
@@ -6232,7 +6232,7 @@ public void createOrder(Order order) {}
 
 #### 原理
 
-![image-20201214105945620](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202012/14/105946-568692.png)
+![image-20201214105945620](https://gitee.com/QianKa/image-bucket/raw/master/typora/202012/14/105946-568692.png)
 
 详情课件官网：[Seata原理](http://seata.io/zh-cn/docs/overview/what-is-seata.html)
 

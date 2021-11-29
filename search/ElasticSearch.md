@@ -27,7 +27,7 @@ github上搜索elasticsearch-head 连接elasticsearch可以直接避免跨域问
 
 效果展示
 
-![es-head](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/233941-851034.png)
+![es-head](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/233941-851034.png)
 
 ### 4、了解ELK
 
@@ -47,7 +47,7 @@ github上搜索elasticsearch-head 连接elasticsearch可以直接避免跨域问
 
 访问效果
 
-![kibana](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/233944-634079.png)
+![kibana](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/233944-634079.png)
 
 ## 3、ElasticSearch核心概念
 
@@ -66,7 +66,7 @@ github上搜索elasticsearch-head 连接elasticsearch可以直接避免跨域问
 
 ​	一个集群至少有一个节点，而一个节点就是一个elasticsearch进程，节点可以有多个索引。默认的，如果你创建索引，那么索引将会有个5个分片 ( primary shard ,又称主分片 ) 构成的，每一个主分片会有一个副本 ( replica shard ,又称复制分片 )  
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/233948-129583.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/233948-129583.png)
 
 上图是一个有3个节点的集群，可以看到主分片和对应的复制分片都不会在同一个节点内，这样有利于某个节点挂掉 了，数据也不至于丢失。 实际上，一个分片是一个Lucene索引，一个包含==倒排索引==的文件目录，倒排索引的结构使 得elasticsearch在不扫描全部文档的情况下，就能告诉你哪些文档包含特定的关键字。
 
@@ -150,11 +150,11 @@ docker restart 容器名
 
 - **Ik_smart :最少分词器，它将一句话拆分成中文词语，不是词语的拆成单字**
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/233953-490953.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/233953-490953.png)
 
 - **Ik_max_word：最详细分词器，它将一段文本拆分成尽可能多的词，包含重复拆分，不是词语的拆成单字**
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/233954-180223.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/233954-180223.png)
 
 **问题：如何自定义自己的词语，使之拆分时不拆分自定义词语，而把它当做一个词来看？**
 
@@ -191,7 +191,7 @@ docker restart 容器名
 
 ##### 4、测试效果
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/233957-709027.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/233957-709027.png)
 
 ## 5、关于索引的操作
 

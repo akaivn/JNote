@@ -67,11 +67,11 @@ http://www.gulixueyuan.com/ 谷粒学院
 
 整合maven进来；
 
-![idea设置](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234030-470134.png)
+![idea设置](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234030-470134.png)
 
 
 
-![images/](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234039-923382.png)
+![images/](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234039-923382.png)
 
 ## 4、Spring Boot HelloWorld
 
@@ -315,7 +315,7 @@ public @interface EnableAutoConfiguration {
 
 ​		将所有需要导入的组件以全类名的方式返回；这些组件就会被添加到容器中；
 
-​		会给容器中导入非常多的自动配置类（xxxAutoConfiguration）；就是给容器中导入这个场景需要的所有组件，并配置好这些组件；		![自动配置类](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234052-369229.png)
+​		会给容器中导入非常多的自动配置类（xxxAutoConfiguration）；就是给容器中导入这个场景需要的所有组件，并配置好这些组件；		![自动配置类](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234052-369229.png)
 
 有了自动配置类，免去了我们手动编写配置注入功能组件等的工作；
 
@@ -531,7 +531,7 @@ public class Person {
 
 调整
 
-![idea配置乱码](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234059-634064.png)
+![idea配置乱码](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234059-634064.png)
 
 #### 2、@Value获取值和@ConfigurationProperties获取值比较
 
@@ -1168,7 +1168,7 @@ public class HelloWorld {
 
 图示；
 
-![images/concrete-bindings.png](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234118-246930.png)
+![images/concrete-bindings.png](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234118-246930.png)
 
 每一个日志的实现框架都有自己的配置文件。使用slf4j以后，**配置文件还是做成日志实现框架自己本身的配置文件；**
 
@@ -1178,7 +1178,7 @@ a（slf4j+logback）: Spring（commons-logging）、Hibernate（jboss-logging）
 
 统一日志记录，即使是别的框架和我一起统一使用slf4j进行输出？
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234125-893892.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234125-893892.png)
 
 **如何让系统中所有的日志都统一到slf4j；**
 
@@ -1212,7 +1212,7 @@ SpringBoot使用它来做日志功能；
 
 底层依赖关系
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234129-578825.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234129-578825.png)
 
 总结：
 
@@ -1231,7 +1231,7 @@ public abstract class LogFactory {
     static LogFactory logFactory = new SLF4JLogFactory();
 ```
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234133-859365.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234133-859365.png)
 
 
 
@@ -1539,7 +1539,7 @@ public class ResourceProperties implements ResourceLoaderAware {
 
 http://www.webjars.org/
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234154-85413.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234154-85413.png)
 
 localhost:8080/webjars/jquery/3.3.1/jquery.js
 
@@ -1584,7 +1584,7 @@ localhost:8080/abc ===  去静态资源文件夹里面找abc
 
 JSP、Velocity、Freemarker、Thymeleaf
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234411-48812.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234411-48812.png)
 
 
 
@@ -1659,7 +1659,7 @@ public class ThymeleafProperties {
 
 ​	th：任意html属性；来替换原生属性的值
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234424-570184.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234424-570184.png)
 
 
 
@@ -1998,7 +1998,7 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 
 1）、编写国际化配置文件，抽取页面需要显示的国际化消息
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234434-698589.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234434-698589.png)
 
 
 
@@ -2039,7 +2039,7 @@ public class MessageSourceAutoConfiguration {
 
 3）、去页面获取国际化的值；
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234437-970465.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234437-970465.png)
 
 
 
@@ -2482,17 +2482,17 @@ insert的公共片段在div标签内
 
 ​		1）、浏览器，返回一个默认的错误页面
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234447-168978.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234447-168978.png)
 
   浏览器发送请求的请求头：
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234451-622418.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234451-622418.png)
 
 ​		2）、如果是其他客户端，默认响应一个json数据
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234452-726243.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234452-726243.png)
 
-​		![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234455-240614.png)
+​		![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234455-240614.png)
 
 原理：
 
@@ -2707,7 +2707,7 @@ public class MyErrorAttributes extends DefaultErrorAttributes {
 
 最终的效果：响应是自适应的，可以通过定制ErrorAttributes改变需要返回的内容，
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234504-481360.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234504-481360.png)
 
 
 
@@ -2715,7 +2715,7 @@ public class MyErrorAttributes extends DefaultErrorAttributes {
 
 SpringBoot默认使用Tomcat作为嵌入式的Servlet容器；
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234504-10678.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234504-10678.png)
 
 
 
@@ -2824,7 +2824,7 @@ public ServletRegistrationBean dispatcherServletRegistration(
 
 ### 3）、替换为其他嵌入式Servlet容器
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234512-613125.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234512-613125.png)
 
 默认支持：
 
@@ -2952,11 +2952,11 @@ public interface EmbeddedServletContainerFactory {
 }
 ```
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234517-574625.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234517-574625.png)
 
 2）、EmbeddedServletContainer：（嵌入式的Servlet容器）
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234519-347941.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234519-347941.png)
 
 
 
@@ -3229,7 +3229,7 @@ Spring的web模块里面有这个文件：**org.springframework.web.SpringServle
 
 4）、每一个WebApplicationInitializer都调用自己的onStartup；
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234527-759506.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234527-759506.png)
 
 5）、相当于我们的SpringBootServletInitializer的类会被创建对象，并执行onStartup方法
 
@@ -3330,11 +3330,11 @@ Docker支持将软件编译成一个镜像；然后在镜像中各种软件做�
 
 运行中的这个镜像称为容器，容器启动是非常快速的。
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234531-183699.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234531-183699.png)
 
 
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234842-620351.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234842-620351.png)
 
 ## 2、核心概念
 
@@ -3348,7 +3348,7 @@ docker镜像(Images)：软件打包好的镜像；放在docker仓库中；
 
 docker容器(Container)：镜像启动后的实例称为一个容器；容器是独立运行的一个或一组应用
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234621-156478.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234621-156478.png)
 
 使用Docker的步骤：
 
@@ -3787,7 +3787,7 @@ public class DruidConfig {
 </dependency>
 ```
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234742-769422.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234742-769422.png)
 
 步骤：
 
@@ -3872,7 +3872,7 @@ http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/
 
 ### 1）、SpringData简介
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234748-740844.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234748-740844.png)
 
 ### 2）、整合SpringData JPA
 
@@ -3962,9 +3962,9 @@ private void initialize(Object[] sources) {
 }
 ```
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234752-673028.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234752-673028.png)
 
-![](https://typora-i-1302727418.cos.ap-shanghai.myqcloud.com/typora/202008/23/234902-182695.png)
+![](https://gitee.com/QianKa/image-bucket/raw/master/typora/202008/23/234902-182695.png)
 
 ## 2、运行run方法
 
